@@ -1,6 +1,6 @@
 # Backend for the Social Enterprise directory
 
-The directory uses Node, Express and Mongo on the backend.
+The directory uses Node, Express (and Mongo.. coming soon!) on the backend.
 
 ## To install
 * `npm install`
@@ -10,4 +10,4 @@ The directory uses Node, Express and Mongo on the backend.
 
 ## To use
 * localhost:14000/api/enterprises
-* localhost:14000/api/enterprises/<id>
+* localhost:14000/api/enterprises/&lt;id&gt;
