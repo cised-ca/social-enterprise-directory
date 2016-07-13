@@ -1,0 +1,25 @@
+{
+  "env": {
+    "node": 1,
+  },
+  "globals": {
+  },
+  "rules": {
+    "comma-dangle": 1,
+    "quotes": [ 1, "single" ],
+    "global-strict": 0,
+    "indent": [ 1, 2 ],
+    "no-undef": 1,
+    "no-extra-semi": 1,
+    "no-underscore-dangle": 0,
+    "no-console": 1,
+    "no-unused-vars": 1,
+    "no-trailing-spaces": 1,
+    "no-unreachable": 1,
+    "no-alert": 0,
+    "semi": [1, "always"]
+  },
+  "extends": "eslint:recommended",
+  "plugins": [
+  ]
+}
