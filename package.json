@@ -1,0 +1,22 @@
+{
+  "name": "social-enterprise-directory-backend",
+  "version": "1.0.0",
+  "description": "Backend for the social enterprise directory",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "directory",
+    "backend"
+  ],
+  "author": "Chad Adams",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.0"
+  },
+  "devDependencies": {
+    "mocha": "^2.5.3"
+  }
+}
