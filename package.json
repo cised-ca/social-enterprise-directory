@@ -1,5 +1,5 @@
 {
-  "name": "social-enterprise-directory-backend",
+  "name": "social-enterprise-directory",
   "version": "1.0.0",
   "description": "Backend for the social enterprise directory",
   "main": "app.js",
@@ -7,12 +7,20 @@
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chad-g-adams/social-enterprise-directory.git"
+  },
   "keywords": [
     "directory",
-    "backend"
+    "social enterprise"
   ],
   "author": "Chad Adams",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chad-g-adams/social-enterprise-directory/issues"
+  },
+  "homepage": "https://github.com/chad-g-adams/social-enterprise-directory#readme",
   "dependencies": {
     "express": "^4.14.0"
   },
