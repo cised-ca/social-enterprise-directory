@@ -1,11 +1,20 @@
-var express = require('express');
-var app = express();
+'use strict';
 
-var routes = require('./api/routes');
+var SwaggerExpress = require('swagger-express-mw');
+var app = require('express')();
+module.exports = app; // for testing
 
-app.set('port', 14000);
+var config = {
+  appRoot: __dirname // required config
+};
 
-app.use('/api/', routes);
+SwaggerExpress.create(config, function(err, swaggerExpress) {
+  if (err) { throw err; }
 
-app.listen(app.get('port'), function() {
+  // install middleware
+  swaggerExpress.register(app);
+
+  var port = process.env.PORT || 10010;
+  app.listen(port);
+
 });

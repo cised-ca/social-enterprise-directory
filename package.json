@@ -2,30 +2,35 @@
   "name": "social-enterprise-directory",
   "version": "1.0.0",
   "description": "Backend for the social enterprise directory",
-  "main": "app.js",
-  "scripts": {
-    "start": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/chad-g-adams/social-enterprise-directory.git"
-  },
   "keywords": [
     "directory",
     "social enterprise"
   ],
   "author": "Chad Adams",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/chad-g-adams/social-enterprise-directory/issues"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cised-ca/social-enterprise-directory"
   },
-  "homepage": "https://github.com/chad-g-adams/social-enterprise-directory#readme",
+  "bugs": {
+    "url": "https://github.com/cised-ca/social-enterprise-directory/issues"
+  },
+  "homepage": "https://github.com/cised-ca/social-enterprise-directory#readme",
+  "engines": {
+    "node": "4.4.5"
+  },
   "dependencies": {
-    "express": "^4.14.0"
+    "express": "4.12.3",
+    "swagger-express-mw": "0.1.0"
   },
   "devDependencies": {
-    "eslint": "^3.0.1",
-    "mocha": "^2.5.3"
+    "should": "7.1.0",
+    "supertest": "1.0.0",
+    "eslint": "3.0.1"
+  },
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "swagger project test"
   }
 }
