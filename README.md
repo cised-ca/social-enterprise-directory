@@ -22,7 +22,7 @@ Starting server
 * the advantage is that it will auto-detect any file modifications and nicely restart the server for you (kind of like nodemon)
 
 To view our API documentation in Swagger UI:
-* `swagger project edit` then open browser to http://127.0.0.1:60674/#/ (if it does not automatically open for you)
+* `swagger project edit` then open browser to the URL shown in the console (if it does not automatically open for you)
 * One neat thing is that you can use the "Try this operation" button to send requests to the server from this UI
 
 To run server in swagger's mock mode
