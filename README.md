@@ -1,9 +1,21 @@
 # Backend for the Social Enterprise directory
 
-The directory uses Node, Swagger (..and Mongo.. coming soon!) on the backend.
+The directory uses Node, Swagger and Mongo on the backend.
 
 ## To install
 * `npm install`
+
+## To install and start Mongo
+* https://docs.mongodb.com/manual/installation/
+
+### (Optional) Load test data into Mongo
+* First delete any previous data from Mongo (if so desired)
+
+ `mongo socialEnterpriseDirectory --eval "db.dropDatabase()"`
+* Now import the test data
+
+ `mongoimport --db socialEnterpriseDirectory --collection enterprises --file /path/to/api/mocks/test_data_mongo.json --jsonArray
+`
 
 ## To start
 * `npm start`

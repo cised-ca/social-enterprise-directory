@@ -128,7 +128,7 @@ definitions:
       addresses:
         type: array
         items:
-           type: string
+           $ref: "#/definitions/Address"
       phones:
         type: array
         items:
@@ -204,6 +204,20 @@ definitions:
       - fax
     properties:
       fax:
+        type: string
+      public:
+        type: boolean
+        default: false
+      tags:
+        type: array
+        items:
+          type: string
+
+  Address:
+    required:
+      - address
+    properties:
+      address:
         type: string
       public:
         type: boolean
