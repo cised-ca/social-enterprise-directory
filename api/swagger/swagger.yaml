@@ -18,6 +18,9 @@ consumes:
 produces:
   - application/json
 paths:
+  /swagger:
+    x-swagger-pipe: swagger_raw
+    
   /directory:
     x-swagger-router-controller: enterprise.controller
     get:
@@ -52,8 +55,6 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
-  /swagger:
-    x-swagger-pipe: swagger_raw
 
   /enterprise/{id}:
     x-swagger-router-controller: enterprise.controller
@@ -99,18 +100,38 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
+  /enterprise:
+    x-swagger-router-controller: enterprise.controller
+    post:
+      description: Creates an enterprise in the directory
+      # call this method name on the controller
+      operationId: createEnterprise
+      parameters: 
+        - 
+          name: Enterprise
+          in: body
+          description: Enterprise to be added to the directory
+          required: true
+          schema:
+            $ref: "#/definitions/NewEnterprise"
+
+      responses:
+        "201":
+          description: Success
+          schema:
+            $ref: "#/definitions/EnterpriseComplete"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
 
 # complex objects have schema definitions
 definitions:
 
-  # public view of an enterprise
-  EnterprisePublic:
+  EnterprisePublicWithoutID:
     required:
-      - id
       - name
     properties:
-      id:
-        type: string
       name:
         type: string
       logo:
@@ -145,12 +166,20 @@ definitions:
         type: array
         items:
            $ref: "#/definitions/Coordinates"
-
-  # full view of an enterprise (incl private fields)
-  EnterpriseComplete:
+  
+  # public view of an enterprise
+  EnterprisePublic:
     allOf:
-      - $ref: '#/definitions/EnterprisePublic' # inherit all the public fields
+      - $ref: '#/definitions/EnterprisePublicWithoutID'
       - properties:
+          id:
+            type: string
+    required:
+      - id
+      - name
+  
+  EnterprisePrivateFields:   
+    properties:
           parent_organization:
             type: string
           contact_person:
@@ -169,7 +198,19 @@ definitions:
               type: string
           stage_of_development:
             type: string
+
+  # full view of an enterprise (including private fields)
+  EnterpriseComplete:
+    allOf:
+      - $ref: '#/definitions/EnterprisePublic' # inherit all the public fields
+      - $ref: '#/definitions/EnterprisePrivateFields'
           
+  # full view of an enterprise (including private fields)
+  NewEnterprise:
+    allOf:
+      - $ref: '#/definitions/EnterprisePublicWithoutID' # inherit all the public fields
+      - $ref: '#/definitions/EnterprisePrivateFields'
+      
   
   PhoneNumber:
     required:

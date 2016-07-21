@@ -30,4 +30,17 @@ var enterprisePublicSchema = new mongoose.Schema({
   locations: [[Number]]
 });
 
-mongoose.model('Enterprise', enterprisePublicSchema, 'enterprises');
+var Enterprise = mongoose.model('EnterprisePublic', enterprisePublicSchema, 'enterprises');
+
+module.exports.enterprisePublicFields = Object.keys(enterprisePublicSchema.paths).join(' ');
+
+var enterpriseCompleteSchema = new mongoose.Schema({
+  clusters: [String],
+  segments: [String],
+  parent_organization: String,
+  contact_person: [String],
+  annual_revenue_range: String,
+  stage_of_development: String
+});
+
+Enterprise.discriminator('EnterpriseComplete', enterpriseCompleteSchema);

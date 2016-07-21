@@ -24,6 +24,9 @@ The directory uses Node, Swagger and Mongo on the backend.
 * http://localhost:10010/api/v1/directory
 * http://localhost:10010/api/v1/enterprise/{id}
 * http://localhost:10010/api/v1/enterprise/{id}/complete
+* POST http://localhost:10010/api/v1/enterprise
+
+
 
 # Swagger commands for development/testing
 First install the swagger command line

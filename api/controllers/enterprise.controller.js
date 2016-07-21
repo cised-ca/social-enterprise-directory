@@ -1,10 +1,16 @@
 var mongoose = require('mongoose');
-var enterpriseModel = mongoose.model('Enterprise');
+var enterprisePublicModel = mongoose.model('EnterprisePublic');
+var enterpriseCompleteModel = mongoose.model('EnterpriseComplete');
+var enterpriseAdapter = require('./enterprise.adapter');
+
+var publicFields = require('../data/enterprise.model').enterprisePublicFields;
+
 
 module.exports.getAllEnterprisesPublic = function(req, res) {
 
-  enterpriseModel
+  enterprisePublicModel
     .find()
+    .select(publicFields)
     .exec(function(err, dbEnterprises) {
       if (err) {
         console.log('Error finding enterprises ' + err);
@@ -15,7 +21,7 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
         return;
       }
 
-      var tranformedEnterprises = transformDbEnterprisesToRestFormat(dbEnterprises);
+      var tranformedEnterprises = enterpriseAdapter.transformDbEnterprisesToRestFormat(dbEnterprises);
       res.status(200).json(tranformedEnterprises);
     });
 };
@@ -23,8 +29,9 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
 module.exports.getOneEnterprisePublic = function(req, res) {
 
   var id = req.swagger.params.id.value;
-  enterpriseModel
+  enterprisePublicModel
     .findById(id)
+    .select(publicFields)
     .exec(function(err, dbEnterprise) {
       if (err) {
         console.log('Error finding enterprise ' + id + ' ' + err);
@@ -35,14 +42,14 @@ module.exports.getOneEnterprisePublic = function(req, res) {
         return;
       }
 
-      var tranformedEnterprise = transformDbEnterpriseToRestFormat(dbEnterprise);
+      var tranformedEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise);
       res.status(200).json(tranformedEnterprise);
     });
 };
 
 module.exports.getOneEnterpriseComplete = function(req, res) {
   var id = req.swagger.params.id.value;
-  enterpriseModel
+  enterprisePublicModel
     .findById(id)
     .exec(function(err, dbEnterprise) {
       if (err) {
@@ -54,31 +61,22 @@ module.exports.getOneEnterpriseComplete = function(req, res) {
         return;
       }
 
-      var tranformedEnterprise = transformDbEnterpriseToRestFormat(dbEnterprise);
+      var tranformedEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise);
       res.status(200).json(tranformedEnterprise);
     });
 };
 
-
-
-function transformDbEnterprisesToRestFormat(dbEnterprises) {
-  var enterprises = [];
-  dbEnterprises.forEach(
-      function(currentItem) {
-        enterprises.push(transformDbEnterpriseToRestFormat(currentItem));
-      }
-  );
-  return enterprises;
-}
-
-function transformDbEnterpriseToRestFormat(dbEnterprise) {
-  // switch "_id" to "id"
-  var apiEnterprise = JSON.parse(JSON.stringify(dbEnterprise));
-  apiEnterprise.id = dbEnterprise._id;
-  delete apiEnterprise._id;
-
-  // remove translation field
-  delete apiEnterprise.translation;
-
-  return apiEnterprise;
-}
+module.exports.createEnterprise = function(req, res) {
+  var enterprise = req.swagger.params.Enterprise.value;
+  enterpriseCompleteModel.create(enterprise, function(err, dbEnterprise) {
+    if (err) {
+      console.log('Error creating enterprise ' + err);
+      res.status(400).json({'message': err});
+      return;
+    } else {
+      console.log('Enterprise created!', dbEnterprise);
+      var apiEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise);
+      res.status(201).json(apiEnterprise);
+    }
+  });
+};
