@@ -21,7 +21,7 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
         return;
       }
 
-      var tranformedEnterprises = enterpriseAdapter.transformDbEnterprisesToRestFormat(dbEnterprises);
+      var tranformedEnterprises = enterpriseAdapter.transformDbEnterprisesToRestFormat(dbEnterprises, false);
       res.status(200).json(tranformedEnterprises);
     });
 };
@@ -42,7 +42,7 @@ module.exports.getOneEnterprisePublic = function(req, res) {
         return;
       }
 
-      var tranformedEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise);
+      var tranformedEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise, false);
       res.status(200).json(tranformedEnterprise);
     });
 };
@@ -61,7 +61,7 @@ module.exports.getOneEnterpriseComplete = function(req, res) {
         return;
       }
 
-      var tranformedEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise);
+      var tranformedEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise, true);
       res.status(200).json(tranformedEnterprise);
     });
 };
@@ -75,7 +75,7 @@ module.exports.createEnterprise = function(req, res) {
       return;
     } else {
       console.log('Enterprise created!', dbEnterprise);
-      var apiEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise);
+      var apiEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise, true);
       res.status(201).json(apiEnterprise);
     }
   });

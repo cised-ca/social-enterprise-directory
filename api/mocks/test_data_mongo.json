@@ -16,6 +16,12 @@
               "number": "44777777777",
               "public": true,
               "tags": ["branch #1"]
+            },
+
+            {
+              "number": "6667777788",
+              "public": false,
+              "tags": ["CEO phpne"]
             }
           ],
       "emails" : [
@@ -23,39 +29,39 @@
               "email": "test1@test.com",
               "public": true,
               "tags": ["main"]
+            },
+            {
+              "email": "privateEmail@test.com",
+              "public": false,
+              "tags": ["CEO email"]
+            }
+          ],
+
+      "faxes" : [
+            {
+              "fax": "8887776666",
+              "public": true,
+              "tags": ["main"]
+            },
+            {
+              "fax": "1112223333",
+              "public": false,
+              "tags": ["CEO fax"]
             }
           ],
       "purposes": [
         "Helping disadvantaged peoples",
         "Raising money for parent company"
       ],
-      "website" : "http://google.com"
+      "website" : "http://google.com",
+      "clusters" : ["cluster#1", "cluster#2"],
+      "segments" : ["SuperSegment"]
     },
     {
       "name" : "Enactus uOttawa",
       "description" : "Student-run non-profit organization that uses the power of entrepreneurial action to empower people to improve their livelihoods. Founded in 2010, the University of Ottawa team is made up of students from 7 faculties that believe that building a better world starts at home.",
       "logo" : "enactus-uottawa.jpg",
       "offering" : "Bob Smith",
-      "phones" : [
-            {
-              "number": "27777777777",
-              "public": true,
-              "tags": ["main"]
-            },
-
-            {
-              "number": "44777777777",
-              "public": true,
-              "tags": ["branch #1"]
-            }
-          ],
-      "emails" : [
-            {
-              "email": "s@s.com",
-              "public": true,
-              "tags": ["main"]
-            }
-          ],
       "purposes": [
         "Helping disadvantaged peoples",
         "Raising money for parent company"
