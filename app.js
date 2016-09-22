@@ -1,21 +1,21 @@
 'use strict';
 
+var conf = require('./config/config.js');
 require('./api/data/db.js');
 var SwaggerExpress = require('swagger-express-mw');
 var app = require('express')();
 module.exports = app; // for testing
 
-var config = {
+var expressConfig = {
   appRoot: __dirname // required config
 };
 
-SwaggerExpress.create(config, function(err, swaggerExpress) {
+SwaggerExpress.create(expressConfig, function(err, swaggerExpress) {
   if (err) { throw err; }
 
   // install middleware
   swaggerExpress.register(app);
-
-  var port = process.env.PORT || 10010;
+  var port = conf.get('port');
   app.listen(port);
 
 });

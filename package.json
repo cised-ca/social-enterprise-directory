@@ -20,15 +20,18 @@
     "node": "4.4.5"
   },
   "dependencies": {
+    "convict": "1.4.0",
     "express": "4.12.3",
     "mongoose": "4.5.4",
     "swagger-express-mw": "0.1.0"
   },
   "devDependencies": {
+    "eslint": "3.0.1",
+    "mocha": "3.0.2",
     "should": "7.1.0",
-    "supertest": "1.0.0",
-    "eslint": "3.0.1"
+    "supertest": "1.0.0"
   },
+
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
