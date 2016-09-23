@@ -8,21 +8,25 @@ var enterprisePublicSchema = new mongoose.Schema({
   purposes: [String],
   website: String,
   emails: [{
+    _id:false,
     email: {type: String, required: true},
     public: Boolean,
     tags: [String]
   }],
   phones: [{
+    _id:false,
     number: {type: String, required: true},
     public: Boolean,
     tags: [String]
   }],
   faxes: [{
+    _id:false,
     fax: {type: String, required: true},
     public: Boolean,
     tags: [String]
   }],
   addresses: [{
+    _id:false,
     address: {type: String, required: true},
     public: Boolean,
     tags: [String]

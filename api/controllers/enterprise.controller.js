@@ -74,7 +74,7 @@ module.exports.createEnterprise = function(req, res) {
       res.status(400).json({'message': err});
       return;
     } else {
-      console.log('Enterprise created!', dbEnterprise);
+      console.log('Enterprise created!');
       var apiEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise, true);
       res.status(201).json(apiEnterprise);
     }
