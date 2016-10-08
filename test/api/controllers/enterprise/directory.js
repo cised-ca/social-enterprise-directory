@@ -51,7 +51,8 @@ describe('GET /directory', function() {
     // Before doing directory request pause for 1 second.
     // Otherwise we seem to get a race condition where sometimes the response
     // only contains the first one or two enterprises.
-    // I think it might be a Mongo thing..
+    // I think the post enterprise are not synchronous calls.
+    // Should come up with a better way to do this.
     setTimeout(doDirectoryRequest, 1000);
 
   });

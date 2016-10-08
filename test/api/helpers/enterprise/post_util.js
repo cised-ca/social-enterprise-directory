@@ -7,6 +7,8 @@ var enterpriseVerifier = require('../../helpers/enterprise/enterprise_verifier')
 
 var url = '/enterprise';
 
+var postIds = {};
+
 module.exports.postTestEnterprise1 = function(done) {
   postEnterprise(done, testEnterprise1, enterpriseVerifier.verifyEnterprise1);
 };
@@ -15,6 +17,16 @@ module.exports.postTestEnterprise2 = function(done) {
 };
 module.exports.postTestEnterprise3 = function(done) {
   postEnterprise(done, testEnterprise3, enterpriseVerifier.verifyEnterprise3);
+};
+
+module.exports.getTestEnterprise1Id = function() {
+  return postIds[testEnterprise1['name']];
+};
+module.exports.getTestEnterprise2Id = function() {
+  return postIds[testEnterprise2['name']];
+};
+module.exports.getTestEnterprise3Id = function() {
+  return postIds[testEnterprise3['name']];
 };
 
 function postEnterprise(done, enterprise, verifyMethod) {
@@ -26,5 +38,6 @@ function postEnterprise(done, enterprise, verifyMethod) {
       if (done) {
         done();
       }
+      postIds[enterprise['name']] = res.body['id'];
     });
-};
+}
