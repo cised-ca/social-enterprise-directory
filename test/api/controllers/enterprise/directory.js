@@ -32,4 +32,28 @@ describe('GET /directory', function() {
         });
   });
 
+  it('should return multiple enterprises', function(done) {
+    postUtil.postTestEnterprise1();
+    postUtil.postTestEnterprise2();
+    postUtil.postTestEnterprise3();
+
+    var doDirectoryRequest = function() {
+      requestUtil.buildGetRequest(url)
+          .end(function(err, res) {
+            should.not.exist(err);
+            enterpriseVerifier.verifyArrayContainsEnterprise1(res.body);
+            enterpriseVerifier.verifyArrayContainsEnterprise2(res.body);
+            enterpriseVerifier.verifyArrayContainsEnterprise3(res.body);
+            done();
+          });
+    };
+
+    // Before doing directory request pause for 1 second.
+    // Otherwise we seem to get a race condition where sometimes the response
+    // only contains the first one or two enterprises.
+    // I think it might be a Mongo thing..
+    setTimeout(doDirectoryRequest, 1000);
+
+  });
+
 });

@@ -1,0 +1,31 @@
+{
+  "name" : "Good Nature Groundskeeping",
+  "description" : "Good Nature Groundskeeping is a social business, providing professional landscape maintenance services while also providing employment to people who are economically disadvantaged.",
+  "logo" : "good-nature-groundskeeping.jpg",
+  "offering" : "Bob Smith",
+  "phones" : [
+        {
+          "number": "27777777777",
+          "public": true,
+          "tags": ["main"]
+        },
+
+        {
+          "number": "44777777777",
+          "public": true,
+          "tags": ["branch #1"]
+        }
+      ],
+  "emails" : [
+        {
+          "email": "test1@test.com",
+          "public": true,
+          "tags": ["main"]
+        }
+      ],
+  "purposes": [
+    "Helping disadvantaged peoples",
+    "Raising money for parent company"
+  ],
+  "website" : "http://google.com"
+}

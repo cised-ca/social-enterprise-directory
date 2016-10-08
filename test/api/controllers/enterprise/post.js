@@ -13,4 +13,11 @@ describe('POST /enterprise', function() {
     postUtil.postTestEnterprise1(done);
   });
 
+  it('should create testEnterprise2', function(done) {
+    postUtil.postTestEnterprise2(done);
+  });
+
+  it('should create testEnterprise3', function(done) {
+    postUtil.postTestEnterprise3(done);
+  });
 });
