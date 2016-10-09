@@ -16,12 +16,6 @@
               "number": "44777777777",
               "public": true,
               "tags": ["branch #1"]
-            },
-
-            {
-              "number": "6667777788",
-              "public": false,
-              "tags": ["CEO phpne"]
             }
           ],
       "emails" : [
@@ -29,11 +23,6 @@
               "email": "test1@test.com",
               "public": true,
               "tags": ["main"]
-            },
-            {
-              "email": "privateEmail@test.com",
-              "public": false,
-              "tags": ["CEO email"]
             }
           ],
 
@@ -42,11 +31,6 @@
               "fax": "8887776666",
               "public": true,
               "tags": ["main"]
-            },
-            {
-              "fax": "1112223333",
-              "public": false,
-              "tags": ["CEO fax"]
             }
           ],
       "purposes": [
@@ -54,8 +38,7 @@
         "Raising money for parent company"
       ],
       "website" : "http://google.com",
-      "clusters" : ["cluster#1", "cluster#2"],
-      "segments" : ["SuperSegment"]
+      "private_info" : "ObjectIDprivateInfoID1"
     },
     {
       "name" : "Enactus uOttawa",

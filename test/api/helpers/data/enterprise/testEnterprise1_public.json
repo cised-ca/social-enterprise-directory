@@ -46,7 +46,5 @@
     "Helping disadvantaged peoples",
     "Raising money for parent company"
   ],
-  "website" : "http://google.com",
-  "clusters" : ["cluster#1", "cluster#2"],
-  "segments" : ["SuperSegment"]
+  "website" : "http://google.com"
 }

@@ -1,10 +1,10 @@
 var mongoose = require('mongoose');
 var winston = require('winston');
 var enterprisePublicModel = mongoose.model('EnterprisePublic');
-var enterpriseCompleteModel = mongoose.model('EnterpriseComplete');
+var enterprisePrivateFieldsModel = mongoose.model('EnterprisePrivateFields');
 var enterpriseAdapter = require('./enterprise.adapter');
 
-var publicFields = require('../data/enterprise.model').enterprisePublicFields;
+var publicFields = require('../data/enterprise.model').enterprisePublicFields.join(' ');
 
 
 module.exports.getAllEnterprisesPublic = function(req, res) {
@@ -22,7 +22,7 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
         return;
       }
 
-      var tranformedEnterprises = enterpriseAdapter.transformDbEnterprisesToRestFormat(dbEnterprises, false);
+      var tranformedEnterprises = enterpriseAdapter.transformDbEnterprisesToRestFormat(dbEnterprises);
       res.status(200).json(tranformedEnterprises);
     });
 };
@@ -44,7 +44,7 @@ module.exports.getOneEnterprisePublic = function(req, res) {
         return;
       }
 
-      var tranformedEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise, false);
+      var tranformedEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise);
       res.status(200).json(tranformedEnterprise);
     });
 };
@@ -64,22 +64,38 @@ module.exports.getOneEnterpriseComplete = function(req, res) {
         return;
       }
 
-      var tranformedEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise, true);
+      var tranformedEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise);
       res.status(200).json(tranformedEnterprise);
     });
 };
 
 module.exports.createEnterprise = function(req, res) {
   var enterprise = req.swagger.params.Enterprise.value;
-  enterpriseCompleteModel.create(enterprise, function(err, dbEnterprise) {
+
+  var publicEnterprise = enterpriseAdapter.transformCompleteEnterpriseToPublicDBFormat(enterprise);
+  var privateEnterprise = enterpriseAdapter.transformCompleteEnterpriseToPrivateDBFormat(enterprise);
+
+  enterprisePrivateFieldsModel.create(privateEnterprise, function(err, dbPrivateEnterprise) {
     if (err) {
-      winston.error('Error creating enterprise ', err, enterprise);
+      winston.error('Error creating private enterprise fields in db ', err, enterprise);
       res.status(400).json({'message': err});
       return;
     } else {
-      var apiEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise, true);
-      winston.info('Enterprise created (name=%s id=%s)', apiEnterprise['name'], apiEnterprise['id']);
-      res.status(201).json(apiEnterprise);
+      publicEnterprise['private_info'] = dbPrivateEnterprise['_id'];
+
+      enterprisePublicModel.create(publicEnterprise, function(err, dbPublicEnterprise) {
+        if (err) {
+          winston.error('Error creating public enterprise in db ', err, enterprise);
+          res.status(400).json({'message': err});
+          return;
+        } else {
+
+          var apiEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbPublicEnterprise);
+          enterpriseAdapter.appendPrivateInfo(apiEnterprise, dbPrivateEnterprise);
+          winston.info('Enterprise created (name=%s id=%s)', apiEnterprise['name'], apiEnterprise['id']);
+          res.status(201).json(apiEnterprise);
+        }
+      });
     }
   });
 };

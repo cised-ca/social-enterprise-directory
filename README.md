@@ -12,10 +12,11 @@ The directory uses Node, Swagger and Mongo on the backend.
 * First delete any previous data from Mongo (if so desired)
 
  `mongo socialEnterpriseDirectory --eval "db.dropDatabase()"`
-* Now import the test data
+* Now import the test data with these commands
 
- `mongoimport --db socialEnterpriseDirectory --collection enterprises --file /path/to/api/mocks/test_data_mongo.json --jsonArray
-`
+ `mongoimport --db socialEnterpriseDirectory --collection enterprises --file /path/to/api/mocks/test_data_mongo_public.json --jsonArray`
+
+ `mongoimport --db socialEnterpriseDirectory --collection enterprisePrivateFields --file /path/to/api/mocks/test_data_mongo_private.json --jsonArray`
 
 ## To start
 * `npm start`

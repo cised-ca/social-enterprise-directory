@@ -1,0 +1,29 @@
+ [
+    {
+      "_id" : "ObjectIDprivateInfoID1",
+      "phones" : [
+            {
+              "number": "6667777788",
+              "public": false,
+              "tags": ["CEO phpne"]
+            }
+          ],
+      "emails" : [
+            {
+              "email": "privateEmail@test.com",
+              "public": false,
+              "tags": ["CEO email"]
+            }
+          ],
+
+      "faxes" : [
+            {
+              "fax": "1112223333",
+              "public": false,
+              "tags": ["CEO fax"]
+            }
+          ],
+      "clusters" : ["cluster#1", "cluster#2"],
+      "segments" : ["SuperSegment"]
+    }
+  ]
