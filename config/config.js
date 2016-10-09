@@ -25,6 +25,12 @@ var conf = convict({
     format: ['error', 'warn', 'info', 'verbose', 'debug', 'silly' ],
     default: 'warn',
     env: 'LOG_LEVEL'
+  },
+  dbURL: {
+    doc: 'The database connection string',
+    format: String,
+    default: 'mongodb://localhost:27017/socialEnterpriseDirectory',
+    env: 'DB_URL'
   }
 });
 

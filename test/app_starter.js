@@ -10,4 +10,8 @@ function startServer() {
 function forceTestEnvironment() {
   var conf = require('../config/config.js');
   conf.set('env', 'test');
+  conf.loadFile('config/test.json');
+
+  // Perform validation
+  conf.validate({strict: true});
 }

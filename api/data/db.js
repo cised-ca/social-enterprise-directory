@@ -2,14 +2,7 @@ var winston = require('winston');
 var mongoose = require('mongoose');
 var conf = require('../../config/config.js');
 
-var PRODUCTION_DB = 'mongodb://localhost:27017/socialEnterpriseDirectory';
-var TEST_DB = 'mongodb://localhost:27017/test_socialEnterpriseDirectory';
-
-var dbURL = PRODUCTION_DB;
-if (conf.get('env') === 'test') {
-  dbURL = TEST_DB;
-}
-
+var dbURL = conf.get('dbURL');
 mongoose.connect(dbURL);
 
 mongoose.connection.on('connected', function() {
