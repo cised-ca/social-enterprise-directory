@@ -9,8 +9,16 @@ var publicFields = require('../data/enterprise.model').enterprisePublicFields.jo
 
 module.exports.getAllEnterprisesPublic = function(req, res) {
 
+  var offset = req.swagger.params.offset.value;
+  var limit = req.swagger.params.count.value;
+  if (!limit) {
+    limit = 25;
+  }
+
   enterprisePublicModel
     .find()
+    .limit(limit)
+    .skip(offset)
     .select(publicFields)
     .exec(function(err, dbEnterprises) {
       if (err) {

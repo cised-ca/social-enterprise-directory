@@ -51,4 +51,32 @@ describe('GET /directory', function() {
     postUtil.postAllEnterprises(doDirectoryRequest);
   });
 
+  it('should limit enterprises when count parameter set', function(done) {
+    var doDirectoryRequest = function() {
+      requestUtil.buildGetRequest(url + '?count=2')
+        .end(function(err, res) {
+          should.not.exist(err);
+          res.body.length.should.equal(2);
+          done();
+        });
+    };
+
+    postUtil.postAllEnterprises(doDirectoryRequest);
+  });
+
+  it('should offset enterprises when offset parameter set', function(done) {
+    var doDirectoryRequest = function() {
+      requestUtil.buildGetRequest(url + '?count=1&offset=2')
+        .end(function(err, res) {
+          should.not.exist(err);
+          res.body.length.should.equal(1);
+          enterpriseVerifier.verifyArrayContainsEnterprise3(res.body);
+          done();
+        });
+    };
+
+    postUtil.postAllEnterprises(doDirectoryRequest);
+  });
+
+
 });

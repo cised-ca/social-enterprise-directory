@@ -20,7 +20,7 @@ produces:
 paths:
   /swagger:
     x-swagger-pipe: swagger_raw
-    
+
   /directory:
     x-swagger-router-controller: enterprise.controller
     get:
@@ -41,7 +41,7 @@ paths:
           type: number
           format: uint
           minimum: 1
-          maximum: 100
+          maximum: 25
 
       responses:
         "200":
@@ -106,8 +106,8 @@ paths:
       description: Creates an enterprise in the directory
       # call this method name on the controller
       operationId: createEnterprise
-      parameters: 
-        - 
+      parameters:
+        -
           name: Enterprise
           in: body
           description: Enterprise to be added to the directory
@@ -166,7 +166,7 @@ definitions:
         type: array
         items:
            $ref: "#/definitions/Coordinates"
-  
+
   # public view of an enterprise
   EnterprisePublic:
     allOf:
@@ -177,8 +177,8 @@ definitions:
     required:
       - id
       - name
-  
-  EnterprisePrivateFields:   
+
+  EnterprisePrivateFields:
     properties:
           parent_organization:
             type: string
@@ -204,14 +204,14 @@ definitions:
     allOf:
       - $ref: '#/definitions/EnterprisePublic' # inherit all the public fields
       - $ref: '#/definitions/EnterprisePrivateFields'
-          
+
   # full view of an enterprise (including private fields)
   NewEnterprise:
     allOf:
       - $ref: '#/definitions/EnterprisePublicWithoutID' # inherit all the public fields
       - $ref: '#/definitions/EnterprisePrivateFields'
-      
-  
+
+
   PhoneNumber:
     required:
       - number
