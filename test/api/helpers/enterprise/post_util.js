@@ -9,6 +9,10 @@ var url = '/enterprise';
 
 var postIds = {};
 
+module.exports.clean = function() {
+  postIds = {};
+};
+
 module.exports.postTestEnterprise1 = function(done) {
   postEnterprise(done, testEnterprise1, enterpriseVerifier.verifyEnterprise1);
 };
@@ -17,6 +21,14 @@ module.exports.postTestEnterprise2 = function(done) {
 };
 module.exports.postTestEnterprise3 = function(done) {
   postEnterprise(done, testEnterprise3, enterpriseVerifier.verifyEnterprise3);
+};
+
+module.exports.postAllEnterprises = function(done) {
+  module.exports.postTestEnterprise1( function() {
+    module.exports.postTestEnterprise2( function() {
+      module.exports.postTestEnterprise3(done);
+    });
+  });
 };
 
 module.exports.getTestEnterprise1Id = function() {
@@ -35,9 +47,9 @@ function postEnterprise(done, enterprise, verifyMethod) {
     .end(function(err, res) {
       should.not.exist(err);
       verifyMethod(res.body);
+      postIds[enterprise['name']] = res.body['id'];
       if (done) {
         done();
       }
-      postIds[enterprise['name']] = res.body['id'];
     });
 }

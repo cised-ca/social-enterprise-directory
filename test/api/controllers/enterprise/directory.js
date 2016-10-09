@@ -11,6 +11,7 @@ describe('GET /directory', function() {
 
   beforeEach(function(done) {
     dbUtil.dropDatabase(done);
+    postUtil.clean();
   });
 
   it('should return empty directory', function(done) {
@@ -23,20 +24,19 @@ describe('GET /directory', function() {
   });
 
   it('should return one enterprise', function(done) {
-    postUtil.postTestEnterprise1();
-    requestUtil.buildGetRequest(url)
+    var doDirectoryRequest = function() {
+      requestUtil.buildGetRequest(url)
         .end(function(err, res) {
           should.not.exist(err);
           enterpriseVerifier.verifyEnterprise1Public(res.body[0]);
           done();
         });
+    };
+
+    postUtil.postTestEnterprise1(doDirectoryRequest);
   });
 
   it('should return multiple enterprises', function(done) {
-    postUtil.postTestEnterprise1();
-    postUtil.postTestEnterprise2();
-    postUtil.postTestEnterprise3();
-
     var doDirectoryRequest = function() {
       requestUtil.buildGetRequest(url)
           .end(function(err, res) {
@@ -48,13 +48,7 @@ describe('GET /directory', function() {
           });
     };
 
-    // Before doing directory request pause for 1 second.
-    // Otherwise we seem to get a race condition where sometimes the response
-    // only contains the first one or two enterprises.
-    // I think the post enterprise are not synchronous calls.
-    // Should come up with a better way to do this.
-    setTimeout(doDirectoryRequest, 1000);
-
+    postUtil.postAllEnterprises(doDirectoryRequest);
   });
 
 });
