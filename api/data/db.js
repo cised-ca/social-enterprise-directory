@@ -1,3 +1,4 @@
+var winston = require('winston');
 var mongoose = require('mongoose');
 var conf = require('../../config/config.js');
 
@@ -12,20 +13,20 @@ if (conf.get('env') === 'test') {
 mongoose.connect(dbURL);
 
 mongoose.connection.on('connected', function() {
-  // do something if necessary when we connect to mongo
+  winston.info('Mongoose connected to', dbURL);
 });
 mongoose.connection.on('error', function(err) {
-  console.log('Mongoose failed to connect to ' + dbURL + ' ' + err);
+  winston.error('Mongoose failed to connect to ', dbURL, err);
 });
 mongoose.connection.on('disconnected', function() {
-  console.log('Mongoose disconnected');
+  winston.warn('Mongoose disconnected');
 });
 
 // CAPTURE APP TERMINATION / RESTART EVENTS
 // To be called when process is restarted or terminated
 function shutdown(msg, callback) {
   mongoose.connection.close(function() {
-    console.log('Mongoose disconnected through ' + msg);
+    winston.info('Mongoose disconnected through ' + msg);
     callback();
   });
 }

@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var winston = require('winston');
 var enterprisePublicModel = mongoose.model('EnterprisePublic');
 var enterpriseCompleteModel = mongoose.model('EnterpriseComplete');
 var enterpriseAdapter = require('./enterprise.adapter');
@@ -13,7 +14,7 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
     .select(publicFields)
     .exec(function(err, dbEnterprises) {
       if (err) {
-        console.log('Error finding enterprises ' + err);
+        winston.error('Error finding enterprises ' + err);
         res.status(500).json({'message': err});
       }
       if (!dbEnterprises) {
@@ -34,10 +35,11 @@ module.exports.getOneEnterprisePublic = function(req, res) {
     .select(publicFields)
     .exec(function(err, dbEnterprise) {
       if (err) {
-        console.log('Error finding enterprise ' + id + ' ' + err);
+        winston.error('Error finding enterprise', id, ':', err);
         res.status(500).json({'message': err});
       }
       if (!dbEnterprise) {
+        winston.info('Enterprise not found for id ', id);
         res.status(404).json({'message': 'Enterprise not found for id ' + id});
         return;
       }
@@ -53,10 +55,11 @@ module.exports.getOneEnterpriseComplete = function(req, res) {
     .findById(id)
     .exec(function(err, dbEnterprise) {
       if (err) {
-        console.log('Error finding enterprise ' + id + ' ' + err);
+        winston.error('Error finding enterprise', id, ':', err);
         res.status(500).json({'message': err});
       }
       if (!dbEnterprise) {
+        winston.info('Enterprise not found for id ', id);
         res.status(404).json({'message': 'Enterprise not found for id ' + id});
         return;
       }
@@ -70,12 +73,12 @@ module.exports.createEnterprise = function(req, res) {
   var enterprise = req.swagger.params.Enterprise.value;
   enterpriseCompleteModel.create(enterprise, function(err, dbEnterprise) {
     if (err) {
-      console.log('Error creating enterprise ' + err);
+      winston.error('Error creating enterprise ', err, enterprise);
       res.status(400).json({'message': err});
       return;
     } else {
-      console.log('Enterprise created!');
       var apiEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise, true);
+      winston.info('Enterprise created (name=%s id=%s)', apiEnterprise['name'], apiEnterprise['id']);
       res.status(201).json(apiEnterprise);
     }
   });

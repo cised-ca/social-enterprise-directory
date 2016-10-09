@@ -19,6 +19,12 @@ var conf = convict({
     format: 'port',
     default: 10010,
     env: 'PORT'
+  },
+  loglevel: {
+    doc: 'The log level',
+    format: ['error', 'warn', 'info', 'verbose', 'debug', 'silly' ],
+    default: 'warn',
+    env: 'LOG_LEVEL'
   }
 });
 

@@ -18,7 +18,7 @@ function transformDbEnterpriseToRestFormat(dbEnterprise, allowPrivateFields) {
   delete apiEnterprise.__t;
 
   // switch "_id" to "id"
-  apiEnterprise.id = dbEnterprise._id;
+  apiEnterprise.id = dbEnterprise._id.toString();
   delete apiEnterprise._id;
 
   if (!allowPrivateFields) {

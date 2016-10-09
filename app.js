@@ -1,6 +1,10 @@
 'use strict';
 
 var conf = require('./config/config.js');
+
+var winston = require('winston');
+winston.level = conf.get('loglevel');
+
 require('./api/data/db.js');
 var SwaggerExpress = require('swagger-express-mw');
 var app = require('express')();
@@ -16,6 +20,9 @@ SwaggerExpress.create(expressConfig, function(err, swaggerExpress) {
   // install middleware
   swaggerExpress.register(app);
   var port = conf.get('port');
-  app.listen(port);
+  var ip = conf.get('ip');
+  app.listen(port, ip, function() {
+    winston.info('Server started on %s:%d', ip, port);
+  });
 
 });

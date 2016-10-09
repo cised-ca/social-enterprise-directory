@@ -50,7 +50,6 @@ function enterpriseNameMatches(nameToMatch) {
 
 function findEnterpriseInArrayOrFail(array, name) {
   var foundEnterprise = array.filter(enterpriseNameMatches(name))[0];
-  //console.log(array.filter(enterpriseNameMatches(name)));
   if (!foundEnterprise) {
     should.fail('Did not find expected enterprise in array having name ' + name);
   }
