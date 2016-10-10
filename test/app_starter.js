@@ -1,9 +1,12 @@
+var winston = require('winston');
 
 module.exports.App = startServer();
 
 function startServer() {
   forceTestEnvironment();
+  winston.profile('started the server');
   var server = require('../app');
+  winston.profile('started the server');
   return server;
 }
 
