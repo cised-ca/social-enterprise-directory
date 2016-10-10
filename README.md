@@ -1,6 +1,7 @@
 # Backend for the Social Enterprise directory
 
 The directory uses Node, Swagger and Mongo on the backend.
+For detailed technical documentation, see the wiki.
 
 ## To install
 * `npm install`
@@ -36,7 +37,7 @@ First install the swagger command line
 
 Starting server
 * as alternative to `npm start` you can use `swagger project start`
-* the advantage is that it will auto-detect any file modifications and nicely restart the server for you (kind of like nodemon)
+* the advantage is that it will auto-detect any file modifications and nicely restart the server for you (it wraps nodemon)
 
 To view our API documentation in Swagger UI:
 * `swagger project edit` then open browser to the URL shown in the console (if it does not automatically open for you)
