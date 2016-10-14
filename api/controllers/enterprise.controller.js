@@ -8,15 +8,31 @@ var publicFields = require('../data/enterprise.model').enterprisePublicFields.jo
 
 
 module.exports.getAllEnterprisesPublic = function(req, res) {
+  var query;
+
+  var search = req.swagger.params.q.value;
+  if (!search) {
+    query = enterprisePublicModel.find();
+  } else {
+    var keywords = search.replace(/\+/g, ' ');
+    query = enterprisePublicModel
+      .find(
+        { $text : { $search : keywords } },
+        { score : { $meta: 'textScore' } })
+      .sort({ score : { $meta : 'textScore' } });
+  }
 
   var offset = req.swagger.params.offset.value;
+  if (!offset) {
+    offset = 0;
+  }
+
   var limit = req.swagger.params.count.value;
   if (!limit) {
     limit = 25;
   }
 
-  enterprisePublicModel
-    .find()
+  query
     .limit(limit)
     .skip(offset)
     .select(publicFields)

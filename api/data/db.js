@@ -2,6 +2,10 @@ var winston = require('winston');
 var mongoose = require('mongoose');
 var conf = require('../../config/config.js');
 
+if (conf.get('loglevel') === 'debug') {
+  mongoose.set('debug', true);
+}
+
 var dbURL = conf.get('dbURL');
 mongoose.connect(dbURL);
 
@@ -15,29 +19,28 @@ mongoose.connection.on('disconnected', function() {
   winston.warn('Mongoose disconnected');
 });
 
-// CAPTURE APP TERMINATION / RESTART EVENTS
-// To be called when process is restarted or terminated
-function shutdown(msg, callback) {
+// Close db connection on signal
+function disconnect(msg, callback) {
   mongoose.connection.close(function() {
-    winston.info('Mongoose disconnected through ' + msg);
+    winston.info('Mongoose disconnected by ' + msg);
     callback();
   });
 }
 
 // For restarts
 process.once('SIGUSR2', function() {
-  shutdown('restart', function() {
+  disconnect('restart', function() {
     process.kill(process.pid, 'SIGUSR2');
   });
 });
 // For app termination
 process.on('SIGINT', function() {
-  shutdown('SIGINT', function() {
+  disconnect('SIGINT', function() {
     process.exit(0);
   });
 });
 process.on('SIGTERM', function() {
-  shutdown('SIGTERM', function() {
+  disconnect('SIGTERM', function() {
     process.exit(0);
   });
 });

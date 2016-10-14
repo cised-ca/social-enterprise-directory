@@ -26,11 +26,13 @@ For detailed technical documentation, see the wiki.
 
 ## To use
 * http://localhost:10010/api/v1/directory
+* Search: http://localhost:10010/api/v1/directory?key+words+here
 * http://localhost:10010/api/v1/enterprise/{id}
 * http://localhost:10010/api/v1/enterprise/{id}/complete
-* POST http://localhost:10010/api/v1/enterprise
+* POST to http://localhost:10010/api/v1/enterprise
 
-
+## To test
+See wiki.
 
 # Swagger commands for development/testing
 First install the swagger command line
