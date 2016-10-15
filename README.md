@@ -26,7 +26,7 @@ For detailed technical documentation, see the wiki.
 
 ## To use
 * http://localhost:10010/api/v1/directory
-* Search: http://localhost:10010/api/v1/directory?key+words+here
+* Search: http://localhost:10010/api/v1/directory?q=key+words+here
 * http://localhost:10010/api/v1/enterprise/{id}
 * http://localhost:10010/api/v1/enterprise/{id}/complete
 * POST to http://localhost:10010/api/v1/enterprise
