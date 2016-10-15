@@ -27,7 +27,7 @@ function rebuildIndexes(done) {
   mongoose.model('EnterprisePublic').ensureIndexes();
 }
 
-module.exports.dropDatabase = function(done) {
+module.exports.cleanDatabase = function(done) {
   mongoose.connection.db.dropDatabase(function() {
     rebuildIndexes(done);
   });

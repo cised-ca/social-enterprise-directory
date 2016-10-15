@@ -5,7 +5,7 @@ var postUtil = require('../../helpers/enterprise/post_util');
 describe('POST /enterprise', function() {
 
   beforeEach(function(done) {
-    dbUtil.dropDatabase(done);
+    dbUtil.cleanDatabase(done);
     postUtil.clean();
   });
 

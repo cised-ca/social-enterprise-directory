@@ -10,7 +10,7 @@ var url = '/directory';
 describe('GET /directory', function() {
 
   beforeEach(function(done) {
-    dbUtil.dropDatabase(done);
+    dbUtil.cleanDatabase(done);
     postUtil.clean();
   });
 
