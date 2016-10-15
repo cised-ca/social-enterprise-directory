@@ -1,7 +1,9 @@
 var mongoose = require('mongoose');
 var winston = require('winston');
+var fs = require('fs');
 var enterprisePublicModel = mongoose.model('EnterprisePublic');
 var enterprisePrivateFieldsModel = mongoose.model('EnterprisePrivateFields');
+var enterpriseLogoModel = mongoose.model('EnterpriseLogo');
 var enterpriseAdapter = require('./enterprise.adapter');
 
 var publicFields = require('../data/enterprise.model').enterprisePublicFields.join(' ');
@@ -122,4 +124,69 @@ module.exports.createEnterprise = function(req, res) {
       });
     }
   });
+};
+
+function imageTypeToContentType(imageType) {
+  if (imageType === 'jpg') {
+    return 'image/jpeg';
+  } else if (imageType === 'png') {
+    return 'image/png';
+  } else if (imageType === 'svg') {
+    return 'image/svg+xml';
+  }
+
+  winston.error('Unsupported image type: ' + imageType);
+}
+
+module.exports.getEnterpriseLogo = function(req, res) {
+  var id = req.swagger.params.id.value;
+  enterpriseLogoModel
+    .findOne({enterpriseId : id})
+    .exec(function(err, dbLogo) {
+      if (err) {
+        winston.error('Error finding enterprise logo', id, ':', err);
+        res.status(500).json({'message': err});
+      }
+      if (!dbLogo) {
+        winston.info('Enterprise logo not found for id ', id);
+        res.status(404).json({'message': 'Enterprise logo not found for id ' + id});
+        return;
+      }
+
+      res.set('Content-Type', dbLogo.contentType);
+      res.status(200).send(dbLogo.image);
+    });
+/*
+  var file;
+  var fileType;
+  if (id == '58014c003762820bc88b86d8') {
+    file = '/cised/African-Bronze-Seal.jpg';
+    fileType = 'jpg';
+  } else {
+    file = '/cised/BOAlogo.png';
+    fileType = 'png';
+  }
+
+  fs.readFile(file, function (err,data) {
+    if (err) {
+      winston.log(err);
+    }
+    var logo = {
+      enterpriseId: new mongoose.mongo.ObjectId(id),
+      image: new Buffer(data),
+      contentType: imageTypeToContentType(fileType)
+    };
+    enterpriseLogoModel.create(logo, function(err, dbLogo) {
+      if (err) {
+        winston.error('Error creating enterprise logo in db ', err, id);
+        res.status(400).json({'message': err});
+        return;
+      } else {
+        res.set('Content-Type', dbLogo.contentType);
+        res.status(200).send(dbLogo.image);
+      }
+    });
+
+  });
+  */
 };

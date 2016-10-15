@@ -1,5 +1,6 @@
  [
     {
+      "_id": {"$oid":"58014c003762820bc88b86d8"},
       "name" : "Cycle Salvation",
       "description" : "Cycle Salvation is a social enterprise operating under the umbrella of Causeway Work Centre. Our business strivesto achieve a triple bottom line (profit, people, planet) by providing training and employment in the field of bike mechanics to people who are economically disadvantaged, while at the same time diverting bikes destined for scrap and landfill sites.",
       "logo" : "cycle-salvation.jpg",
@@ -38,9 +39,10 @@
         "Raising money for parent company"
       ],
       "website" : "http://google.com",
-      "private_info" : "ObjectIDprivateInfoID1"
+      "private_info" : {"$oid":"77774c003762820bc88b8600"}
     },
     {
+      "_id": {"$oid":"58014c003762820bc88b86d9"},
       "name" : "Enactus uOttawa",
       "description" : "Student-run non-profit organization that uses the power of entrepreneurial action to empower people to improve their livelihoods. Founded in 2010, the University of Ottawa team is made up of students from 7 faculties that believe that building a better world starts at home.",
       "logo" : "enactus-uottawa.jpg",
@@ -52,6 +54,7 @@
       "website" : "http://giggle.com"
     },
     {
+      "_id": "58014c003762820bc88b86e1",
       "name" : "EnviroCentre",
       "description" : "EnviroCentre is an Ottawa-based non-profit organization that helps residents, businesses and organizations conserve energy and reduce their impact on the environment, while saving money.",
       "logo" : "envirocentre.png",
@@ -83,6 +86,7 @@
       "website" : "http://google.com"
     },
     {
+      "_id": "58014c003762820bc88b86e2",
       "name" : "Good Nature Groundskeeping",
       "description" : "Good Nature Groundskeeping is a social business, providing professional landscape maintenance services while also providing employment to people who are economically disadvantaged.",
       "logo" : "good-nature-groundskeeping.jpg",
@@ -114,6 +118,7 @@
       "website" : "http://google.com"
     },
     {
+      "_id": {"$oid":"58014c003762820bc88b86e3"},
       "name" : "Gourmet Express",
       "description" : "In response to clients with multiple barriers to employment and without access to the labor market, the Vanier Community Service Centre has launched the Gourmet-Xpress social enterprise, a free learning program in food preparation and customer service.",
       "logo" : "gourmet-xpress.jpg",
@@ -145,6 +150,7 @@
       "website" : "http://google.com"
     },
     {
+      "_id": {"$oid":"58014c003762820bc88b86e4"},
       "name" : "Impact Hub",
       "description" : "Impact Hub Ottawa is the national capital region’s collaboration, innovation and incubation ecosystem for people and organizations working to better the world.",
       "logo" : "impact-hub.png",

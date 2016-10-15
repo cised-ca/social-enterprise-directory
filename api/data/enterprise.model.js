@@ -88,8 +88,15 @@ enterprisePublicSchema.index(
   }
 );
 
+var enterpriseLogoSchema = new mongoose.Schema({
+  enterpriseId: { type: mongoose.Schema.Types.ObjectId, required: true, unique: true },
+  image: {type: Buffer, required: true},
+  contentType: {type: String, required: true}
+});
+
 var EnterprisePublicModel = mongoose.model('EnterprisePublic', enterprisePublicSchema, 'enterprises');
 var EnterprisePrivateModel = mongoose.model('EnterprisePrivateFields', enterprisePrivateFieldsSchema, 'enterprisePrivateFields');
+var EnterpriseLogoModel = mongoose.model('EnterpriseLogo', enterpriseLogoSchema, 'enterpriseLogos');
 
 EnterprisePublicModel.on('index', function(err) {
   if (err) {
@@ -104,6 +111,14 @@ EnterprisePrivateModel.on('index', function(err) {
     winston.error('Error building indexes on Enterprise Private Model: ' + err);
   } else {
     winston.info('Built index on Enterprise Private Model');
+  }
+});
+
+EnterpriseLogoModel.on('index', function(err) {
+  if (err) {
+    winston.error('Error building indexes on Enterprise Logo Model: ' + err);
+  } else {
+    winston.info('Built index on Enterprise Logo Model');
   }
 });
 

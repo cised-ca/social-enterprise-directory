@@ -21,15 +21,18 @@ For detailed technical documentation, see the wiki.
 
  `mongoimport --db socialEnterpriseDirectory --collection enterprisePrivateFields --file /path/to/api/mocks/test_data_mongo_private.json --jsonArray`
 
+  `mongoimport --db socialEnterpriseDirectory --collection enterpriseLogos --file /path/to/api/mocks/test_data_mongo_logos.json --jsonArray`
+
 ## To start
 * `npm start`
 
 ## To use
-* http://localhost:10010/api/v1/directory
-* Search: http://localhost:10010/api/v1/directory?q=key+words+here
-* http://localhost:10010/api/v1/enterprise/{id}
+* Browse directory: http://localhost:10010/api/v1/directory
+* Search directory: http://localhost:10010/api/v1/directory?q=key+words+here
+* Get Enterprise: http://localhost:10010/api/v1/enterprise/{id}
+* Get Enterprise Logo: http://localhost:10010/api/v1/enterprise/{id}/logo
+* POST Enterprise http://localhost:10010/api/v1/enterprise
 * http://localhost:10010/api/v1/enterprise/{id}/complete
-* POST to http://localhost:10010/api/v1/enterprise
 
 ## To test
 See wiki.
