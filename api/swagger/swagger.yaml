@@ -168,8 +168,6 @@ definitions:
     properties:
       name:
         type: string
-      logo:
-        type: string
       description:
         type: string
       offering:

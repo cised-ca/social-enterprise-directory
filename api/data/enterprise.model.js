@@ -36,7 +36,6 @@ var enterprisePrivateFieldsSchema = new mongoose.Schema({
 
 var enterprisePublicSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  logo: String,
   description: String,
   offering: String,
   purposes: [String],
