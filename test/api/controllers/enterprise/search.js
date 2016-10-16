@@ -76,4 +76,18 @@ describe('Search /directory', function() {
     postUtil.postAllEnterprises(doSearchRequest);
   });
 
+
+  it('should match search on twitter handle', function(done) {
+    var doSearchRequest = function() {
+      requestUtil.buildGetRequest(url + '?q=abhoney')
+        .end(function(err, res) {
+          should.not.exist(err);
+          res.body.length.should.equal(1);
+          enterpriseVerifier.verifyEnterprise1Public(res.body[0]);
+          done();
+        });
+    };
+    postUtil.postAllEnterprises(doSearchRequest);
+  });
+
 });
