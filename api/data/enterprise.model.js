@@ -36,10 +36,15 @@ var enterprisePrivateFieldsSchema = new mongoose.Schema({
 
 var enterprisePublicSchema = new mongoose.Schema({
   name: { type: String, required: true },
+  short_description: String,
   description: String,
   offering: String,
   purposes: [String],
+  year_started: Number,
   website: String,
+  facebook: String,
+  instagram: String,
+  twitter: String,
   emails: [{
     _id:false,
     email: {type: String, required: true},
@@ -72,16 +77,26 @@ var enterprisePublicSchema = new mongoose.Schema({
 enterprisePublicSchema.index(
   {
     name: 'text',
-    description: 'text',
+    website: 'text',
+    facebook: 'text',
+    instagram: 'text',
+    twitter: 'text',
     offering: 'text',
+    short_description: 'text',
+    description: 'text',
     purposes: 'text'
   },
   {
     name: 'Weighted text index',
     weights: {
       name: 20,
+      website: 20,
+      facebook: 20,
+      instagram: 20,
+      twitter: 20,
+      offering: 10,
+      short_description: 5,
       description: 5,
-      offering: 5,
       purposes: 3
     }
   }

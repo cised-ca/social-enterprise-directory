@@ -24,6 +24,9 @@ function transformDbEnterpriseToRestFormat(dbEnterprise) {
   apiEnterprise.id = dbEnterprise._id.toString();
   delete apiEnterprise._id;
 
+  // if there was a "score" field due to text index lookup, remove it
+  delete apiEnterprise.score;
+
   return apiEnterprise;
 }
 
