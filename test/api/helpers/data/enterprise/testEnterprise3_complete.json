@@ -1,7 +1,6 @@
 {
   "name" : "National Capital Freenet",
   "description" : "The National Capital FreeNet (NCF) is an Ottawa-based, member-governed, not-for-profit alternative to commercial internet service providers.",
-  "logo" : "national-capital-freenet.png",
   "offering" : "Bob Smith",
   "phones" : [
         {
