@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var winston = require('winston');
-var fs = require('fs');
 var enterprisePublicModel = mongoose.model('EnterprisePublic');
 var enterprisePrivateFieldsModel = mongoose.model('EnterprisePrivateFields');
 var enterpriseLogoModel = mongoose.model('EnterpriseLogo');
@@ -70,8 +69,12 @@ module.exports.getOneEnterprisePublic = function(req, res) {
         return;
       }
 
-      var tranformedEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise);
-      res.status(200).json(tranformedEnterprise);
+      try {
+        var tranformedEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise);
+        res.status(200).json(tranformedEnterprise);
+      } catch (e) {
+        res.status(500).json({'message': e});
+      }
     });
 };
 
@@ -90,16 +93,23 @@ module.exports.getOneEnterpriseComplete = function(req, res) {
         return;
       }
 
-      var tranformedEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise);
-      res.status(200).json(tranformedEnterprise);
+      try {
+        var tranformedEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise);
+        res.status(200).json(tranformedEnterprise);
+      } catch (e) {
+        res.status(500).json({'message': e});
+      }
     });
 };
 
 module.exports.createEnterprise = function(req, res) {
   var enterprise = req.swagger.params.Enterprise.value;
-
-  var publicEnterprise = enterpriseAdapter.transformCompleteEnterpriseToPublicDBFormat(enterprise);
-  var privateEnterprise = enterpriseAdapter.transformCompleteEnterpriseToPrivateDBFormat(enterprise);
+  try {
+    var publicEnterprise = enterpriseAdapter.transformCompleteEnterpriseToPublicDBFormat(enterprise);
+    var privateEnterprise = enterpriseAdapter.transformCompleteEnterpriseToPrivateDBFormat(enterprise);
+  } catch (e) {
+    res.status(500).json({'message': e});
+  }
 
   enterprisePrivateFieldsModel.create(privateEnterprise, function(err, dbPrivateEnterprise) {
     if (err) {
@@ -156,37 +166,4 @@ module.exports.getEnterpriseLogo = function(req, res) {
       res.set('Content-Type', dbLogo.contentType);
       res.status(200).send(dbLogo.image);
     });
-/*
-  var file;
-  var fileType;
-  if (id == '58014c003762820bc88b86d8') {
-    file = '/cised/African-Bronze-Seal.jpg';
-    fileType = 'jpg';
-  } else {
-    file = '/cised/BOAlogo.png';
-    fileType = 'png';
-  }
-
-  fs.readFile(file, function (err,data) {
-    if (err) {
-      winston.log(err);
-    }
-    var logo = {
-      enterpriseId: new mongoose.mongo.ObjectId(id),
-      image: new Buffer(data),
-      contentType: imageTypeToContentType(fileType)
-    };
-    enterpriseLogoModel.create(logo, function(err, dbLogo) {
-      if (err) {
-        winston.error('Error creating enterprise logo in db ', err, id);
-        res.status(400).json({'message': err});
-        return;
-      } else {
-        res.set('Content-Type', dbLogo.contentType);
-        res.status(200).send(dbLogo.image);
-      }
-    });
-
-  });
-  */
 };

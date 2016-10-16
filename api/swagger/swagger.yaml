@@ -17,10 +17,6 @@ consumes:
 # format of the responses to the client (Accepts)
 produces:
   - application/json
-  - image/jpeg
-  - image/png
-  - image/gif
-  - image/svg+xml
 paths:
   /swagger:
     x-swagger-pipe: swagger_raw
@@ -115,6 +111,12 @@ paths:
       description: Returns logo of one social enterprise in the directory
       # call this method name on the controller
       operationId: getEnterpriseLogo
+      produces:
+        - image/jpeg
+        - image/png
+        - image/gif
+        - image/svg+xml
+        - application/json
       parameters:
         - name: id
           in: path

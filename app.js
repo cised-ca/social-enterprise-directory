@@ -1,9 +1,9 @@
 'use strict';
 
 var conf = require('./config/config.js');
-
 var winston = require('winston');
 winston.level = conf.get('loglevel');
+winston.info('Running in NODE_ENV mode: ' + process.env.NODE_ENV);
 
 require('./api/data/db.js');
 var SwaggerExpress = require('swagger-express-mw');

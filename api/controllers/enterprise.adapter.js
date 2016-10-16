@@ -27,6 +27,7 @@ function transformDbEnterpriseToRestFormat(dbEnterprise) {
   return apiEnterprise;
 }
 
+// Throws exception on error.
 module.exports.transformCompleteEnterpriseToPublicDBFormat = function(enterprise) {
 
   var dbPublicEnterprise = {};
@@ -45,6 +46,7 @@ module.exports.transformCompleteEnterpriseToPublicDBFormat = function(enterprise
   return dbPublicEnterprise;
 };
 
+// Throws exception on error.
 module.exports.transformCompleteEnterpriseToPrivateDBFormat = function(enterprise) {
 
   var dbPrivateEnterprise = {};
@@ -63,6 +65,7 @@ module.exports.transformCompleteEnterpriseToPrivateDBFormat = function(enterpris
   return dbPrivateEnterprise;
 };
 
+// Throws exception on error.
 module.exports.appendPrivateInfo = function(enterprise, privateInfo) {
 
   privateFields.forEach( function(field) {
