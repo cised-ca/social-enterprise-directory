@@ -21,9 +21,13 @@ swagger:
       name: swagger_validator
       validateResponse: true
 
+    _logging-middleware:
+      name: logging-middleware
+
     # pipe for all swagger-node controllers
     swagger_controllers:
       - onError: json_error_handler
+      - _logging-middleware
       - cors
       - swagger_security
       - _swagger_validate
