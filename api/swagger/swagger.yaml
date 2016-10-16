@@ -178,6 +178,10 @@ definitions:
         type: array
         items:
           type: string
+      year_started:
+        type: integer
+        minimum: 1000
+        maximum: 3000
       website:
         type: string
       facebook:
