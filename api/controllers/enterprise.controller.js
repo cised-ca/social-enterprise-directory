@@ -41,6 +41,7 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
       if (err) {
         logger.error('Error finding enterprises ' + err);
         res.status(500).json({'message': err});
+        return;
       }
       if (!dbEnterprises) {
         res.status(200).json({});
@@ -62,6 +63,7 @@ module.exports.getOneEnterprisePublic = function(req, res) {
       if (err) {
         logger.error('Error finding enterprise', id, ':', err);
         res.status(500).json({'message': err});
+        return;
       }
       if (!dbEnterprise) {
         logger.info('Enterprise not found for id ', id);
@@ -74,6 +76,7 @@ module.exports.getOneEnterprisePublic = function(req, res) {
         res.status(200).json(tranformedEnterprise);
       } catch (e) {
         res.status(500).json({'message': e});
+        return;
       }
     });
 };
@@ -86,6 +89,7 @@ module.exports.getOneEnterpriseComplete = function(req, res) {
       if (err) {
         logger.error('Error finding enterprise', id, ':', err);
         res.status(500).json({'message': err});
+        return;
       }
       if (!dbEnterprise) {
         logger.info('Enterprise not found for id ', id);
@@ -98,6 +102,7 @@ module.exports.getOneEnterpriseComplete = function(req, res) {
         res.status(200).json(tranformedEnterprise);
       } catch (e) {
         res.status(500).json({'message': e});
+        return;
       }
     });
 };
@@ -109,6 +114,7 @@ module.exports.createEnterprise = function(req, res) {
     var privateEnterprise = enterpriseAdapter.transformCompleteEnterpriseToPrivateDBFormat(enterprise);
   } catch (e) {
     res.status(500).json({'message': e});
+    return;
   }
 
   enterprisePrivateFieldsModel.create(privateEnterprise, function(err, dbPrivateEnterprise) {
@@ -156,6 +162,7 @@ module.exports.getEnterpriseLogo = function(req, res) {
       if (err) {
         logger.error('Error finding enterprise logo', id, ':', err);
         res.status(500).json({'message': err});
+        return;
       }
       if (!dbLogo) {
         logger.info('Enterprise logo not found for id ', id);
