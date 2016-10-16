@@ -1,4 +1,4 @@
-var winston = require('winston');
+var logger = require('../../lib/logger');
 var mongoose = require('mongoose');
 
 var enterprisePrivateFieldsSchema = new mongoose.Schema({
@@ -100,25 +100,25 @@ var EnterpriseLogoModel = mongoose.model('EnterpriseLogo', enterpriseLogoSchema,
 
 EnterprisePublicModel.on('index', function(err) {
   if (err) {
-    winston.error('Error building indexes on Enterprise Public Model: ' + err);
+    logger.error('Error building indexes on Enterprise Public Model: ' + err);
   } else {
-    winston.info('Built index on Enterprise Public Model');
+    logger.info('Built index on Enterprise Public Model');
   }
 });
 
 EnterprisePrivateModel.on('index', function(err) {
   if (err) {
-    winston.error('Error building indexes on Enterprise Private Model: ' + err);
+    logger.error('Error building indexes on Enterprise Private Model: ' + err);
   } else {
-    winston.info('Built index on Enterprise Private Model');
+    logger.info('Built index on Enterprise Private Model');
   }
 });
 
 EnterpriseLogoModel.on('index', function(err) {
   if (err) {
-    winston.error('Error building indexes on Enterprise Logo Model: ' + err);
+    logger.error('Error building indexes on Enterprise Logo Model: ' + err);
   } else {
-    winston.info('Built index on Enterprise Logo Model');
+    logger.info('Built index on Enterprise Logo Model');
   }
 });
 

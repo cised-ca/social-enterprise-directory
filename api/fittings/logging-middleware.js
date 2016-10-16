@@ -1,8 +1,8 @@
-var winston = require('winston');
+var logger = require('../../lib/logger');
 
-module.exports = function create(fittingDef, bagpipes) {
+module.exports = function create() {
   return function log(context, cb) {
-    winston.info(context.request.method, context.request.url);
+    logger.info(context.request.method, context.request.url);
     cb();
   };
 };

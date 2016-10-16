@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var winston = require('winston');
+var logger = require('../../lib/logger');
 var enterprisePublicModel = mongoose.model('EnterprisePublic');
 var enterprisePrivateFieldsModel = mongoose.model('EnterprisePrivateFields');
 var enterpriseLogoModel = mongoose.model('EnterpriseLogo');
@@ -39,7 +39,7 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
     .select(publicFields)
     .exec(function(err, dbEnterprises) {
       if (err) {
-        winston.error('Error finding enterprises ' + err);
+        logger.error('Error finding enterprises ' + err);
         res.status(500).json({'message': err});
       }
       if (!dbEnterprises) {
@@ -60,11 +60,11 @@ module.exports.getOneEnterprisePublic = function(req, res) {
     .select(publicFields)
     .exec(function(err, dbEnterprise) {
       if (err) {
-        winston.error('Error finding enterprise', id, ':', err);
+        logger.error('Error finding enterprise', id, ':', err);
         res.status(500).json({'message': err});
       }
       if (!dbEnterprise) {
-        winston.info('Enterprise not found for id ', id);
+        logger.info('Enterprise not found for id ', id);
         res.status(404).json({'message': 'Enterprise not found for id ' + id});
         return;
       }
@@ -84,11 +84,11 @@ module.exports.getOneEnterpriseComplete = function(req, res) {
     .findById(id)
     .exec(function(err, dbEnterprise) {
       if (err) {
-        winston.error('Error finding enterprise', id, ':', err);
+        logger.error('Error finding enterprise', id, ':', err);
         res.status(500).json({'message': err});
       }
       if (!dbEnterprise) {
-        winston.info('Enterprise not found for id ', id);
+        logger.info('Enterprise not found for id ', id);
         res.status(404).json({'message': 'Enterprise not found for id ' + id});
         return;
       }
@@ -113,7 +113,7 @@ module.exports.createEnterprise = function(req, res) {
 
   enterprisePrivateFieldsModel.create(privateEnterprise, function(err, dbPrivateEnterprise) {
     if (err) {
-      winston.error('Error creating private enterprise fields in db ', err, enterprise);
+      logger.error('Error creating private enterprise fields in db ', err, enterprise);
       res.status(400).json({'message': err});
       return;
     } else {
@@ -121,14 +121,14 @@ module.exports.createEnterprise = function(req, res) {
 
       enterprisePublicModel.create(publicEnterprise, function(err, dbPublicEnterprise) {
         if (err) {
-          winston.error('Error creating public enterprise in db ', err, enterprise);
+          logger.error('Error creating public enterprise in db ', err, enterprise);
           res.status(400).json({'message': err});
           return;
         } else {
 
           var apiEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbPublicEnterprise);
           enterpriseAdapter.appendPrivateInfo(apiEnterprise, dbPrivateEnterprise);
-          winston.info('Enterprise created (name=%s id=%s)', apiEnterprise['name'], apiEnterprise['id']);
+          logger.info('Enterprise created (name=%s id=%s)', apiEnterprise['name'], apiEnterprise['id']);
           res.status(201).json(apiEnterprise);
         }
       });
@@ -145,7 +145,7 @@ function imageTypeToContentType(imageType) {
     return 'image/svg+xml';
   }
 
-  winston.error('Unsupported image type: ' + imageType);
+  logger.error('Unsupported image type: ' + imageType);
 }
 
 module.exports.getEnterpriseLogo = function(req, res) {
@@ -154,11 +154,11 @@ module.exports.getEnterpriseLogo = function(req, res) {
     .findOne({enterpriseId : id})
     .exec(function(err, dbLogo) {
       if (err) {
-        winston.error('Error finding enterprise logo', id, ':', err);
+        logger.error('Error finding enterprise logo', id, ':', err);
         res.status(500).json({'message': err});
       }
       if (!dbLogo) {
-        winston.info('Enterprise logo not found for id ', id);
+        logger.info('Enterprise logo not found for id ', id);
         res.status(404).json({'message': 'Enterprise logo not found for id ' + id});
         return;
       }

@@ -1,4 +1,4 @@
-var winston = require('winston');
+var logger = require('../../lib/logger');
 var mongoose = require('mongoose');
 var conf = require('../../config/config.js');
 
@@ -10,19 +10,19 @@ var dbURL = conf.get('dbURL');
 mongoose.connect(dbURL);
 
 mongoose.connection.on('connected', function() {
-  winston.info('Mongoose connected to', dbURL);
+  logger.info('Mongoose connected to', dbURL);
 });
 mongoose.connection.on('error', function(err) {
-  winston.error('Mongoose failed to connect to ', dbURL, err);
+  logger.error('Mongoose failed to connect to ', dbURL, err);
 });
 mongoose.connection.on('disconnected', function() {
-  winston.warn('Mongoose disconnected');
+  logger.warn('Mongoose disconnected');
 });
 
 // Close db connection on signal
 function disconnect(msg, callback) {
   mongoose.connection.close(function() {
-    winston.info('Mongoose disconnected by ' + msg);
+    logger.info('Mongoose disconnected by ' + msg);
     callback();
   });
 }

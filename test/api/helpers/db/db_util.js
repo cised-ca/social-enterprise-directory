@@ -1,6 +1,6 @@
 /* eslint-env node, mocha */
 var mongoose = require('mongoose');
-var winston = require('winston');
+var logger = require('../../../../lib/logger');
 
 var indexBuiltCallback = function() {};
 
@@ -11,9 +11,9 @@ before(function(done){
 
 function handleIndexBuild(err) {
   if (err) {
-    winston.error('Failed to rebuild index ' + err);
+    logger.error('Failed to rebuild index ' + err);
   }
-  winston.debug('db_util handling index build');
+  logger.debug('db_util handling index build');
   indexBuiltCallback();
 
   // clear callback to avoid case where mongoose raises event multiple times
