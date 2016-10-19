@@ -94,8 +94,8 @@ enterprisePublicSchema.index(
       facebook: 20,
       instagram: 20,
       twitter: 20,
+      short_description: 15,
       offering: 10,
-      short_description: 5,
       description: 5,
       purposes: 3
     }
