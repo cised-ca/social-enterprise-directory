@@ -31,6 +31,11 @@ var conf = convict({
     format: String,
     default: 'mongodb://localhost:27017/socialEnterpriseDirectory',
     env: 'DB_URL'
+  },
+  logFile: {
+    doc: 'The log file name, if file logging is desired',
+    format: String,
+    default: ''
   }
 });
 
