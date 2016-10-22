@@ -36,6 +36,11 @@ var conf = convict({
     doc: 'The log file name, if file logging is desired',
     format: String,
     default: ''
+  },
+  enterpriseCacheControl: {
+    doc: 'The max-age value for Cache-Control for enterprises',
+    format: Number,
+    default: 3600
   }
 });
 

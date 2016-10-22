@@ -1,4 +1,5 @@
 {
   "loglevel" : "info",
-  "dbURL" : "mongodb://localhost:27017/socialEnterpriseDirectory"
+  "dbURL" : "mongodb://localhost:27017/socialEnterpriseDirectory",
+  "enterpriseCacheControl": 10
 }

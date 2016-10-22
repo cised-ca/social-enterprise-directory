@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 var logger = require('../../lib/logger');
+var conf = require('../../config/config.js');
+
 var enterprisePublicModel = mongoose.model('EnterprisePublic');
 var enterprisePrivateFieldsModel = mongoose.model('EnterprisePrivateFields');
 var enterpriseLogoModel = mongoose.model('EnterpriseLogo');
@@ -7,6 +9,7 @@ var enterpriseAdapter = require('./enterprise.adapter');
 
 var publicFields = require('../data/enterprise.model').enterprisePublicFields.join(' ');
 
+var ENTERPRISE_CACHE_CONTROL = conf.get('enterpriseCacheControl');
 
 module.exports.getAllEnterprisesPublic = function(req, res) {
   var query;
@@ -49,6 +52,7 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
       }
 
       var tranformedEnterprises = enterpriseAdapter.transformDbEnterprisesToRestFormat(dbEnterprises);
+      res.set('Cache-Control', 'max-age=' + ENTERPRISE_CACHE_CONTROL);
       res.status(200).json(tranformedEnterprises);
     });
 };
@@ -73,6 +77,7 @@ module.exports.getOneEnterprisePublic = function(req, res) {
 
       try {
         var tranformedEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise);
+        res.set('Cache-Control', 'max-age=' + ENTERPRISE_CACHE_CONTROL);
         res.status(200).json(tranformedEnterprise);
       } catch (e) {
         res.status(500).json({'message': e});
@@ -99,6 +104,7 @@ module.exports.getOneEnterpriseComplete = function(req, res) {
 
       try {
         var tranformedEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise);
+        res.set('Cache-Control', 'max-age=' + ENTERPRISE_CACHE_CONTROL);
         res.status(200).json(tranformedEnterprise);
       } catch (e) {
         res.status(500).json({'message': e});
@@ -171,6 +177,7 @@ module.exports.getEnterpriseLogo = function(req, res) {
       }
 
       res.set('Content-Type', dbLogo.contentType);
+      res.set('Cache-Control', 'max-age=' + ENTERPRISE_CACHE_CONTROL);
       res.status(200).send(dbLogo.image);
     });
 };
