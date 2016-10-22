@@ -46,7 +46,7 @@ enterprises.forEach(function(enterprise) {
     website: fields[9],
     short_description: fields[11],
     description: fields[12],
-    year_started: fields[13],
+    year_started: parseInt(fields[13]),
     offering: fields[14],
     purposes: [fields[18]],
     facebook: fields[21].replace(/^.*facebook.com\//, '').replace(/^.*fb.me\//, '').replace(/\//, ''),
