@@ -1,4 +1,4 @@
 {
   "loglevel" : "warn",
-  "dbURL" : "mongodb://localhost:27017/socialEnterpriseDirectory"
+  "dbURL" : "mongodb://username:password@localhost:27017/socialEnterpriseDirectory"
 }

@@ -7,7 +7,13 @@ if (conf.get('loglevel') === 'debug') {
 }
 
 var dbURL = conf.get('dbURL');
-mongoose.connect(dbURL);
+var options = {
+  server: {
+    reconnectTries: Number.MAX_VALUE,
+    socketOptions: { keepAlive: 120 }
+  }
+};
+mongoose.connect(dbURL, options);
 
 mongoose.connection.on('connected', function() {
   logger.info('Mongoose connected to', dbURL);
