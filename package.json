@@ -7,7 +7,7 @@
     "social enterprise"
   ],
   "author": "Chad Adams",
-  "license": "ISC",
+  "license": "AGPL-3.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cised-ca/social-enterprise-directory"
@@ -20,10 +20,10 @@
     "node": "4.4.5"
   },
   "dependencies": {
-    "convict": "1.4.0",
-    "express": "4.12.3",
-    "mongoose": "4.5.4",
-    "swagger-express-mw": "0.1.0",
+    "convict": "1.5.0",
+    "express": "4.14.0",
+    "mongoose": "4.6.4",
+    "swagger-express-mw": "0.7.0",
     "winston": "2.2.0"
   },
   "devDependencies": {
