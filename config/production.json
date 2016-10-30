@@ -1,5 +1,5 @@
 {
   "loglevel" : "warn",
-  "dbURL" : "mongodb://username:password@localhost:27017/socialEnterpriseDirectory",
-  "logFile" : "/var/log/socialEnterpriseDirectory.log"
+  "dbURL" : "mongodb://localhost:27017/socialEnterpriseDirectory",
+  "logFile" : "/sedir/logs/socialEnterpriseDirectory.log"
 }
