@@ -114,6 +114,10 @@ module.exports.getOneEnterpriseComplete = function(req, res) {
 };
 
 module.exports.createEnterprise = function(req, res) {
+  if (conf.get('env') != 'test') {
+    res.status(403).json({'message': 'Not supported yet'});
+    return;
+  }
   var enterprise = req.swagger.params.Enterprise.value;
   try {
     var publicEnterprise = enterpriseAdapter.transformCompleteEnterpriseToPublicDBFormat(enterprise);

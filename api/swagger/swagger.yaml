@@ -83,27 +83,27 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
-  /enterprise/{id}/complete:
-    x-swagger-router-controller: enterprise.controller
-    get:
-      description: Returns *all* details about one social enterprise in the directory
+#  /enterprise/{id}/complete:
+#    x-swagger-router-controller: enterprise.controller
+#    get:
+#      description: Returns *all* details about one social enterprise in the directory
       # call this method name on the controller
-      operationId: getOneEnterpriseComplete
-      parameters:
-        - name: id
-          in: path
-          description: ID of enterprise to fetch
-          required: true
-          type: string
-      responses:
-        "200":
-          description: Success
-          schema:
-            $ref: "#/definitions/EnterpriseComplete"
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
+#      operationId: getOneEnterpriseComplete
+#      parameters:
+#        - name: id
+#          in: path
+#          description: ID of enterprise to fetch
+#          required: true
+#          type: string
+#      responses:
+#        "200":
+#          description: Success
+#          schema:
+#            $ref: "#/definitions/EnterpriseComplete"
+#        default:
+#          description: Error
+#          schema:
+#            $ref: "#/definitions/ErrorResponse"
 
   /enterprise/{id}/logo:
     x-swagger-router-controller: enterprise.controller
