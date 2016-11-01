@@ -27,12 +27,15 @@ For detailed technical documentation, see the wiki.
 * `npm start`
 
 ## To use
+Full API documentation is available here:
+* https://app.swaggerhub.com/api/chad.adams/SocialEnterpriseDirectory/1
+
+Sample operations:
 * Browse directory: http://localhost:10010/api/v1/directory
 * Search directory: http://localhost:10010/api/v1/directory?q=key+words+here
 * Get Enterprise: http://localhost:10010/api/v1/enterprise/{id}
 * Get Enterprise Logo: http://localhost:10010/api/v1/enterprise/{id}/logo
 * POST Enterprise http://localhost:10010/api/v1/enterprise
-* http://localhost:10010/api/v1/enterprise/{id}/complete
 
 ## To test
 See wiki.
