@@ -33,7 +33,7 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
 
   var limit = req.swagger.params.count.value;
   if (!limit) {
-    limit = 25;
+    limit = 500;
   }
 
   query
