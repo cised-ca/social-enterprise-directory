@@ -73,6 +73,9 @@ var enterprisePublicSchema = new mongoose.Schema({
   private_info: mongoose.Schema.Types.ObjectId
 });
 
+// Create index for sorting by name
+enterprisePublicSchema.index({name: 1});
+
 // Create text index for searching enterprise by keyword
 enterprisePublicSchema.index(
   {

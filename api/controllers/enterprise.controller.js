@@ -16,7 +16,7 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
 
   var search = req.swagger.params.q.value;
   if (!search) {
-    query = enterprisePublicModel.find();
+    query = enterprisePublicModel.find().sort({name: 1});
   } else {
     var keywords = search.replace(/\+/g, ' ');
     query = enterprisePublicModel

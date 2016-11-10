@@ -45,7 +45,10 @@ var mappings = {
   'SuraiTea': '58014c003762820bc88b8073',
   'Tetra Society of North America - Ottawa Chapter': '58014c003762820bc88b8076',
   'Ottawa Inuit Children\'s Centre': '58014c003762820bc88b8077',
-  'Tucker House Renewal Centre': '58014c003762820bc88b8080'
+  'Tucker House Renewal Centre': '58014c003762820bc88b8080',
+  'FoodWorks': '58014c003762820bc88b8081',
+  'Propeller Dance': '58014c003762820bc88b8082',
+  'RePurpose': '58014c003762820bc88b8083'
 
 };
 

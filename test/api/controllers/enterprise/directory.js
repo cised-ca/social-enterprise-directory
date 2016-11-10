@@ -36,14 +36,14 @@ describe('GET /directory', function() {
     postUtil.postTestEnterprise1(doDirectoryRequest);
   });
 
-  it('should return multiple enterprises', function(done) {
+  it('should return multiple enterprises in alphabetical order', function(done) {
     var doDirectoryRequest = function() {
       requestUtil.buildGetRequest(url)
           .end(function(err, res) {
             should.not.exist(err);
-            enterpriseVerifier.verifyArrayContainsEnterprise1(res.body);
-            enterpriseVerifier.verifyArrayContainsEnterprise2(res.body);
-            enterpriseVerifier.verifyArrayContainsEnterprise3(res.body);
+            enterpriseVerifier.verifyEnterprise3Public(res.body[0]);
+            enterpriseVerifier.verifyEnterprise1Public(res.body[1]);
+            enterpriseVerifier.verifyEnterprise2Public(res.body[2]);
             done();
           });
     };
@@ -70,7 +70,7 @@ describe('GET /directory', function() {
         .end(function(err, res) {
           should.not.exist(err);
           res.body.length.should.equal(1);
-          enterpriseVerifier.verifyArrayContainsEnterprise3(res.body);
+          enterpriseVerifier.verifyArrayContainsEnterprise2(res.body);
           done();
         });
     };
