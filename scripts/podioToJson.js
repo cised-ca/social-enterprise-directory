@@ -83,6 +83,7 @@ enterprises.forEach(function(enterprise) {
   var public = {
     _id: {'$oid': genPubId},
     name: fields[2],
+    lowercase_name: fields[2].toLowerCase(),
     parent_organization: fields[4],
     postal_code: fields[6],
     website: fields[9],

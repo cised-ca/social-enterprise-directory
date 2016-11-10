@@ -36,6 +36,7 @@ var enterprisePrivateFieldsSchema = new mongoose.Schema({
 
 var enterprisePublicSchema = new mongoose.Schema({
   name: { type: String, required: true },
+  lowercase_name: { type: String, required: true },
   short_description: String,
   description: String,
   offering: String,
@@ -74,7 +75,7 @@ var enterprisePublicSchema = new mongoose.Schema({
 });
 
 // Create index for sorting by name
-enterprisePublicSchema.index({name: 1});
+enterprisePublicSchema.index({lowercase_name: 1});
 
 // Create text index for searching enterprise by keyword
 enterprisePublicSchema.index(

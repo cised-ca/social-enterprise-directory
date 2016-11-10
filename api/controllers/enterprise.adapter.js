@@ -24,6 +24,8 @@ function transformDbEnterpriseToRestFormat(dbEnterprise) {
   apiEnterprise.id = dbEnterprise._id.toString();
   delete apiEnterprise._id;
 
+  delete apiEnterprise.lowercase_name;
+
   // if there was a "score" field due to text index lookup, remove it
   delete apiEnterprise.score;
 
@@ -39,6 +41,9 @@ module.exports.transformCompleteEnterpriseToPublicDBFormat = function(enterprise
       dbPublicEnterprise[field] = JSON.parse(JSON.stringify(enterprise[field]));
     }
   });
+
+  // create lower case name field
+  dbPublicEnterprise.lowercase_name = dbPublicEnterprise.name.toLowerCase();
 
   // remove private fields
   filterPrivateEntriesForArray(dbPublicEnterprise.emails);
