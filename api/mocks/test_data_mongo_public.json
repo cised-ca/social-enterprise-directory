@@ -2,6 +2,7 @@
     {
       "_id": {"$oid":"58014c003762820bc88b86d8"},
       "name" : "African Bronze Honey",
+      "lowercase_name" : "african bronze honey",
       "short_description" : "We market and sell products on behalf of 10,000 traditional forest beekeepers in Zambia.",
       "description" : "15 years ago, Zambian Canadian Dan Ball went into a remote forest to work with two dozen beekeepers. Today they have trained over 10,000 beekeepers and exported 1,200 tons of organic bulk honey to Europe last year. Longtime friend Dan asked us to develop a retail market in North America to help value add their honey and create additional sustainable profit to train more beekeepers. This is the African Bronze Honey Company.",
       "year_started" : 2015,
@@ -19,6 +20,7 @@
     {
       "_id": {"$oid":"58014c003762820bc88b86d9"},
       "name" : "Beads of Awareness",
+      "lowercase_name" : "beads of awareness",
       "postal_code" : "J9B 2A9",
       "website" : "beadsofawareness.org",
       "short_description" : "Beads of Awareness sells handmade paper bead products to support women's cooperatives and encourage economic empowerment in Uganda.",
@@ -40,6 +42,7 @@
         "$oid": "58014c003762820bc88b8012"
       },
       "name": "Canada Corporate Sports",
+      "lowercase_name": "canada corporate sports",
       "parent_organization": "Enactus uOttawa",
       "postal_code": "K1N 6N5",
       "website": "",
@@ -60,6 +63,7 @@
         "$oid": "58014c003762820bc88b8014"
       },
       "name": "CigBins",
+      "lowercase_name": "cigbins",
       "parent_organization": "",
       "postal_code": "K2P 0V4",
       "website": "http://www.cigbins.com/",
@@ -80,6 +84,7 @@
         "$oid": "58014c003762820bc88b8051"
       },
       "name": "MakerHouse Co",
+      "lowercase_name": "makerhouse co",
       "parent_organization": "",
       "postal_code": "K1Y 2Y1",
       "website": "http://www.makerhouse.co/password",
@@ -99,6 +104,7 @@
         "$oid": "58014c003762820bc88b8052"
       },
       "name": "MarketMobile",
+      "lowercase_name": "marketmobile",
       "parent_organization": "Rideau Rockliffe Community Resources Centre",
       "postal_code": "",
       "website": "www.marketmobileottawa.ca ",
@@ -119,6 +125,7 @@
         "$oid": "58014c003762820bc88b8078"
       },
       "name": "Tucker House Renewal Centre",
+      "lowercase_name": "tucker house renewal centre",
       "parent_organization": "",
       "postal_code": "K1S 5B4",
       "website": "www.maisontuckerhouse.ca",
