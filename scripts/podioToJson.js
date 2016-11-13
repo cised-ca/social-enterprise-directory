@@ -48,7 +48,11 @@ var mappings = {
   'Tucker House Renewal Centre': '58014c003762820bc88b8080',
   'FoodWorks': '58014c003762820bc88b8081',
   'Propeller Dance': '58014c003762820bc88b8082',
-  'RePurpose': '58014c003762820bc88b8083'
+  'RePurpose': '58014c003762820bc88b8083',
+  'Savour Ottawa Online': '58014c003762820bc88b8084',
+  'Ottawa Incubator Kitchen': '58014c003762820bc88b8085',
+  'Just Food Start-Up Farm Program': '58014c003762820bc88b8086',
+  'CompuCorps': '58014c003762820bc88b8087'
 
 };
 
@@ -61,8 +65,8 @@ function pad(n, width, z) {
   return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
 
-var  i = 100;
-var  j = 100;
+var  i = 500;
+var  j = 500;
 
 enterprises.forEach(function(enterprise) {
   var genPubId = '58014c003762820bc88b8' + pad(i++, 3);
