@@ -1,4 +1,4 @@
-var enterpriseData = require('./test_data.json');
+const enterpriseData = require('./test_data.json');
 
 module.exports.getAllEnterprisesPublic = function(req, res) {
   res.status(200)
@@ -6,8 +6,8 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
 };
 
 module.exports.getOneEnterprisePublic = function(req, res) {
-  var id = req.swagger.params.id.value;
-  var enterprise = enterpriseData['enterprises'].filter(function(enterprise) {
+  let id = req.swagger.params.id.value;
+  let enterprise = enterpriseData['enterprises'].filter(function(enterprise) {
     return enterprise.id == id;
   })[0];
 
@@ -16,8 +16,8 @@ module.exports.getOneEnterprisePublic = function(req, res) {
 };
 
 module.exports.getOneEnterpriseComplete = function(req, res) {
-  var id = req.swagger.params.id.value;
-  var enterprise = enterpriseData['enterprises'].filter(function(enterprise) {
+  let id = req.swagger.params.id.value;
+  let enterprise = enterpriseData['enterprises'].filter(function(enterprise) {
     return enterprise.id == id;
   })[0];
 

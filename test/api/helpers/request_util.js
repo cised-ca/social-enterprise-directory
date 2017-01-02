@@ -1,8 +1,8 @@
 
-var request = require('supertest');
-var App = require('../../app_starter').App;
+const request = require('supertest');
+const App = require('../../app_starter').App;
 
-var URL_PREFIX = '/api/v1';
+const URL_PREFIX = '/api/v1';
 
 module.exports.buildGetRequest = function(url) {
   return request(App)

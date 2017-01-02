@@ -1,11 +1,11 @@
 /* eslint-env node, mocha */
-var should = require('should');
-var dbUtil = require('../../helpers/db/db_util');
-var requestUtil = require('../../helpers/request_util');
-var postUtil = require('../../helpers/enterprise/post_util');
-var enterpriseVerifier = require('../../helpers/enterprise/enterprise_verifier');
+const should = require('should');
+const dbUtil = require('../../helpers/db/db_util');
+const requestUtil = require('../../helpers/request_util');
+const postUtil = require('../../helpers/enterprise/post_util');
+const enterpriseVerifier = require('../../helpers/enterprise/enterprise_verifier');
 
-var url = '/directory';
+const url = '/directory';
 
 describe('GET /directory', function() {
 
@@ -24,7 +24,7 @@ describe('GET /directory', function() {
   });
 
   it('should return one enterprise', function(done) {
-    var doDirectoryRequest = function() {
+    let doDirectoryRequest = function() {
       requestUtil.buildGetRequest(url)
         .end(function(err, res) {
           should.not.exist(err);
@@ -37,7 +37,7 @@ describe('GET /directory', function() {
   });
 
   it('should return multiple enterprises in alphabetical order', function(done) {
-    var doDirectoryRequest = function() {
+    let doDirectoryRequest = function() {
       requestUtil.buildGetRequest(url)
           .end(function(err, res) {
             should.not.exist(err);
@@ -52,7 +52,7 @@ describe('GET /directory', function() {
   });
 
   it('should limit enterprises when count parameter set', function(done) {
-    var doDirectoryRequest = function() {
+    let doDirectoryRequest = function() {
       requestUtil.buildGetRequest(url + '?count=2')
         .end(function(err, res) {
           should.not.exist(err);
@@ -65,7 +65,7 @@ describe('GET /directory', function() {
   });
 
   it('should offset enterprises when offset parameter set', function(done) {
-    var doDirectoryRequest = function() {
+    let doDirectoryRequest = function() {
       requestUtil.buildGetRequest(url + '?count=1&offset=2')
         .end(function(err, res) {
           should.not.exist(err);

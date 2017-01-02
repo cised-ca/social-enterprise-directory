@@ -1,11 +1,11 @@
 /* eslint-env node, mocha */
-var should = require('should');
-var dbUtil = require('../../helpers/db/db_util');
-var requestUtil = require('../../helpers/request_util');
-var postUtil = require('../../helpers/enterprise/post_util');
-var enterpriseVerifier = require('../../helpers/enterprise/enterprise_verifier');
+const should = require('should');
+const dbUtil = require('../../helpers/db/db_util');
+const requestUtil = require('../../helpers/request_util');
+const postUtil = require('../../helpers/enterprise/post_util');
+const enterpriseVerifier = require('../../helpers/enterprise/enterprise_verifier');
 
-var url = '/enterprise/';
+const url = '/enterprise/';
 
 function doGetEnterprise1(done) {
   return function() {
@@ -52,7 +52,7 @@ describe('GET /enterprise', function() {
   });
 
   it('should return enterprise when multiple enterprises in directory', function(done) {
-    var doGetRequests = doGetEnterprise1(
+    let doGetRequests = doGetEnterprise1(
                           doGetEnterprise2(
                             doGetEnterprise3(
                               done)));

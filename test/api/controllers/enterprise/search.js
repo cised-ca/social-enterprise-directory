@@ -1,11 +1,11 @@
 /* eslint-env node, mocha */
-var should = require('should');
-var dbUtil = require('../../helpers/db/db_util');
-var requestUtil = require('../../helpers/request_util');
-var postUtil = require('../../helpers/enterprise/post_util');
-var enterpriseVerifier = require('../../helpers/enterprise/enterprise_verifier');
+const should = require('should');
+const dbUtil = require('../../helpers/db/db_util');
+const requestUtil = require('../../helpers/request_util');
+const postUtil = require('../../helpers/enterprise/post_util');
+const enterpriseVerifier = require('../../helpers/enterprise/enterprise_verifier');
 
-var url = '/directory';
+const url = '/directory';
 
 describe('Search /directory', function() {
 
@@ -15,7 +15,7 @@ describe('Search /directory', function() {
   });
 
   it('should return only the one enterprise matching search item', function(done) {
-    var doSearchRequest = function() {
+    let doSearchRequest = function() {
       requestUtil.buildGetRequest(url + '?q=cycle')
         .end(function(err, res) {
           should.not.exist(err);
@@ -29,7 +29,7 @@ describe('Search /directory', function() {
   });
 
   it('should return multiple enterprises matching search item', function(done) {
-    var doSearchRequest = function() {
+    let doSearchRequest = function() {
       requestUtil.buildGetRequest(url + '?q=social')
         .end(function(err, res) {
           should.not.exist(err);
@@ -45,7 +45,7 @@ describe('Search /directory', function() {
 
 
   it('should return enterprises matching multiple search items', function(done) {
-    var doSearchRequest = function() {
+    let doSearchRequest = function() {
       requestUtil.buildGetRequest(url + '?q=cycle+good')
         .end(function(err, res) {
           should.not.exist(err);
@@ -60,7 +60,7 @@ describe('Search /directory', function() {
   });
 
   it('should weight enterprise name over description for search', function(done) {
-    var doSearchRequest = function() {
+    let doSearchRequest = function() {
       requestUtil.buildGetRequest(url + '?q=good+social')
         .end(function(err, res) {
           should.not.exist(err);
@@ -78,7 +78,7 @@ describe('Search /directory', function() {
 
 
   it('should match search on twitter handle', function(done) {
-    var doSearchRequest = function() {
+    let doSearchRequest = function() {
       requestUtil.buildGetRequest(url + '?q=abhoney')
         .end(function(err, res) {
           should.not.exist(err);

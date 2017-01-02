@@ -1,6 +1,6 @@
 /* eslint-env node, mocha */
-var dbUtil = require('../../helpers/db/db_util');
-var postUtil = require('../../helpers/enterprise/post_util');
+const dbUtil = require('../../helpers/db/db_util');
+const postUtil = require('../../helpers/enterprise/post_util');
 
 describe('POST /enterprise', function() {
 

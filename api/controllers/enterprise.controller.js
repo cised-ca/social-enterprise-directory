@@ -1,24 +1,24 @@
-var mongoose = require('mongoose');
-var logger = require('../../lib/logger');
-var conf = require('../../config/config.js');
+const mongoose = require('mongoose');
+const logger = require('../../lib/logger');
+const conf = require('../../config/config.js');
 
-var enterprisePublicModel = mongoose.model('EnterprisePublic');
-var enterprisePrivateFieldsModel = mongoose.model('EnterprisePrivateFields');
-var enterpriseLogoModel = mongoose.model('EnterpriseLogo');
-var enterpriseAdapter = require('./enterprise.adapter');
+const enterprisePublicModel = mongoose.model('EnterprisePublic');
+const enterprisePrivateFieldsModel = mongoose.model('EnterprisePrivateFields');
+const enterpriseLogoModel = mongoose.model('EnterpriseLogo');
+const enterpriseAdapter = require('./enterprise.adapter');
 
-var publicFields = require('../data/enterprise.model').enterprisePublicFields.join(' ');
+const publicFields = require('../data/enterprise.model').enterprisePublicFields.join(' ');
 
-var ENTERPRISE_CACHE_CONTROL = conf.get('enterpriseCacheControl');
+const ENTERPRISE_CACHE_CONTROL = conf.get('enterpriseCacheControl');
 
 module.exports.getAllEnterprisesPublic = function(req, res) {
-  var query;
+  let query;
 
-  var search = req.swagger.params.q.value;
+  let search = req.swagger.params.q.value;
   if (!search) {
     query = enterprisePublicModel.find().sort({lowercase_name: 1});
   } else {
-    var keywords = search.replace(/\+/g, ' ');
+    let keywords = search.replace(/\+/g, ' ');
     query = enterprisePublicModel
       .find(
         { $text : { $search : keywords } },
@@ -26,12 +26,12 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
       .sort({ score : { $meta : 'textScore' } });
   }
 
-  var offset = req.swagger.params.offset.value;
+  let offset = req.swagger.params.offset.value;
   if (!offset) {
     offset = 0;
   }
 
-  var limit = req.swagger.params.count.value;
+  let limit = req.swagger.params.count.value;
   if (!limit) {
     limit = 500;
   }
@@ -51,7 +51,7 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
         return;
       }
 
-      var tranformedEnterprises = enterpriseAdapter.transformDbEnterprisesToRestFormat(dbEnterprises);
+      let tranformedEnterprises = enterpriseAdapter.transformDbEnterprisesToRestFormat(dbEnterprises);
       res.set('Cache-Control', 'max-age=' + ENTERPRISE_CACHE_CONTROL);
       res.status(200).json(tranformedEnterprises);
     });
@@ -59,7 +59,7 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
 
 module.exports.getOneEnterprisePublic = function(req, res) {
 
-  var id = req.swagger.params.id.value;
+  let id = req.swagger.params.id.value;
   enterprisePublicModel
     .findById(id)
     .select(publicFields)
@@ -76,7 +76,7 @@ module.exports.getOneEnterprisePublic = function(req, res) {
       }
 
       try {
-        var tranformedEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise);
+        let tranformedEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise);
         res.set('Cache-Control', 'max-age=' + ENTERPRISE_CACHE_CONTROL);
         res.status(200).json(tranformedEnterprise);
       } catch (e) {
@@ -87,7 +87,7 @@ module.exports.getOneEnterprisePublic = function(req, res) {
 };
 
 module.exports.getOneEnterpriseComplete = function(req, res) {
-  var id = req.swagger.params.id.value;
+  let id = req.swagger.params.id.value;
   enterprisePublicModel
     .findById(id)
     .exec(function(err, dbEnterprise) {
@@ -103,7 +103,7 @@ module.exports.getOneEnterpriseComplete = function(req, res) {
       }
 
       try {
-        var tranformedEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise);
+        let tranformedEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise);
         res.set('Cache-Control', 'max-age=' + ENTERPRISE_CACHE_CONTROL);
         res.status(200).json(tranformedEnterprise);
       } catch (e) {
@@ -118,10 +118,12 @@ module.exports.createEnterprise = function(req, res) {
     res.status(403).json({'message': 'Not supported yet'});
     return;
   }
-  var enterprise = req.swagger.params.Enterprise.value;
+  let enterprise = req.swagger.params.Enterprise.value;
+  let publicEnterprise;
+  let privateEnterprise;
   try {
-    var publicEnterprise = enterpriseAdapter.transformCompleteEnterpriseToPublicDBFormat(enterprise);
-    var privateEnterprise = enterpriseAdapter.transformCompleteEnterpriseToPrivateDBFormat(enterprise);
+    publicEnterprise = enterpriseAdapter.transformCompleteEnterpriseToPublicDBFormat(enterprise);
+    privateEnterprise = enterpriseAdapter.transformCompleteEnterpriseToPrivateDBFormat(enterprise);
   } catch (e) {
     res.status(500).json({'message': e});
     return;
@@ -142,9 +144,9 @@ module.exports.createEnterprise = function(req, res) {
           return;
         } else {
 
-          var apiEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbPublicEnterprise);
+          let apiEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbPublicEnterprise);
           enterpriseAdapter.appendPrivateInfo(apiEnterprise, dbPrivateEnterprise);
-          logger.info('Enterprise created (name=%s id=%s)', apiEnterprise['name'], apiEnterprise['id']);
+          logger.info(`Enterprise created (name=${apiEnterprise['name']} id=${apiEnterprise['id']})`);
           res.status(201).json(apiEnterprise);
         }
       });
@@ -165,7 +167,7 @@ function imageTypeToContentType(imageType) {
 }
 
 module.exports.getEnterpriseLogo = function(req, res) {
-  var id = req.swagger.params.id.value;
+  let id = req.swagger.params.id.value;
   enterpriseLogoModel
     .findOne({enterpriseId : id})
     .exec(function(err, dbLogo) {

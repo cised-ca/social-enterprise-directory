@@ -1,7 +1,7 @@
-var logger = require('../../lib/logger');
-var mongoose = require('mongoose');
+const logger = require('../../lib/logger');
+const mongoose = require('mongoose');
 
-var enterprisePrivateFieldsSchema = new mongoose.Schema({
+let enterprisePrivateFieldsSchema = new mongoose.Schema({
   clusters: [String],
   segments: [String],
   parent_organization: String,
@@ -34,7 +34,7 @@ var enterprisePrivateFieldsSchema = new mongoose.Schema({
   }]
 });
 
-var enterprisePublicSchema = new mongoose.Schema({
+let enterprisePublicSchema = new mongoose.Schema({
   name: { type: String, required: true },
   lowercase_name: { type: String, required: true },
   short_description: String,
@@ -106,15 +106,15 @@ enterprisePublicSchema.index(
   }
 );
 
-var enterpriseLogoSchema = new mongoose.Schema({
+let enterpriseLogoSchema = new mongoose.Schema({
   enterpriseId: { type: mongoose.Schema.Types.ObjectId, required: true, unique: true },
   image: {type: Buffer, required: true},
   contentType: {type: String, required: true}
 });
 
-var EnterprisePublicModel = mongoose.model('EnterprisePublic', enterprisePublicSchema, 'enterprises');
-var EnterprisePrivateModel = mongoose.model('EnterprisePrivateFields', enterprisePrivateFieldsSchema, 'enterprisePrivateFields');
-var EnterpriseLogoModel = mongoose.model('EnterpriseLogo', enterpriseLogoSchema, 'enterpriseLogos');
+let EnterprisePublicModel = mongoose.model('EnterprisePublic', enterprisePublicSchema, 'enterprises');
+let EnterprisePrivateModel = mongoose.model('EnterprisePrivateFields', enterprisePrivateFieldsSchema, 'enterprisePrivateFields');
+let EnterpriseLogoModel = mongoose.model('EnterpriseLogo', enterpriseLogoSchema, 'enterpriseLogos');
 
 EnterprisePublicModel.on('index', function(err) {
   if (err) {

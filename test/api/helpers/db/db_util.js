@@ -1,6 +1,6 @@
 /* eslint-env node, mocha */
-var mongoose = require('mongoose');
-var logger = require('../../../../lib/logger');
+const mongoose = require('mongoose');
+const logger = require('../../../../lib/logger');
 
 var indexBuiltCallback = function() {};
 

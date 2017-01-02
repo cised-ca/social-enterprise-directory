@@ -1,13 +1,13 @@
-var logger = require('../../lib/logger');
-var mongoose = require('mongoose');
-var conf = require('../../config/config.js');
+const logger = require('../../lib/logger');
+const mongoose = require('mongoose');
+const conf = require('../../config/config.js');
 
 if (conf.get('loglevel') === 'debug') {
   mongoose.set('debug', true);
 }
 
-var dbURL = conf.get('dbURL');
-var options = {
+let dbURL = conf.get('dbURL');
+let options = {
   server: {
     reconnectTries: Number.MAX_VALUE,
     socketOptions: { keepAlive: 120 }

@@ -1,11 +1,11 @@
-var should = require('should');
-var testEnterprise1 = require('../../helpers/data/enterprise/testEnterprise1_complete');
-var testEnterprise2 = require('../../helpers/data/enterprise/testEnterprise2_complete');
-var testEnterprise3 = require('../../helpers/data/enterprise/testEnterprise3_complete');
-var requestUtil = require('../../helpers/request_util');
-var enterpriseVerifier = require('../../helpers/enterprise/enterprise_verifier');
+const should = require('should');
+const testEnterprise1 = require('../../helpers/data/enterprise/testEnterprise1_complete');
+const testEnterprise2 = require('../../helpers/data/enterprise/testEnterprise2_complete');
+const testEnterprise3 = require('../../helpers/data/enterprise/testEnterprise3_complete');
+const requestUtil = require('../../helpers/request_util');
+const enterpriseVerifier = require('../../helpers/enterprise/enterprise_verifier');
 
-var url = '/enterprise';
+const url = '/enterprise';
 
 var postIds = {};
 

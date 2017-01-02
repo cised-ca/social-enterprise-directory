@@ -1,8 +1,8 @@
-var publicFields = require('../data/enterprise.model').enterprisePublicFields;
-var privateFields = require('../data/enterprise.model').enterprisePrivateFields;
+const publicFields = require('../data/enterprise.model').enterprisePublicFields;
+const privateFields = require('../data/enterprise.model').enterprisePrivateFields;
 
 function transformDbEnterprisesToRestFormat(dbEnterprises) {
-  var enterprises = [];
+  let enterprises = [];
   dbEnterprises.forEach(
       function(currentItem) {
         enterprises.push(transformDbEnterpriseToRestFormat(currentItem));
@@ -14,7 +14,7 @@ function transformDbEnterprisesToRestFormat(dbEnterprises) {
 function transformDbEnterpriseToRestFormat(dbEnterprise) {
 
   //clone the object. Is there a better way to do this?
-  var apiEnterprise = JSON.parse(JSON.stringify(dbEnterprise));
+  let apiEnterprise = JSON.parse(JSON.stringify(dbEnterprise));
 
   // remove the __v and __t fields that are auto created by Mongo
   delete apiEnterprise.__v;
@@ -35,7 +35,7 @@ function transformDbEnterpriseToRestFormat(dbEnterprise) {
 // Throws exception on error.
 module.exports.transformCompleteEnterpriseToPublicDBFormat = function(enterprise) {
 
-  var dbPublicEnterprise = {};
+  let dbPublicEnterprise = {};
   publicFields.forEach( function(field) {
     if (enterprise[field]) {
       dbPublicEnterprise[field] = JSON.parse(JSON.stringify(enterprise[field]));
@@ -57,7 +57,7 @@ module.exports.transformCompleteEnterpriseToPublicDBFormat = function(enterprise
 // Throws exception on error.
 module.exports.transformCompleteEnterpriseToPrivateDBFormat = function(enterprise) {
 
-  var dbPrivateEnterprise = {};
+  let dbPrivateEnterprise = {};
   privateFields.forEach( function(field) {
     if (enterprise[field]) {
       dbPrivateEnterprise[field] = JSON.parse(JSON.stringify(enterprise[field]));
@@ -93,7 +93,7 @@ function filterPrivateEntriesForArray(array) {
   if (!array) {
     return;
   }
-  var i = array.length;
+  let i = array.length;
   while(i--) {
     if (array[i].public) {
       continue;
@@ -106,7 +106,7 @@ function filterPublicEntriesForArray(array) {
   if (!array) {
     return;
   }
-  var i = array.length;
+  let i = array.length;
   while(i--) {
     if (!array[i].public) {
       continue;

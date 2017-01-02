@@ -1,12 +1,12 @@
-var should = require('should');
-var testEnterprise1_public = require('../../helpers/data/enterprise/testEnterprise1_public');
-var testEnterprise1_complete = require('../../helpers/data/enterprise/testEnterprise1_complete');
-var testEnterprise2_public = require('../../helpers/data/enterprise/testEnterprise2_public');
-var testEnterprise2_complete = require('../../helpers/data/enterprise/testEnterprise2_complete');
-var testEnterprise3_public = require('../../helpers/data/enterprise/testEnterprise3_public');
-var testEnterprise3_complete = require('../../helpers/data/enterprise/testEnterprise3_complete');
+const should = require('should');
+const testEnterprise1_public = require('../../helpers/data/enterprise/testEnterprise1_public');
+const testEnterprise1_complete = require('../../helpers/data/enterprise/testEnterprise1_complete');
+const testEnterprise2_public = require('../../helpers/data/enterprise/testEnterprise2_public');
+const testEnterprise2_complete = require('../../helpers/data/enterprise/testEnterprise2_complete');
+const testEnterprise3_public = require('../../helpers/data/enterprise/testEnterprise3_public');
+const testEnterprise3_complete = require('../../helpers/data/enterprise/testEnterprise3_complete');
 
-var enterpriseFields = [
+const enterpriseFields = [
   'name',
   'description',
   'logo',
@@ -26,7 +26,7 @@ var enterpriseFields = [
   'stage_of_development'
 ];
 
-var enterprisePublicFields = [
+const enterprisePublicFields = [
   'name',
   'description',
   'logo',
@@ -49,46 +49,46 @@ function enterpriseNameMatches(nameToMatch) {
 }
 
 function findEnterpriseInArrayOrFail(array, name) {
-  var foundEnterprise = array.filter(enterpriseNameMatches(name))[0];
+  let foundEnterprise = array.filter(enterpriseNameMatches(name))[0];
   if (!foundEnterprise) {
     should.fail('Did not find expected enterprise in array having name ' + name);
   }
   return foundEnterprise;
 }
 
-var verifyArrayContainsEnterprise1 = function(enterpriseArray) {
-  var foundEnterprise = findEnterpriseInArrayOrFail(enterpriseArray, testEnterprise1_complete['name']);
+let verifyArrayContainsEnterprise1 = function(enterpriseArray) {
+  let foundEnterprise = findEnterpriseInArrayOrFail(enterpriseArray, testEnterprise1_complete['name']);
   verifyEnterprise1Public(foundEnterprise);
 };
 
-var verifyArrayContainsEnterprise2 = function(enterpriseArray) {
-  var foundEnterprise = findEnterpriseInArrayOrFail(enterpriseArray, testEnterprise2_complete['name']);
+let verifyArrayContainsEnterprise2 = function(enterpriseArray) {
+  let foundEnterprise = findEnterpriseInArrayOrFail(enterpriseArray, testEnterprise2_complete['name']);
   verifyEnterprise2Public(foundEnterprise);
 };
 
-var verifyArrayContainsEnterprise3 = function(enterpriseArray) {
-  var foundEnterprise = findEnterpriseInArrayOrFail(enterpriseArray, testEnterprise3_complete['name']);
+let verifyArrayContainsEnterprise3 = function(enterpriseArray) {
+  let foundEnterprise = findEnterpriseInArrayOrFail(enterpriseArray, testEnterprise3_complete['name']);
   verifyEnterprise3Public(foundEnterprise);
 };
 
-var verifyEnterprise1 = function(enterprise) {
+let verifyEnterprise1 = function(enterprise) {
   verifyEnterprise(testEnterprise1_complete, enterprise);
 };
-var verifyEnterprise1Public = function(enterprise) {
+let verifyEnterprise1Public = function(enterprise) {
   verifyEnterprisePublic(testEnterprise1_public, enterprise);
 };
 
-var verifyEnterprise2 = function(enterprise) {
+let verifyEnterprise2 = function(enterprise) {
   verifyEnterprise(testEnterprise2_complete, enterprise);
 };
-var verifyEnterprise2Public = function(enterprise) {
+let verifyEnterprise2Public = function(enterprise) {
   verifyEnterprisePublic(testEnterprise2_public, enterprise);
 };
 
-var verifyEnterprise3 = function(enterprise) {
+let verifyEnterprise3 = function(enterprise) {
   verifyEnterprise(testEnterprise3_complete, enterprise);
 };
-var verifyEnterprise3Public = function(enterprise) {
+let verifyEnterprise3Public = function(enterprise) {
   verifyEnterprisePublic(testEnterprise3_public, enterprise);
 };
 

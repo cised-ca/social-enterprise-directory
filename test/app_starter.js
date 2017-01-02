@@ -1,17 +1,17 @@
-var logger = require('../lib/logger');
+const logger = require('../lib/logger');
 
 module.exports.App = startServer();
 
 function startServer() {
   forceTestEnvironment();
   logger.profile('started the server');
-  var server = require('../app');
+  const server = require('../app');
   logger.profile('started the server');
   return server;
 }
 
 function forceTestEnvironment() {
-  var conf = require('../config/config.js');
+  const conf = require('../config/config.js');
   conf.set('env', 'test');
   conf.loadFile('config/test.json');
 

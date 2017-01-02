@@ -1,4 +1,4 @@
-var logger = require('../../lib/logger');
+const logger = require('../../lib/logger');
 
 module.exports = function create() {
   return function log(context, cb) {
