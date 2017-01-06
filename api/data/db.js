@@ -2,6 +2,8 @@ const logger = require('../../lib/logger');
 const mongoose = require('mongoose');
 const conf = require('../../config/config.js');
 
+mongoose.promise = Promise;
+
 if (conf.get('loglevel') === 'debug') {
   mongoose.set('debug', true);
 }

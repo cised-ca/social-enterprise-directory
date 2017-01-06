@@ -58,7 +58,7 @@ module.exports.transformCompleteEnterpriseToPublicDBFormat = function(enterprise
 module.exports.transformCompleteEnterpriseToPrivateDBFormat = function(enterprise) {
 
   let dbPrivateEnterprise = {};
-  privateFields.forEach( function(field) {
+  privateFields.forEach( field => {
     if (enterprise[field]) {
       dbPrivateEnterprise[field] = JSON.parse(JSON.stringify(enterprise[field]));
     }
@@ -76,7 +76,7 @@ module.exports.transformCompleteEnterpriseToPrivateDBFormat = function(enterpris
 // Throws exception on error.
 module.exports.appendPrivateInfo = function(enterprise, privateInfo) {
 
-  privateFields.forEach( function(field) {
+  privateFields.forEach( field => {
     if (privateInfo[field]) {
       if (!enterprise[field]) {
         enterprise[field] = privateInfo[field];

@@ -40,12 +40,7 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
     .limit(limit)
     .skip(offset)
     .select(publicFields)
-    .exec(function(err, dbEnterprises) {
-      if (err) {
-        logger.error('Error finding enterprises ' + err);
-        res.status(500).json({'message': err});
-        return;
-      }
+    .then(dbEnterprises => {
       if (!dbEnterprises) {
         res.status(200).json({});
         return;
@@ -54,6 +49,10 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
       let tranformedEnterprises = enterpriseAdapter.transformDbEnterprisesToRestFormat(dbEnterprises);
       res.set('Cache-Control', 'max-age=' + ENTERPRISE_CACHE_CONTROL);
       res.status(200).json(tranformedEnterprises);
+    })
+    .catch(err => {
+      logger.error('Error finding enterprises ' + err);
+      res.status(500).json({'message': err});
     });
 };
 
@@ -129,29 +128,25 @@ module.exports.createEnterprise = function(req, res) {
     return;
   }
 
-  enterprisePrivateFieldsModel.create(privateEnterprise, function(err, dbPrivateEnterprise) {
-    if (err) {
-      logger.error('Error creating private enterprise fields in db ', err, enterprise);
-      res.status(400).json({'message': err});
-      return;
-    } else {
+  let dbPrivateEnterpriseInfo;
+  enterprisePrivateFieldsModel.create(privateEnterprise)
+    // create public enterprise info
+    .then(dbPrivateEnterprise => {
+      dbPrivateEnterpriseInfo = dbPrivateEnterprise;
       publicEnterprise['private_info'] = dbPrivateEnterprise['_id'];
-
-      enterprisePublicModel.create(publicEnterprise, function(err, dbPublicEnterprise) {
-        if (err) {
-          logger.error('Error creating public enterprise in db ', err, enterprise);
-          res.status(400).json({'message': err});
-          return;
-        } else {
-
-          let apiEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbPublicEnterprise);
-          enterpriseAdapter.appendPrivateInfo(apiEnterprise, dbPrivateEnterprise);
-          logger.info(`Enterprise created (name=${apiEnterprise['name']} id=${apiEnterprise['id']})`);
-          res.status(201).json(apiEnterprise);
-        }
-      });
-    }
-  });
+      return enterprisePublicModel.create(publicEnterprise);
+    })
+    // create api response
+    .then( dbPublicEnterprise => {
+      let apiEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbPublicEnterprise);
+      enterpriseAdapter.appendPrivateInfo(apiEnterprise, dbPrivateEnterpriseInfo);
+      logger.info(`Enterprise created (name=${apiEnterprise['name']} id=${apiEnterprise['id']})`);
+      res.status(201).json(apiEnterprise);
+    })
+    .catch(err => {
+      logger.error('Error creating enterprise in db ', err, enterprise);
+      res.status(400).json({'message': err});
+    });
 };
 
 function imageTypeToContentType(imageType) {
