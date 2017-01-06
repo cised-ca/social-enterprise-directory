@@ -62,12 +62,7 @@ module.exports.getOneEnterprisePublic = function(req, res) {
   enterprisePublicModel
     .findById(id)
     .select(publicFields)
-    .exec(function(err, dbEnterprise) {
-      if (err) {
-        logger.error('Error finding enterprise', id, ':', err);
-        res.status(500).json({'message': err});
-        return;
-      }
+    .then(dbEnterprise => {
       if (!dbEnterprise) {
         logger.info('Enterprise not found for id ', id);
         res.status(404).json({'message': 'Enterprise not found for id ' + id});
@@ -82,6 +77,10 @@ module.exports.getOneEnterprisePublic = function(req, res) {
         res.status(500).json({'message': e});
         return;
       }
+    })
+    .catch(err => {
+      logger.error('Error finding enterprise', id, ':', err);
+      res.status(500).json({'message': err});
     });
 };
 
@@ -89,12 +88,7 @@ module.exports.getOneEnterpriseComplete = function(req, res) {
   let id = req.swagger.params.id.value;
   enterprisePublicModel
     .findById(id)
-    .exec(function(err, dbEnterprise) {
-      if (err) {
-        logger.error('Error finding enterprise', id, ':', err);
-        res.status(500).json({'message': err});
-        return;
-      }
+    .then(dbEnterprise => {
       if (!dbEnterprise) {
         logger.info('Enterprise not found for id ', id);
         res.status(404).json({'message': 'Enterprise not found for id ' + id});
@@ -109,6 +103,10 @@ module.exports.getOneEnterpriseComplete = function(req, res) {
         res.status(500).json({'message': e});
         return;
       }
+    })
+    .catch(err => {
+      logger.error('Error finding enterprise', id, ':', err);
+      res.status(500).json({'message': err});
     });
 };
 
@@ -149,28 +147,11 @@ module.exports.createEnterprise = function(req, res) {
     });
 };
 
-function imageTypeToContentType(imageType) {
-  if (imageType === 'jpg') {
-    return 'image/jpeg';
-  } else if (imageType === 'png') {
-    return 'image/png';
-  } else if (imageType === 'svg') {
-    return 'image/svg+xml';
-  }
-
-  logger.error('Unsupported image type: ' + imageType);
-}
-
 module.exports.getEnterpriseLogo = function(req, res) {
   let id = req.swagger.params.id.value;
   enterpriseLogoModel
     .findOne({enterpriseId : id})
-    .exec(function(err, dbLogo) {
-      if (err) {
-        logger.error('Error finding enterprise logo', id, ':', err);
-        res.status(500).json({'message': err});
-        return;
-      }
+    .then( dbLogo => {
       if (!dbLogo) {
         logger.info('Enterprise logo not found for id ', id);
         res.status(404).json({'message': 'Enterprise logo not found for id ' + id});
@@ -180,5 +161,9 @@ module.exports.getEnterpriseLogo = function(req, res) {
       res.set('Content-Type', dbLogo.contentType);
       res.set('Cache-Control', 'max-age=' + ENTERPRISE_CACHE_CONTROL);
       res.status(200).send(dbLogo.image);
+    })
+    .catch( err => {
+      logger.error('Error finding enterprise logo', id, ':', err);
+      res.status(500).json({'message': err});
     });
 };
