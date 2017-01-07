@@ -24,20 +24,20 @@ describe('GET /directory', function() {
   });
 
   it('should return one enterprise', function(done) {
-    let doDirectoryRequest = function() {
+    postUtil.postTestEnterprise1()
+    .then( () => {
       requestUtil.buildGetRequest(url)
         .end(function(err, res) {
           should.not.exist(err);
           enterpriseVerifier.verifyEnterprise1Public(res.body[0]);
           done();
         });
-    };
-
-    postUtil.postTestEnterprise1(doDirectoryRequest);
+    });
   });
 
   it('should return multiple enterprises in alphabetical order', function(done) {
-    let doDirectoryRequest = function() {
+    postUtil.postAllEnterprises()
+    .then( () => {
       requestUtil.buildGetRequest(url)
           .end(function(err, res) {
             should.not.exist(err);
@@ -46,26 +46,25 @@ describe('GET /directory', function() {
             enterpriseVerifier.verifyEnterprise2Public(res.body[2]);
             done();
           });
-    };
+    });
 
-    postUtil.postAllEnterprises(doDirectoryRequest);
   });
 
   it('should limit enterprises when count parameter set', function(done) {
-    let doDirectoryRequest = function() {
+    postUtil.postAllEnterprises()
+    .then( () => {
       requestUtil.buildGetRequest(url + '?count=2')
         .end(function(err, res) {
           should.not.exist(err);
           res.body.length.should.equal(2);
           done();
         });
-    };
-
-    postUtil.postAllEnterprises(doDirectoryRequest);
+    });
   });
 
   it('should offset enterprises when offset parameter set', function(done) {
-    let doDirectoryRequest = function() {
+    postUtil.postAllEnterprises()
+    .then( () => {
       requestUtil.buildGetRequest(url + '?count=1&offset=2')
         .end(function(err, res) {
           should.not.exist(err);
@@ -73,9 +72,7 @@ describe('GET /directory', function() {
           enterpriseVerifier.verifyArrayContainsEnterprise2(res.body);
           done();
         });
-    };
-
-    postUtil.postAllEnterprises(doDirectoryRequest);
+    });
   });
 
 

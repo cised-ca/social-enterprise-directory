@@ -15,7 +15,8 @@ describe('Search /directory', function() {
   });
 
   it('should return only the one enterprise matching search item', function(done) {
-    let doSearchRequest = function() {
+    postUtil.postAllEnterprises()
+    .then(() => {
       requestUtil.buildGetRequest(url + '?q=cycle')
         .end(function(err, res) {
           should.not.exist(err);
@@ -23,13 +24,12 @@ describe('Search /directory', function() {
           enterpriseVerifier.verifyArrayContainsEnterprise1(res.body);
           done();
         });
-    };
-
-    postUtil.postAllEnterprises(doSearchRequest);
+    });
   });
 
   it('should return multiple enterprises matching search item', function(done) {
-    let doSearchRequest = function() {
+    postUtil.postAllEnterprises()
+    .then( () => {
       requestUtil.buildGetRequest(url + '?q=social')
         .end(function(err, res) {
           should.not.exist(err);
@@ -38,14 +38,13 @@ describe('Search /directory', function() {
           enterpriseVerifier.verifyArrayContainsEnterprise2(res.body);
           done();
         });
-    };
-
-    postUtil.postAllEnterprises(doSearchRequest);
+    });
   });
 
 
   it('should return enterprises matching multiple search items', function(done) {
-    let doSearchRequest = function() {
+    postUtil.postAllEnterprises()
+    .then( () => {
       requestUtil.buildGetRequest(url + '?q=cycle+good')
         .end(function(err, res) {
           should.not.exist(err);
@@ -54,13 +53,12 @@ describe('Search /directory', function() {
           enterpriseVerifier.verifyArrayContainsEnterprise2(res.body);
           done();
         });
-    };
-
-    postUtil.postAllEnterprises(doSearchRequest);
+    });
   });
 
   it('should weight enterprise name over description for search', function(done) {
-    let doSearchRequest = function() {
+    postUtil.postAllEnterprises()
+    .then( () => {
       requestUtil.buildGetRequest(url + '?q=good+social')
         .end(function(err, res) {
           should.not.exist(err);
@@ -71,14 +69,13 @@ describe('Search /directory', function() {
           enterpriseVerifier.verifyEnterprise1Public(res.body[1]);
           done();
         });
-    };
-
-    postUtil.postAllEnterprises(doSearchRequest);
+    });
   });
 
 
   it('should match search on twitter handle', function(done) {
-    let doSearchRequest = function() {
+    postUtil.postAllEnterprises()
+    .then( () => {
       requestUtil.buildGetRequest(url + '?q=abhoney')
         .end(function(err, res) {
           should.not.exist(err);
@@ -86,8 +83,7 @@ describe('Search /directory', function() {
           enterpriseVerifier.verifyEnterprise1Public(res.body[0]);
           done();
         });
-    };
-    postUtil.postAllEnterprises(doSearchRequest);
+    });
   });
 
 });
