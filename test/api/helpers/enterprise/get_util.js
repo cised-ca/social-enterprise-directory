@@ -6,33 +6,33 @@ const url = '/enterprise/';
 
 module.exports.getByIdEnterprise1 = function () {
   return new Promise( (resolve) => {
-    requestUtil.buildGetRequest(url + postUtil.getTestEnterprise1Id())
-      .end(function(err, res) {
-        should.not.exist(err);
-        enterpriseVerifier.verifyEnterprise1Public(res.body);
-        resolve();
-      });
+    requestUtil.performGetRequest(url + postUtil.getTestEnterprise1Id())()
+    .then( res => {
+      enterpriseVerifier.verifyEnterprise1Public(res.body);
+    })
+    .then(resolve)
+    .catch( err => should.not.exist(err));
   });
 };
 
 module.exports.getByIdEnterprise2 = function () {
   return new Promise( (resolve) => {
-    requestUtil.buildGetRequest(url + postUtil.getTestEnterprise2Id())
-        .end(function(err, res) {
-          should.not.exist(err);
-          enterpriseVerifier.verifyEnterprise2Public(res.body);
-          resolve();
-        });
+    requestUtil.performGetRequest(url + postUtil.getTestEnterprise2Id())()
+    .then( res => {
+      enterpriseVerifier.verifyEnterprise2Public(res.body);
+    })
+    .then(resolve)
+    .catch( err => should.not.exist(err));
   });
 };
 
 module.exports.getByIdEnterprise3 = function () {
   return new Promise( (resolve) => {
-    requestUtil.buildGetRequest(url + postUtil.getTestEnterprise3Id())
-        .end(function(err, res) {
-          should.not.exist(err);
-          enterpriseVerifier.verifyEnterprise3Public(res.body);
-          resolve();
-        });
+    requestUtil.performGetRequest(url + postUtil.getTestEnterprise3Id())()
+    .then( res => {
+      enterpriseVerifier.verifyEnterprise3Public(res.body);
+    })
+    .then(resolve)
+    .catch( err => should.not.exist(err));
   });
 };
