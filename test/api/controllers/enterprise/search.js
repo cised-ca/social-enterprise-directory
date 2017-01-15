@@ -9,6 +9,8 @@ const url = '/directory';
 
 describe('Search /directory', function() {
 
+  this.timeout(5000);
+
   beforeEach(function(done) {
     dbUtil.cleanDatabase(done);
     postUtil.clean();

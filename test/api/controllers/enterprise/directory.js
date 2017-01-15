@@ -8,6 +8,7 @@ const enterpriseVerifier = require('../../helpers/enterprise/enterprise_verifier
 const url = '/directory';
 
 describe('GET /directory', function() {
+  this.timeout(5000);
 
   beforeEach(function(done) {
     dbUtil.cleanDatabase(done);

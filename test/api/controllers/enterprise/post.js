@@ -4,6 +4,8 @@ const postUtil = require('../../helpers/enterprise/post_util');
 
 describe('POST /enterprise', function() {
 
+  this.timeout(5000);
+
   beforeEach(function(done) {
     dbUtil.cleanDatabase(done);
     postUtil.clean();

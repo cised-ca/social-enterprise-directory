@@ -5,6 +5,8 @@ const getUtil = require('../../helpers/enterprise/get_util');
 
 describe('GET /enterprise', function() {
 
+  this.timeout(5000);
+
   beforeEach(function(done) {
     dbUtil.cleanDatabase(done);
     postUtil.clean();
