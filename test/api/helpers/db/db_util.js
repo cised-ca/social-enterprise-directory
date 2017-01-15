@@ -28,7 +28,7 @@ function rebuildIndexes(done) {
 }
 
 module.exports.cleanDatabase = function(done) {
-  mongoose.connection.db.dropDatabase(function() {
+  mongoose.connection.dropDatabase(function() {
     rebuildIndexes(done);
   });
 };
