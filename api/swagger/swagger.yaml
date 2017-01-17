@@ -170,9 +170,9 @@ paths:
       # call this method name on the controller
       operationId: getAllEnterprisesPublic
       parameters:
-        - name: offset
+        - name: page
           in: query
-          description: Skip the first number of enterprises specified by offset value
+          description: Skip the first number of pages specified by page value
           required: false
           type: number
           format: uint

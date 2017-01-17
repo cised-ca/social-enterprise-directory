@@ -1,6 +1,7 @@
 const logger = require('../../lib/logger');
 const mongoose = require('mongoose');
 const SUPPORTED_LANGUAGES = require('../helpers/language/constants').SUPPORTED_LANGUAGES;
+const mongoosePaginate = require('mongoose-paginate');
 
 let directoryAdministratorsSchema = new mongoose.Schema({
   email: String
@@ -98,6 +99,8 @@ let enterprisePublicSchema = new mongoose.Schema({
   }]
 }, { _id : false });
 
+enterprisePublicSchema.plugin(mongoosePaginate);
+
 // Create index for sorting by name
 enterprisePublicSchema.index({lowercase_name: 1});
 
@@ -138,6 +141,8 @@ SUPPORTED_LANGUAGES.forEach(lang => {
   internationalFields[lang] = { type: enterprisePublicSchema, _id: false };
 });
 let enterpriseInternationalPublicSchema = new mongoose.Schema(internationalFields);
+
+enterpriseInternationalPublicSchema.plugin(mongoosePaginate);
 
 enterpriseInternationalPublicSchema.index({ locations : '2dsphere' });
 
