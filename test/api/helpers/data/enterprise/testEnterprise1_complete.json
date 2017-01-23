@@ -56,6 +56,13 @@
             "tags": ["main"]
           }
   ],
+  
+  "locations" : {
+      "type": "MultiPoint",
+      "coordinates": [
+        [45.425, -75.692]
+      ]
+  },
 
   "purposes": [
     "Helping disadvantaged peoples",
