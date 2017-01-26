@@ -34,6 +34,14 @@ let enterprisePrivateFieldsSchema = new mongoose.Schema({
   }]
 });
 
+let locationSchema = new mongoose.Schema({
+  type: {
+    type: String,
+    default: 'MultiPoint'
+  },
+  coordinates: [[Number]]
+}, { _id : false });
+
 let enterprisePublicSchema = new mongoose.Schema({
   name: { type: String, required: true },
   lowercase_name: { type: String, required: true },
@@ -70,12 +78,14 @@ let enterprisePublicSchema = new mongoose.Schema({
     tags: [String],
     public: Boolean
   }],
-  locations: [[Number]],
+  locations: locationSchema,
   private_info: mongoose.Schema.Types.ObjectId
 });
 
 // Create index for sorting by name
 enterprisePublicSchema.index({lowercase_name: 1});
+
+enterprisePublicSchema.index({ locations : '2dsphere' });
 
 // Create text index for searching enterprise by keyword
 enterprisePublicSchema.index(
