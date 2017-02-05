@@ -25,7 +25,7 @@ describe('GET /directory with location', function() {
       enterpriseVerifier.verifyArrayDoesNotContainEnterprise3(res.body);
     })
     .then(done)
-    .catch( err => should.not.exist(err.stack));
+    .catch( err => should.not.exist(err));
   });
 
   it('should return multiple enterprises sorted by proximity (near enterprise 2)', function(done) {
@@ -37,7 +37,7 @@ describe('GET /directory with location', function() {
       enterpriseVerifier.verifyArrayDoesNotContainEnterprise3(res.body);
     })
     .then(done)
-    .catch( err => should.not.exist(err.stack));
+    .catch( err => should.not.exist(err));
   });
 
   it('should sort by proximity with count parameter set (near enterprise 2)', function(done) {
@@ -49,7 +49,7 @@ describe('GET /directory with location', function() {
       enterpriseVerifier.verifyArrayDoesNotContainEnterprise3(res.body);
     })
     .then(done)
-    .catch( err => should.not.exist(err.stack));
+    .catch( err => should.not.exist(err));
   });
 
   it('should sort by proximity with count and offset parameter set (near enterprise 2)', function(done) {
@@ -61,7 +61,7 @@ describe('GET /directory with location', function() {
       enterpriseVerifier.verifyArrayDoesNotContainEnterprise3(res.body);
     })
     .then(done)
-    .catch( err => should.not.exist(err.stack));
+    .catch( err => should.not.exist(err));
   });
 
 });

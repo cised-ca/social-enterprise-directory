@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const logger = require('../../lib/logger');
-const coordsUtil = require('../../lib/coordsUtil');
+const coordsUtil = require('../../lib/coords_util');
 const conf = require('../../config/config.js');
 
 const enterprisePublicModel = mongoose.model('EnterprisePublic');
