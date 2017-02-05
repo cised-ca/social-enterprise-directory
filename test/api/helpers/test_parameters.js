@@ -1,0 +1,3 @@
+const TEST_TIMEOUT = 5000;
+
+exports.TEST_TIMEOUT = TEST_TIMEOUT;

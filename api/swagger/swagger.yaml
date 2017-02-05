@@ -47,6 +47,11 @@ paths:
           description: Search keyword(s), each one separated by + symbol
           required: false
           type: string
+        - name: at
+          in: query
+          description: Location. Eg. ?at=longitude,latitude
+          required: false
+          type: string
 
       responses:
         "200":

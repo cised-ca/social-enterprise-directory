@@ -1,5 +1,6 @@
 /* eslint-env node, mocha */
 const should = require('should');
+const testParameters = require('../../helpers/test_parameters');
 const dbUtil = require('../../helpers/db/db_util');
 const requestUtil = require('../../helpers/request_util');
 const postUtil = require('../../helpers/enterprise/post_util');
@@ -9,7 +10,7 @@ const url = '/directory';
 
 describe('Search /directory', function() {
 
-  this.timeout(5000);
+  this.timeout(testParameters.TEST_TIMEOUT);
 
   beforeEach(function(done) {
     dbUtil.cleanDatabase(done);

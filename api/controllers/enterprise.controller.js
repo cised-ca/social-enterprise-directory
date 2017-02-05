@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const logger = require('../../lib/logger');
+const coordsUtil = require('../../lib/coordsUtil');
 const conf = require('../../config/config.js');
 
 const enterprisePublicModel = mongoose.model('EnterprisePublic');
@@ -11,10 +12,68 @@ const publicFields = require('../data/enterprise.model').enterprisePublicFields.
 
 const ENTERPRISE_CACHE_CONTROL = conf.get('enterpriseCacheControl');
 
+function locationParamToPointObject(locationSearch) {
+  let [longStr, latStr] = locationSearch.split(',');
+  let long = parseFloat(longStr);
+  let lat = parseFloat(latStr);
+  if (!coordsUtil.isValidCoords(long, lat)) {
+    return undefined;
+  }
+  let point = { type : 'Point', coordinates : [long,lat] };
+  return point;
+}
+
+function processDirectoryResults(res, dbEnterprises) {
+  if (!dbEnterprises) {
+    res.status(200).json({});
+    return;
+  }
+
+  let tranformedEnterprises = enterpriseAdapter.transformDbEnterprisesToRestFormat(dbEnterprises);
+  res.set('Cache-Control', 'max-age=' + ENTERPRISE_CACHE_CONTROL);
+  res.status(200).json(tranformedEnterprises);
+}
+
+function performLocationSearch(res, locationSearch, limit, offset) {
+  let point = locationParamToPointObject(locationSearch);
+  if (!point) {
+    res.status(400).json({'message': 'Invalid location parameter'});
+    return;
+  }
+
+  enterprisePublicModel.aggregate(
+    [
+      { '$geoNear': {
+        'near': point,
+        'spherical': true,
+        'distanceField': 'dis'
+      }},
+      { '$skip': offset },
+      { '$limit': limit }
+    ])
+  .then(dbEnterprises => {
+    processDirectoryResults(res, dbEnterprises);
+  })
+  .catch(err => {
+    logger.error('Error finding enterprises ' + err);
+    res.status(500).json({'message': err});
+  });
+}
+
 module.exports.getAllEnterprisesPublic = function(req, res) {
   let query;
 
   let search = req.swagger.params.q.value;
+  let locationSearch = req.swagger.params.at.value;
+
+  let limit = req.swagger.params.count.value || 500;
+  let offset = req.swagger.params.offset.value || 0;
+
+  if (locationSearch) {
+    performLocationSearch(res, locationSearch, limit, offset);
+    return;
+  }
+
   if (!search) {
     query = enterprisePublicModel.find().sort({lowercase_name: 1});
   } else {
@@ -26,30 +85,11 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
       .sort({ score : { $meta : 'textScore' } });
   }
 
-  let offset = req.swagger.params.offset.value;
-  if (!offset) {
-    offset = 0;
-  }
-
-  let limit = req.swagger.params.count.value;
-  if (!limit) {
-    limit = 500;
-  }
-
   query
     .limit(limit)
     .skip(offset)
     .select(publicFields)
-    .then(dbEnterprises => {
-      if (!dbEnterprises) {
-        res.status(200).json({});
-        return;
-      }
-
-      let tranformedEnterprises = enterpriseAdapter.transformDbEnterprisesToRestFormat(dbEnterprises);
-      res.set('Cache-Control', 'max-age=' + ENTERPRISE_CACHE_CONTROL);
-      res.status(200).json(tranformedEnterprises);
-    })
+    .then(dbEnterprises => processDirectoryResults(res, dbEnterprises))
     .catch(err => {
       logger.error('Error finding enterprises ' + err);
       res.status(500).json({'message': err});
