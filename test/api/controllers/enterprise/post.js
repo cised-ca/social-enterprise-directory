@@ -1,10 +1,11 @@
 /* eslint-env node, mocha */
+const testParameters = require('../../helpers/test_parameters');
 const dbUtil = require('../../helpers/db/db_util');
 const postUtil = require('../../helpers/enterprise/post_util');
 
 describe('POST /enterprise', function() {
 
-  this.timeout(5000);
+  this.timeout(testParameters.TEST_TIMEOUT);
 
   beforeEach(function(done) {
     dbUtil.cleanDatabase(done);

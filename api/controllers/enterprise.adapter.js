@@ -13,7 +13,7 @@ function transformDbEnterprisesToRestFormat(dbEnterprises) {
 
 function transformDbEnterpriseToRestFormat(dbEnterprise) {
 
-  //clone the object. Is there a better way to do this?
+  // clone the object
   let apiEnterprise = JSON.parse(JSON.stringify(dbEnterprise));
 
   // remove the __v and __t fields that are auto created by Mongo
@@ -28,6 +28,9 @@ function transformDbEnterpriseToRestFormat(dbEnterprise) {
 
   // if there was a "score" field due to text index lookup, remove it
   delete apiEnterprise.score;
+
+  // if there was a "distance" field due to location index lookup, remove it
+  delete apiEnterprise.dis;
 
   return apiEnterprise;
 }

@@ -26,5 +26,11 @@
     "Helping disadvantaged peoples",
     "Raising money for parent company"
   ],
+  "locations" : {
+      "type": "MultiPoint",
+      "coordinates": [
+        [43.425, -75.692]
+      ]
+  },
   "website" : "http://google.com"
 }
