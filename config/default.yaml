@@ -24,13 +24,17 @@ swagger:
     _logging-middleware:
       name: logging-middleware
 
+    _swagger_security:
+      name: swagger_security
+      securityHandlersModule: api/helpers/auth/swagger_security_handler
+
     # pipe for all swagger-node controllers
     swagger_controllers:
       - onError: json_error_handler
       - _logging-middleware
       - cors
       - swagger_params_parser
-      - swagger_security
+      - _swagger_security
       - _swagger_validate
       - express_compatibility
       - _router

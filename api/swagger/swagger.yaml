@@ -17,6 +17,24 @@ consumes:
 # format of the responses to the client (Accepts)
 produces:
   - application/json
+
+securityDefinitions:
+  # handler for directory admins
+  oauth-directory-admin:
+    description: Ensures the logged in user is a directory administrator
+    type: oauth2
+    flow: accessCode
+    authorizationUrl: ''
+    tokenUrl: ''
+
+  # handler for enterprise admin
+  oauth-enterprise-admin:
+    description: Ensures the logged in user is an administrator for the enterprise
+    type: oauth2
+    flow: accessCode
+    authorizationUrl: ''
+    tokenUrl: ''
+
 paths:
   /swagger:
     x-swagger-pipe: swagger_raw
@@ -138,6 +156,8 @@ paths:
     x-swagger-router-controller: enterprise.controller
     post:
       description: Creates an enterprise in the directory
+      security:
+        - oauth-directory-admin: []
       # call this method name on the controller
       operationId: createEnterprise
       parameters:
