@@ -4,7 +4,7 @@ let conf = require('./config/config.js');
 var logger = require('./lib/logger');
 logger.info('Running in NODE_ENV mode: ' + process.env.NODE_ENV);
 
-const passport = require('./api/helpers/auth/passport_factory').initializePassport();
+const passport = require('./api/helpers/auth/passport_factory');
 require('./api/data/db.js');
 var SwaggerExpress = require('swagger-express-mw');
 var app = require('express')();
@@ -12,17 +12,12 @@ module.exports = app; // for testing
 
 // TODO: make secret a configuration item
 // TODO: use proper express-session store, not the default one
-app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+app.use(require('express-session')({ secret: 'keyboard cat 100', resave: true, saveUninitialized: true }));
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-// TODO: implement these endpoints through swagger
-app.get('/logout', function(req, res) { req.logout();} );
-app.get('/login/facebook', passport.authenticate('facebook', {scope: 'email', session:false}));
-app.get('/login/twitter', passport.authenticate('twitter', {session: false}));
-app.get('/login/instagram', passport.authenticate('instagram', {failWithError: true}));
-
+// TODO: remove these callback endpoints (and make callback URL configurable)
 app.get('/auth/facebook/callback',
   passport.authenticate('facebook', { failureRedirect: '/login/facebook' }),
   function(req, res) {
@@ -42,6 +37,7 @@ app.get('/auth/instagram/callback',
     res.redirect('/profile');
   });
 
+// TODO: remove this test endpoint
 app.get('/profile',
     function(req, res){
       if (req.isAuthenticated()) {

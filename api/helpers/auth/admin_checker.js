@@ -8,3 +8,10 @@ module.exports.isEnterpriseAdmin = function(req, enterpriseId) {
           (req.isAuthenticated() && req.user && req.user.authenticatedEnterprises
             && req.user.authenticatedEnterprises.contains(enterpriseId));
 };
+
+module.exports.getAuthenticatedEnterprises = function(req) {
+  if (req.isAuthenticated() && req.user && req.user.authenticatedEnterprises) {
+    return req.user.authenticatedEnterprises;
+  }
+  return [];
+};

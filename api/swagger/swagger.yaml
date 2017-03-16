@@ -39,6 +39,93 @@ paths:
   /swagger:
     x-swagger-pipe: swagger_raw
 
+  /account/login/twitter:
+    x-swagger-router-controller: account_controller
+    get:
+      description: Endpoint for logging into the directory using Twitter
+      # call this method name on the controller
+      operationId: loginTwitter
+
+      responses:
+        "302":
+          description: Redirect to login
+
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+
+  /account/login/facebook:
+    x-swagger-router-controller: account_controller
+    get:
+      description: Endpoint for logging into the directory using Facebook
+      # call this method name on the controller
+      operationId: loginFacebook
+
+      responses:
+        "302":
+          description: Redirect to login
+
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+
+  /account/login/instagram:
+    x-swagger-router-controller: account_controller
+    get:
+      description: Endpoint for logging into the directory using Instagram
+      # call this method name on the controller
+      operationId: loginInstagram
+
+      responses:
+        "302":
+          description: Redirect to login
+
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /account/logout:
+    x-swagger-router-controller: account_controller
+    get:
+      description: Endpoint for logging out
+      # call this method name on the controller
+      operationId: logout
+
+      responses:
+        "200":
+          description: Successfully logged out
+
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /account/permissions:
+    x-swagger-router-controller: account_controller
+    get:
+      description: Endpoint for retrieving account permisions
+      # call this method name on the controller
+      operationId: getAccountPermissions
+
+      responses:
+        "200":
+          description: Returns the details of the account permissions
+          schema:
+            $ref: "#/definitions/AccountPermissions"
+
+        "403":
+          description: Not logged in.
+
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
   /directory:
     x-swagger-router-controller: enterprise.controller
     get:
@@ -341,6 +428,16 @@ definitions:
         type: number
       lon:
         type: number
+
+  AccountPermissions:
+    properties:
+      directoryAdmin:
+        type: boolean
+      authenticatedEnterprises:
+        description: List of enterprise names
+        type: array
+        items:
+          type: string
 
   ErrorResponse:
     required:
