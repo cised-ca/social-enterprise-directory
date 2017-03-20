@@ -38,6 +38,9 @@ For detailed technical documentation, see the wiki.
   "instagramSecret": "your secret "
 }`
 
+### Directory Administrators
+* A directory administrator is someone who has full privileges over the directory content as well as other administrators. If the database does not already contain a directory administrator, an administrator can be bootstrapped into the database.
+Create a file called `config/admins.txt` where each line holds one email address of a directory administrator. This will be loaded into the database on startup (only if there is not already an administrator present in the database).
 
 ## To start
 * `npm start`

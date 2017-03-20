@@ -1,5 +1,5 @@
 const passport = require('../helpers/auth/passport_factory');
-const adminChecker = require('../helpers/auth/admin_checker');
+const adminChecker = require('../helpers/auth/request_admin_checker');
 
 module.exports.logout = function(req, res) {
   req.logout();
@@ -11,7 +11,7 @@ module.exports.loginTwitter = function(req, res, next) {
 };
 
 module.exports.loginInstagram = function(req, res, next) {
-  passport.authenticate('instagram', {failWithError: true})(req, res, next);
+  passport.authenticate('instagram', {scope: 'basic', failWithError: true})(req, res, next);
 };
 
 module.exports.loginFacebook = function(req, res, next) {
@@ -24,12 +24,12 @@ module.exports.getAccountPermissions = function(req, res) {
     return;
   }
 
-  if (adminChecker.isDirectoryAdmin(req)) {
+  if (adminChecker.isRequestDirectoryAdmin(req)) {
     res.status(200).json({'directoryAdmin': true});
     return;
   }
 
-  let enterprisePermissions = adminChecker.getAuthenticatedEnterprises(req);
+  let enterprisePermissions = adminChecker.getAuthenticatedEnterprisesByRequest(req);
   //TODO: add enterprise names from DB
   res.status(200).json({'authenticatedEnterprises': enterprisePermissions});
 };

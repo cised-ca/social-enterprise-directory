@@ -1,7 +1,7 @@
-const adminChecker = require('./admin_checker');
+const adminChecker = require('./request_admin_checker');
 
 function authenticateDirectoryAdmin(req, res, next) {
-  if (adminChecker.isDirectoryAdmin(req)) {
+  if (adminChecker.isRequestDirectoryAdmin(req)) {
     return next();
   }
 
@@ -10,7 +10,7 @@ function authenticateDirectoryAdmin(req, res, next) {
 
 function authenticateEnterpriseAdmin(req, res, next) {
   let enterpriseId = extractExterpriseFromRequest(req);
-  if (adminChecker.isEnterpriseAdmin(req, enterpriseId)) {
+  if (adminChecker.isRequestEnterpriseAdmin(req, enterpriseId)) {
     next();
   }
   handleNotAuthorized(res);

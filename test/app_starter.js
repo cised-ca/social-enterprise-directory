@@ -21,9 +21,9 @@ function forceTestEnvironment() {
 
 function installMockAuthHandler() {
   // for testing we'll stub out the admin_helper to simulate all users as directory administrators
-  td.replace('../api/helpers/auth/admin_checker',
+  td.replace('../api/helpers/auth/request_admin_checker',
     {
-      'isDirectoryAdmin': function() { return true; }
+      'isRequestDirectoryAdmin': function() { return true; }
     }
   );
 }

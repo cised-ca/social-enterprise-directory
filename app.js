@@ -4,8 +4,10 @@ let conf = require('./config/config.js');
 var logger = require('./lib/logger');
 logger.info('Running in NODE_ENV mode: ' + process.env.NODE_ENV);
 
-const passport = require('./api/helpers/auth/passport_factory');
 require('./api/data/db.js');
+require('./api/helpers/auth/directory_admin_bootstrapper').bootstrap();
+
+const passport = require('./api/helpers/auth/passport_factory');
 var SwaggerExpress = require('swagger-express-mw');
 var app = require('express')();
 module.exports = app; // for testing
