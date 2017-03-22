@@ -19,37 +19,6 @@ app.use(require('express-session')({ secret: 'keyboard cat 100', resave: true, s
 app.use(passport.initialize());
 app.use(passport.session());
 
-// TODO: remove these callback endpoints (and make callback URL configurable)
-app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', { failureRedirect: '/login/facebook' }),
-  function(req, res) {
-    res.redirect('/profile');
-  });
-
-app.get('/auth/twitter/callback',
-  passport.authenticate('twitter', { failureRedirect: '/login/twitter' }),
-  function(req, res) {
-    res.redirect('/profile');
-  });
-
-
-app.get('/auth/instagram/callback',
-  passport.authenticate('instagram', { failureRedirect: '/login/instagram' }),
-  function(req, res) {
-    res.redirect('/profile');
-  });
-
-// TODO: remove this test endpoint
-app.get('/profile',
-    function(req, res){
-      if (req.isAuthenticated()) {
-        console.log('Authenticated ' + req.user);
-        res.status(200).json(req.user);
-      } else {
-        res.redirect('/login/twitter');
-      }
-    });
-
 var expressConfig = {
   appRoot: __dirname // required config
 };

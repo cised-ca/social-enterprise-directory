@@ -1,6 +1,30 @@
 const convict = require('convict');
 
 let oauthConfig = convict({
+  redirectURLOnSuccessfulLogin: {
+    doc: 'The URL to load after oauth succeeds',
+    format: String,
+    default: '',
+    env: 'OAUTH_REDIRECT_URL'
+  },
+  twitterCallbackURL: {
+    doc: 'The twitter callback URL after oauth succeeds',
+    format: String,
+    default: '',
+    env: 'TWITTER_CALLBACK_URL'
+  },
+  facebookCallbackURL: {
+    doc: 'The facebook callback URL after oauth succeeds',
+    format: String,
+    default: '',
+    env: 'FACEBOOK_CALLBACK_URL'
+  },
+  instagramCallbackURL: {
+    doc: 'The instagram callback URL after oauth succeeds',
+    format: String,
+    default: '',
+    env: 'INSTAGRAM_CALLBACK_URL'
+  },
   twitterConsumerKey: {
     doc: 'The twitter consumer key',
     format: String,

@@ -20,6 +20,7 @@ module.exports.handle = function(user, callback) {
       } else {
         user.authenticatedEnterprises = [];
       }
+
       return callback(null, user);
     })
     .catch(err => {

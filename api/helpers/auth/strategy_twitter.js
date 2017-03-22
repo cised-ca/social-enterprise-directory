@@ -10,7 +10,7 @@ module.exports.install = function() {
       consumerSecret: oauthConfig.get('twitterConsumerSecret'),
       // next line is needed to retrieve email address
       userProfileURL  : 'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true',
-      callbackURL: 'http://localhost:10010/auth/twitter/callback'
+      callbackURL: oauthConfig.get('twitterCallbackURL')
     },
     verifyTwitterAccount
   ));

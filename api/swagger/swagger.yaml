@@ -55,6 +55,21 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
+  /account/login/twitter/callback:
+    x-swagger-router-controller: account_controller
+    get:
+      description: Callback after logging into the directory using Twitter
+      # call this method name on the controller
+      operationId: loginCallbackTwitter
+
+      responses:
+        "302":
+          description: Redirect to login
+
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
 
   /account/login/facebook:
     x-swagger-router-controller: account_controller
@@ -62,6 +77,23 @@ paths:
       description: Endpoint for logging into the directory using Facebook
       # call this method name on the controller
       operationId: loginFacebook
+
+      responses:
+        "302":
+          description: Redirect to login
+
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+
+  /account/login/facebook/callback:
+    x-swagger-router-controller: account_controller
+    get:
+      description: Callback after logging into the directory using Facebook
+      # call this method name on the controller
+      operationId: loginCallbackFacebook
 
       responses:
         "302":

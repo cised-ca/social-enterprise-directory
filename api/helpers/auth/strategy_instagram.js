@@ -7,7 +7,7 @@ module.exports.install = function() {
     {
       clientID: oauthConfig.get('instagramClientId'),
       clientSecret: oauthConfig.get('instagramSecret'),
-      callbackURL: 'http://localhost:10010/auth/instagram/callback'
+      callbackURL: oauthConfig.get('instagramCallbackURL')
     },
       function(accessToken, refreshToken, profile, cb) {
         console.log(profile);

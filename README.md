@@ -27,7 +27,14 @@ For detailed technical documentation, see the wiki.
 ### Oauth configuration
 * The directory uses OAuth to authenticate administrators. To configure OAuth, create a file called `oauth.json` and place it in directory `config/oauth/`. The contents should look like:
 
-`{
+```
+{
+  "twitterCallbackURL": "http://localhost:10010/api/v1/account/login/twitter/callback",
+  "facebookCallbackURL": "http://localhost:10010/api/v1/account/login/facebook/callback",
+  "instagramCallbackURL": "http://localhost:10010/api/v1/account/login/instagram/callback",
+
+  "redirectURLOnSuccessfulLogin": "your URL",
+
   "twitterConsumerKey" : "your key",
   "twitterConsumerSecret": "your secret",
 
@@ -36,7 +43,8 @@ For detailed technical documentation, see the wiki.
 
   "instagramClientId": "your client id",
   "instagramSecret": "your secret "
-}`
+}
+```
 
 ### Directory Administrators
 * A directory administrator is someone who has full privileges over the directory content as well as other administrators. If the database does not already contain a directory administrator, an administrator can be bootstrapped into the database.
