@@ -32,7 +32,7 @@ module.exports.loginCallbackFacebook = function(req, res) {
 };
 
 module.exports.getAccountPermissions = function(req, res) {
-  if (!req.isAuthenticated()) {
+  if (!adminChecker.isLoggedIn(req)) {
     res.status(403).json({'message': 'Not logged in'});
     return;
   }
@@ -43,5 +43,10 @@ module.exports.getAccountPermissions = function(req, res) {
   }
 
   let enterprisePermissions = adminChecker.getAuthenticatedEnterprisesByRequest(req);
-  res.status(200).json({'authenticatedEnterprises': enterprisePermissions});
+  res.status(200).json(
+    {
+      'directoryAdmin': false,
+      'authenticatedEnterprises': enterprisePermissions
+    }
+  );
 };

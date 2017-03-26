@@ -1,5 +1,6 @@
 const logger = require('../lib/logger');
 const td = require('testdouble');
+const mockAuthHandler = require('./api/helpers/auth/mock_auth_handler');
 
 module.exports.App = startServer();
 
@@ -20,10 +21,6 @@ function forceTestEnvironment() {
 }
 
 function installMockAuthHandler() {
-  // for testing we'll stub out the admin_helper to simulate all users as directory administrators
-  td.replace('../api/helpers/auth/request_admin_checker',
-    {
-      'isRequestDirectoryAdmin': function() { return true; }
-    }
-  );
+  // for testing we'll stub out the admin_checker
+  td.replace('../api/helpers/auth/request_admin_checker', mockAuthHandler.handler);
 }

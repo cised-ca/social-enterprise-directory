@@ -1,14 +1,14 @@
 /* eslint-env node, mocha */
-const dbUtil = require('../../helpers/db/db_util');
 const postUtil = require('../../helpers/enterprise/post_util');
+const TEST_TIMEOUT = require('../../../test_constants').TEST_TIMEOUT;
+const testInitializer = require('../../../test_initializer');
 
 describe('POST /enterprise', function() {
 
-  this.timeout(5000);
+  this.timeout(TEST_TIMEOUT);
 
   beforeEach(function(done) {
-    dbUtil.cleanDatabase(done);
-    postUtil.clean();
+    testInitializer.setup(done);
   });
 
   it('should create testEnterprise1', function(done) {

@@ -1,3 +1,7 @@
+module.exports.isLoggedIn = function(req) {
+  return req.isAuthenticated();
+};
+
 module.exports.isRequestDirectoryAdmin = function(req) {
   return req.isAuthenticated() && req.user && req.user.isDirectoryAdmin === true;
 };
