@@ -167,6 +167,11 @@ paths:
           description: Search keyword(s), each one separated by + symbol
           required: false
           type: string
+        - name: at
+          in: query
+          description: Location. Eg. ?at=longitude,latitude
+          required: false
+          type: string
 
       responses:
         "200":
@@ -329,9 +334,7 @@ definitions:
         items:
            $ref: "#/definitions/FaxAddress"
       locations:
-        type: array
-        items:
-           $ref: "#/definitions/Coordinates"
+        $ref: "#/definitions/Locations"
 
   # public view of an enterprise
   EnterprisePublic:
@@ -434,15 +437,28 @@ definitions:
         items:
           type: string
 
-  Coordinates:
+  Locations:
+    description: Follows GeoJSON MultiPoint data format
     required:
-      - lat
-      - lon
+      - type
+      - coordinates
     properties:
-      lat:
-        type: number
-      lon:
-        type: number
+      type:
+        type: string
+        enum: ["MultiPoint"]
+      coordinates:
+        type: array
+        items:
+          $ref: '#/definitions/Coordinates'
+
+  Coordinates:
+    description: longitude, latitude.
+    example: [45.425, -75.692]
+    type: array
+    maxItems: 2
+    minItems: 2
+    items:
+      type: number
 
   AccountPermissions:
     properties:

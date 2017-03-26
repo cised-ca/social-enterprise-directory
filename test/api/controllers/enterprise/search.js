@@ -9,7 +9,6 @@ const testInitializer = require('../../../test_initializer');
 const url = '/directory';
 
 describe('Search /directory', function() {
-
   this.timeout(TEST_TIMEOUT);
 
   beforeEach(function(done) {

@@ -57,6 +57,14 @@
           }
   ],
 
+  "locations" : {
+      "type": "MultiPoint",
+      "coordinates": [
+        [45.425, -75.692],
+        [45.901, -76.005]
+      ]
+  },
+
   "purposes": [
     "Helping disadvantaged peoples",
     "Raising money for parent company"

@@ -56,6 +56,23 @@ function findEnterpriseInArrayOrFail(array, name) {
   return foundEnterprise;
 }
 
+function failIfArrayContainsEnterprise(enterpriseArray, name) {
+  let foundEnterprise = enterpriseArray.filter(enterpriseNameMatches(name))[0];
+  if (foundEnterprise) {
+    should.fail('Found unexpected enterprise with name ' + name);
+  }
+}
+
+let verifyArrayDoesNotContainEnterprise1 = function(enterpriseArray) {
+  failIfArrayContainsEnterprise(enterpriseArray, testEnterprise1_complete['name']);
+};
+let verifyArrayDoesNotContainEnterprise2 = function(enterpriseArray) {
+  failIfArrayContainsEnterprise(enterpriseArray, testEnterprise2_complete['name']);
+};
+let verifyArrayDoesNotContainEnterprise3 = function(enterpriseArray) {
+  failIfArrayContainsEnterprise(enterpriseArray, testEnterprise3_complete['name']);
+};
+
 let verifyArrayContainsEnterprise1 = function(enterpriseArray) {
   let foundEnterprise = findEnterpriseInArrayOrFail(enterpriseArray, testEnterprise1_complete['name']);
   verifyEnterprise1Public(foundEnterprise);
@@ -135,6 +152,9 @@ module.exports = {
   verifyArrayContainsEnterprise1 : verifyArrayContainsEnterprise1,
   verifyArrayContainsEnterprise2 : verifyArrayContainsEnterprise2,
   verifyArrayContainsEnterprise3 : verifyArrayContainsEnterprise3,
+  verifyArrayDoesNotContainEnterprise1: verifyArrayDoesNotContainEnterprise1,
+  verifyArrayDoesNotContainEnterprise2: verifyArrayDoesNotContainEnterprise2,
+  verifyArrayDoesNotContainEnterprise3: verifyArrayDoesNotContainEnterprise3,
   verifyEnterprise1 : verifyEnterprise1,
   verifyEnterprise1Public : verifyEnterprise1Public,
   verifyEnterprise2 : verifyEnterprise2,

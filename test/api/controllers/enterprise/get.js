@@ -5,7 +5,6 @@ const TEST_TIMEOUT = require('../../../test_constants').TEST_TIMEOUT;
 const testInitializer = require('../../../test_initializer');
 
 describe('GET /enterprise', function() {
-
   this.timeout(TEST_TIMEOUT);
 
   beforeEach(function(done) {
