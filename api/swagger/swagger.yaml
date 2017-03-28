@@ -17,9 +17,129 @@ consumes:
 # format of the responses to the client (Accepts)
 produces:
   - application/json
+
+securityDefinitions:
+  # handler for directory admins
+  oauth-directory-admin:
+    description: Ensures the logged in user is a directory administrator
+    type: oauth2
+    flow: accessCode
+    authorizationUrl: ''
+    tokenUrl: ''
+
+  # handler for enterprise admin
+  oauth-enterprise-admin:
+    description: Ensures the logged in user is an administrator for the enterprise
+    type: oauth2
+    flow: accessCode
+    authorizationUrl: ''
+    tokenUrl: ''
+
 paths:
   /swagger:
     x-swagger-pipe: swagger_raw
+
+  /account/login/twitter:
+    x-swagger-router-controller: account_controller
+    get:
+      description: Endpoint for logging into the directory using Twitter
+      # call this method name on the controller
+      operationId: loginTwitter
+
+      responses:
+        "302":
+          description: Redirect to login
+
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /account/login/twitter/callback:
+    x-swagger-router-controller: account_controller
+    get:
+      description: Callback after logging into the directory using Twitter
+      # call this method name on the controller
+      operationId: loginCallbackTwitter
+
+      responses:
+        "302":
+          description: Redirect to login
+
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /account/login/facebook:
+    x-swagger-router-controller: account_controller
+    get:
+      description: Endpoint for logging into the directory using Facebook
+      # call this method name on the controller
+      operationId: loginFacebook
+
+      responses:
+        "302":
+          description: Redirect to login
+
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+
+  /account/login/facebook/callback:
+    x-swagger-router-controller: account_controller
+    get:
+      description: Callback after logging into the directory using Facebook
+      # call this method name on the controller
+      operationId: loginCallbackFacebook
+
+      responses:
+        "302":
+          description: Redirect to login
+
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /account/logout:
+    x-swagger-router-controller: account_controller
+    get:
+      description: Endpoint for logging out
+      # call this method name on the controller
+      operationId: logout
+
+      responses:
+        "200":
+          description: Successfully logged out
+
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /account/permissions:
+    x-swagger-router-controller: account_controller
+    get:
+      description: Endpoint for retrieving account permisions
+      # call this method name on the controller
+      operationId: getAccountPermissions
+
+      responses:
+        "200":
+          description: Returns the details of the account permissions
+          schema:
+            $ref: "#/definitions/AccountPermissions"
+
+        "403":
+          description: Not logged in.
+
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
 
   /directory:
     x-swagger-router-controller: enterprise.controller
@@ -143,6 +263,8 @@ paths:
     x-swagger-router-controller: enterprise.controller
     post:
       description: Creates an enterprise in the directory
+      security:
+        - oauth-directory-admin: []
       # call this method name on the controller
       operationId: createEnterprise
       parameters:
@@ -337,6 +459,25 @@ definitions:
     minItems: 2
     items:
       type: number
+
+  AccountPermissions:
+    properties:
+      directoryAdmin:
+        type: boolean
+      authenticatedEnterprises:
+        description: List of enterprises {id, name}
+        type: array
+        items:
+          $ref: "#/definitions/SimpleEnterpiseInfo"
+
+  SimpleEnterpiseInfo:
+    required:
+      - id
+    properties:
+      id:
+        type: string
+      name:
+        type: string
 
   ErrorResponse:
     required:

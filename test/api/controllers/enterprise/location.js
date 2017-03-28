@@ -1,15 +1,15 @@
 /* eslint-env node, mocha */
 const should = require('should');
 const dbUtil = require('../../helpers/db/db_util');
-const testParameters = require('../../helpers/test_parameters');
 const requestUtil = require('../../helpers/request_util');
 const postUtil = require('../../helpers/enterprise/post_util');
 const enterpriseVerifier = require('../../helpers/enterprise/enterprise_verifier');
+const TEST_TIMEOUT = require('../../../test_constants').TEST_TIMEOUT;
 
 const url = '/directory';
 
 describe('GET /directory with location', function() {
-  this.timeout(testParameters.TEST_TIMEOUT);
+  this.timeout(TEST_TIMEOUT);
 
   beforeEach(function(done) {
     dbUtil.cleanDatabase(done);

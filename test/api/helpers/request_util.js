@@ -4,12 +4,13 @@ const App = require('../../app_starter').App;
 
 const URL_PREFIX = '/api/v1';
 
-function buildGetRequest(url) {
+function buildGetRequest(url, statusCode) {
+  statusCode = statusCode || 200;
   return request(App)
       .get(URL_PREFIX + url)
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200);
+      .expect(statusCode);
 }
 
 module.exports.buildPostRequest = function(url) {
@@ -20,10 +21,10 @@ module.exports.buildPostRequest = function(url) {
       .expect(201);
 };
 
-module.exports.performGetRequest = function(url) {
+module.exports.performGetRequest = function(url, statusCode) {
   return function() {
     return new Promise((resolve, reject) => {
-      buildGetRequest(url)
+      buildGetRequest(url, statusCode)
       .end( (err, res) => {
         err ? reject(err) : resolve(res);
       });

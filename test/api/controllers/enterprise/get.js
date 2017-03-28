@@ -1,16 +1,14 @@
 /* eslint-env node, mocha */
-const testParameters = require('../../helpers/test_parameters');
-const dbUtil = require('../../helpers/db/db_util');
 const postUtil = require('../../helpers/enterprise/post_util');
 const getUtil = require('../../helpers/enterprise/get_util');
+const TEST_TIMEOUT = require('../../../test_constants').TEST_TIMEOUT;
+const testInitializer = require('../../../test_initializer');
 
 describe('GET /enterprise', function() {
-
-  this.timeout(testParameters.TEST_TIMEOUT);
+  this.timeout(TEST_TIMEOUT);
 
   beforeEach(function(done) {
-    dbUtil.cleanDatabase(done);
-    postUtil.clean();
+    testInitializer.setup(done);
   });
 
   it('should return enterprise', function(done) {

@@ -1,7 +1,15 @@
 const logger = require('../../lib/logger');
 const mongoose = require('mongoose');
 
+let directoryAdministratorsSchema = new mongoose.Schema({
+  email: String
+});
+
+directoryAdministratorsSchema.index({email: 1});
+
 let enterprisePrivateFieldsSchema = new mongoose.Schema({
+  admin_emails: [String],
+  enterprise_id: mongoose.Schema.Types.ObjectId,
   clusters: [String],
   segments: [String],
   parent_organization: String,
@@ -33,6 +41,8 @@ let enterprisePrivateFieldsSchema = new mongoose.Schema({
     public: Boolean
   }]
 });
+
+enterprisePrivateFieldsSchema.index({admin_emails: 1});
 
 let locationSchema = new mongoose.Schema({
   type: {
@@ -122,9 +132,18 @@ let enterpriseLogoSchema = new mongoose.Schema({
   contentType: {type: String, required: true}
 });
 
+let DirectoryAdministratorsModel = mongoose.model('DirectoryAdministrators', directoryAdministratorsSchema, 'directoryAdministrators');
 let EnterprisePublicModel = mongoose.model('EnterprisePublic', enterprisePublicSchema, 'enterprises');
 let EnterprisePrivateModel = mongoose.model('EnterprisePrivateFields', enterprisePrivateFieldsSchema, 'enterprisePrivateFields');
 let EnterpriseLogoModel = mongoose.model('EnterpriseLogo', enterpriseLogoSchema, 'enterpriseLogos');
+
+DirectoryAdministratorsModel.on('index', function(err) {
+  if (err) {
+    logger.error('Error building indexes on Directory Administrators Model: ' + err);
+  } else {
+    logger.info('Built index on Directory Administrators Model');
+  }
+});
 
 EnterprisePublicModel.on('index', function(err) {
   if (err) {

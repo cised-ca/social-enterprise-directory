@@ -23,6 +23,33 @@ For detailed technical documentation, see the wiki.
 
   `mongoimport --db socialEnterpriseDirectory --collection enterpriseLogos --file /path/to/api/mocks/test_data_mongo_logos.json --jsonArray`
 
+## To configure
+### Oauth configuration
+* The directory uses OAuth to authenticate administrators. To configure OAuth, create a file called `oauth.json` and place it in directory `config/oauth/`. The contents should look like:
+
+```
+{
+  "twitterCallbackURL": "http://localhost:10010/api/v1/account/login/twitter/callback",
+  "facebookCallbackURL": "http://localhost:10010/api/v1/account/login/facebook/callback",
+  "instagramCallbackURL": "http://localhost:10010/api/v1/account/login/instagram/callback",
+
+  "redirectURLOnSuccessfulLogin": "your URL",
+
+  "twitterConsumerKey" : "your key",
+  "twitterConsumerSecret": "your secret",
+
+  "facebookClientId": "your client id",
+  "facebookSecret": "your secret",
+
+  "instagramClientId": "your client id",
+  "instagramSecret": "your secret "
+}
+```
+
+### Directory Administrators
+* A directory administrator is someone who has full privileges over the directory content as well as other administrators. If the database does not already contain a directory administrator, an administrator can be bootstrapped into the database.
+Create a file called `config/admins.txt` where each line holds one email address of a directory administrator. This will be loaded into the database on startup (only if there is not already an administrator present in the database).
+
 ## To start
 * `npm start`
 
@@ -35,7 +62,7 @@ Sample operations:
 * Search directory: http://localhost:10010/api/v1/directory?q=key+words+here
 * Get Enterprise: http://localhost:10010/api/v1/enterprise/{id}
 * Get Enterprise Logo: http://localhost:10010/api/v1/enterprise/{id}/logo
-* POST Enterprise http://localhost:10010/api/v1/enterprise
+* POST Enterprise (requires authentication): http://localhost:10010/api/v1/enterprise
 
 ## To test
 See wiki.
@@ -52,7 +79,3 @@ Starting server
 To view our API documentation in Swagger UI:
 * `swagger project edit` then open browser to the URL shown in the console (if it does not automatically open for you)
 * One neat thing is that you can use the "Try this operation" button to send requests to the server from this UI
-
-To run server in swagger's mock mode
-* `swagger project start -m`
-* This starts the server but stubs out all the controllers on the server and auto responds to API requests with mock data that conforms to the API definition. Mainly used when trying out the API or testing the clients before the server code is finished.
