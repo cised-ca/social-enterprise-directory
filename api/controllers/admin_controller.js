@@ -8,7 +8,7 @@ module.exports.getAllDirectoryAdmins = function(req, res) {
     .sort({ emails: 1 })
     .then(dbAdmins => processDBAdminResults(res, dbAdmins))
     .catch(err => {
-      logger.error('Error finding enterprises ' + err);
+      logger.error('Error finding directory administrators ' + err);
       res.status(500).json({'message': err});
     });
 };
