@@ -10,7 +10,7 @@ module.exports.handle = function(user, callback) {
       user.isDirectoryAdmin = isDirectoryAdmin;
       if (isDirectoryAdmin) {
         // done, no need to authenticate further we are a super user!
-        return callback(null, user);
+        return Promise.resolve(null);
       }
       return emailAdminChecker.getAuthenticatedEnterprisesByEmails(user.emails);
     })
@@ -21,10 +21,10 @@ module.exports.handle = function(user, callback) {
         user.authenticatedEnterprises = [];
       }
 
-      return callback(null, user);
+      callback(null, user);
     })
     .catch(err => {
       logger.error('Error authenticating user ', user.emails, ':', err);
-      return callback(err, null);
+      callback(err, null);
     });
 };
