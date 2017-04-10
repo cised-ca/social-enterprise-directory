@@ -12,9 +12,22 @@ var SwaggerExpress = require('swagger-express-mw');
 var app = require('express')();
 module.exports = app; // for testing
 
-// TODO: make secret a configuration item
-// TODO: use proper express-session store, not the default one
-app.use(require('express-session')({ secret: 'keyboard cat 100', resave: true, saveUninitialized: true }));
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+let dbURL = conf.get('dbURL');
+var sess = {
+  secret: conf.get('sessionSecret'),
+  saveUninitialized: false,
+  resave: false,
+  store: new MongoStore({url: dbURL}),
+  cookie: {}
+};
+if (conf.get('env') === 'production') {
+  // force secure cookies in production
+  app.set('trust proxy', 1);
+  sess.cookie.secure = true;
+}
+app.use(session(sess));
 
 app.use(passport.initialize());
 app.use(passport.session());

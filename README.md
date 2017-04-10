@@ -24,14 +24,21 @@ For detailed technical documentation, see the wiki.
   `mongoimport --db socialEnterpriseDirectory --collection enterpriseLogos --file /path/to/api/mocks/test_data_mongo_logos.json --jsonArray`
 
 ## To configure
+
+### Session secret
+* Add a session secret to config/production.json
+```
+  "sessionSecret": "Any secret string here"
+```
+
 ### Oauth configuration
 * The directory uses OAuth to authenticate administrators. To configure OAuth, create a file called `oauth.json` and place it in directory `config/oauth/`. The contents should look like:
 
 ```
 {
-  "twitterCallbackURL": "http://localhost:10010/api/v1/account/login/twitter/callback",
-  "facebookCallbackURL": "http://localhost:10010/api/v1/account/login/facebook/callback",
-  "instagramCallbackURL": "http://localhost:10010/api/v1/account/login/instagram/callback",
+  "twitterCallbackURL": "https://<your url>/api/v1/account/login/twitter/callback",
+  "facebookCallbackURL": "https://<your url>/api/v1/account/login/facebook/callback",
+  "instagramCallbackURL": "https://<your url>/api/v1/account/login/instagram/callback",
 
   "redirectURLOnSuccessfulLogin": "your URL",
 

@@ -41,6 +41,12 @@ let conf = convict({
     doc: 'The max-age value for Cache-Control for enterprises',
     format: Number,
     default: 3600
+  },
+  sessionSecret: {
+    doc: 'The secret used for session cookies',
+    format: String,
+    default: null,
+    sensitive: true
   }
 });
 

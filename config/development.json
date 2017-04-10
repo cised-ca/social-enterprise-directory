@@ -1,5 +1,6 @@
 {
   "loglevel" : "info",
   "dbURL" : "mongodb://localhost:27017/socialEnterpriseDirectory",
-  "enterpriseCacheControl": 10
+  "enterpriseCacheControl": 10,
+  "sessionSecret": "keyboard cat 1000"
 }
