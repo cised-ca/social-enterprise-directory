@@ -141,6 +141,28 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
+  /directoryAdmin:
+    x-swagger-router-controller: admin_controller
+    get:
+      description: Endpoint for managing admins
+      security:
+        - oauth-directory-admin: []
+      # call this method name on the controller
+      operationId: getAllDirectoryAdmins
+
+      responses:
+        "200":
+          description: Returns the details of the directory administrators
+          schema:
+            type: array
+            items:
+               $ref: "#/definitions/DirectoryAdmin"
+
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
   /directory:
     x-swagger-router-controller: enterprise.controller
     get:
@@ -477,6 +499,13 @@ definitions:
       id:
         type: string
       name:
+        type: string
+
+  DirectoryAdmin:
+    required:
+      - email
+    properties:
+      email:
         type: string
 
   ErrorResponse:
