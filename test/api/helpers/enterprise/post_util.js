@@ -4,7 +4,7 @@ const testEnterprise2 = require('../../helpers/data/enterprise/testEnterprise2_c
 const testEnterprise3 = require('../../helpers/data/enterprise/testEnterprise3_complete');
 const requestUtil = require('../../helpers/request_util');
 const enterpriseVerifier = require('../../helpers/enterprise/enterprise_verifier');
-const DEFAULT_LANGUAGE = 'en';
+const DEFAULT_LANGUAGE = require('../../helpers/language/language_test_constants').DEFAULT_LANGUAGE;
 
 const url = '/enterprise';
 
@@ -15,19 +15,19 @@ module.exports.clean = function() {
 };
 
 module.exports.postTestEnterprise1 = function() {
-  return new Promise( (resolve, reject) => {
+  return new Promise( (resolve) => {
     postEnterprise(resolve, testEnterprise1, enterpriseVerifier.verifyEnterprise1);
   });
 };
 
 module.exports.postTestEnterprise2 = function() {
-  return new Promise( (resolve, reject) => {
+  return new Promise( (resolve) => {
     postEnterprise(resolve, testEnterprise2, enterpriseVerifier.verifyEnterprise2);
   });
 };
 
 module.exports.postTestEnterprise3 = function() {
-  return new Promise( (resolve, reject) => {
+  return new Promise( (resolve) => {
     postEnterprise(resolve, testEnterprise3, enterpriseVerifier.verifyEnterprise3);
   });
 };

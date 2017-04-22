@@ -1,0 +1,29 @@
+{
+  "name" : "A-Nationale Capitale Librenet",
+  "description" : "Le National Capital LibreNet (NCF) est une alternative",
+  "offering" : "Bob Smith",
+  "phones" : [
+        {
+          "number": "27777777777",
+          "public": true,
+          "tags": ["centrale"]
+        },
+
+        {
+          "number": "44777777777",
+          "public": true,
+          "tags": ["branche #1"]
+        }
+      ],
+  "emails" : [
+        {
+          "email": "test1@test.com",
+          "public": true,
+          "tags": ["centrale"]
+        }
+      ],
+  "purposes": [
+    "Supporter les pauvres"
+  ],
+  "website" : "http://google.com/fr"
+}

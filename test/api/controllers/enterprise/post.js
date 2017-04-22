@@ -2,6 +2,7 @@
 const postUtil = require('../../helpers/enterprise/post_util');
 const TEST_TIMEOUT = require('../../../test_constants').TEST_TIMEOUT;
 const testInitializer = require('../../../test_initializer');
+const failTest = require('../../helpers/test_util').failTest;
 
 describe('POST /enterprise', function() {
   this.timeout(TEST_TIMEOUT);
@@ -12,16 +13,19 @@ describe('POST /enterprise', function() {
 
   it('should create testEnterprise1', function(done) {
     postUtil.postTestEnterprise1()
-    .then(done);
+    .then(done)
+    .catch(failTest(done));
   });
 
   it('should create testEnterprise2', function(done) {
     postUtil.postTestEnterprise2()
-    .then(done);
+    .then(done)
+    .catch(failTest(done));
   });
 
   it('should create testEnterprise3', function(done) {
     postUtil.postTestEnterprise3()
-    .then(done);
+    .then(done)
+    .catch(failTest(done));
   });
 });

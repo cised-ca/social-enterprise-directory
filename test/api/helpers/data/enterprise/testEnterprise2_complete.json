@@ -5,7 +5,7 @@
         [43.425, -75.692]
       ]
   },
-  
+
   "en": {
     "name" : "Good Nature Groundskeeping",
     "description" : "Good Nature Groundskeeping is a social business, providing professional landscape maintenance services while also providing employment to people who are economically disadvantaged.",
@@ -35,5 +35,35 @@
       "Raising money for parent company"
     ],
     "website" : "http://google.com"
+  },
+
+  "fr": {
+    "name" : "Bon Nature Groundskeeping",
+    "description" : "Bon Nature Groundskeeping est un firme sociale",
+    "offering" : "Jean Levesque",
+    "phones" : [
+          {
+            "number": "27777777777",
+            "public": true,
+            "tags": ["centrale"]
+          },
+
+          {
+            "number": "44777777777",
+            "public": true,
+            "tags": ["branche #1"]
+          }
+        ],
+    "emails" : [
+          {
+            "email": "test1@test.com",
+            "public": true,
+            "tags": ["centrale"]
+          }
+        ],
+    "purposes": [
+      "Sauter les injustices"
+    ],
+    "website" : "http://google.com/FR"
   }
 }

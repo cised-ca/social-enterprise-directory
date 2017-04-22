@@ -1,10 +1,10 @@
 /* eslint-env node, mocha */
-const should = require('should');
 const requestUtil = require('../../helpers/request_util');
 const postUtil = require('../../helpers/enterprise/post_util');
 const enterpriseVerifier = require('../../helpers/enterprise/enterprise_verifier');
 const TEST_TIMEOUT = require('../../../test_constants').TEST_TIMEOUT;
 const testInitializer = require('../../../test_initializer');
+const failTest = require('../../helpers/test_util').failTest;
 
 const url = '/directory';
 
@@ -21,7 +21,7 @@ describe('GET /directory', function() {
       res.body.should.be.empty();
     })
     .then(done)
-    .catch( err => should.not.exist(err));
+    .catch(failTest(done));
   });
 
   it('should return one enterprise', function(done) {
@@ -31,7 +31,7 @@ describe('GET /directory', function() {
       enterpriseVerifier.verifyEnterprise1Public(res.body[0]);
     })
     .then(done)
-    .catch( err => should.not.exist(err));
+    .catch(failTest(done));
   });
 
   it('should return multiple enterprises in alphabetical order', function(done) {
@@ -43,7 +43,7 @@ describe('GET /directory', function() {
       enterpriseVerifier.verifyEnterprise2Public(res.body[2]);
     })
     .then(done)
-    .catch( err => should.not.exist(err));
+    .catch(failTest(done));
   });
 
   it('should limit enterprises when count parameter set', function(done) {
@@ -53,7 +53,7 @@ describe('GET /directory', function() {
       res.body.length.should.equal(2);
     })
     .then(done)
-    .catch( err => should.not.exist(err));
+    .catch(failTest(done));
   });
 
   it('should offset enterprises when offset parameter set', function(done) {
@@ -64,7 +64,7 @@ describe('GET /directory', function() {
       enterpriseVerifier.verifyArrayContainsEnterprise2(res.body);
     })
     .then(done)
-    .catch( err => should.not.exist(err));
+    .catch(failTest(done));
   });
 
 

@@ -5,6 +5,7 @@ const postUtil = require('../../helpers/enterprise/post_util');
 const enterpriseVerifier = require('../../helpers/enterprise/enterprise_verifier');
 const TEST_TIMEOUT = require('../../../test_constants').TEST_TIMEOUT;
 const testInitializer = require('../../../test_initializer');
+const failTest = require('../../helpers/test_util').failTest;
 
 const url = '/directory';
 
@@ -23,7 +24,7 @@ describe('Search /directory', function() {
       enterpriseVerifier.verifyArrayContainsEnterprise1(res.body);
     })
     .then(done)
-    .catch( err => should.not.exist(err));
+    .catch(failTest(done));
   });
 
   it('should return multiple enterprises matching search item', function(done) {
@@ -35,7 +36,7 @@ describe('Search /directory', function() {
       enterpriseVerifier.verifyArrayContainsEnterprise2(res.body);
     })
     .then(done)
-    .catch( err => should.not.exist(err));
+    .catch(failTest(done));
   });
 
 
@@ -48,7 +49,7 @@ describe('Search /directory', function() {
       enterpriseVerifier.verifyArrayContainsEnterprise2(res.body);
     })
     .then(done)
-    .catch( err => should.not.exist(err));
+    .catch(failTest(done));
   });
 
   it('should weight enterprise name over description for search', function(done) {
@@ -62,7 +63,7 @@ describe('Search /directory', function() {
       enterpriseVerifier.verifyEnterprise1Public(res.body[1]);
     })
     .then(done)
-    .catch( err => should.not.exist(err));
+    .catch(failTest(done));
   });
 
 
@@ -74,7 +75,7 @@ describe('Search /directory', function() {
       enterpriseVerifier.verifyEnterprise1Public(res.body[0]);
     })
     .then(done)
-    .catch( err => should.not.exist(err));
+    .catch(failTest(done));
   });
 
 });

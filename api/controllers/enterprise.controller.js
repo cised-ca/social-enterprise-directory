@@ -10,8 +10,6 @@ const enterpriseAdapter = require('./enterprise.adapter');
 const SUPPORTED_LANGUAGES = require('../helpers/language/constants').SUPPORTED_LANGUAGES;
 const DEFAULT_LANGUAGE = require('../helpers/language/constants').DEFAULT_LANGUAGE;
 
-const publicFields = require('../data/enterprise.model').enterprisePublicFields.join(' ');
-
 const ENTERPRISE_CACHE_CONTROL = conf.get('enterpriseCacheControl');
 
 function locationParamToPointObject(locationSearch) {
@@ -25,18 +23,18 @@ function locationParamToPointObject(locationSearch) {
   return point;
 }
 
-function processDirectoryResults(res, dbEnterprises) {
+function processDirectoryResults(res, dbEnterprises, language) {
   if (!dbEnterprises) {
     res.status(200).json({});
     return;
   }
 
-  let tranformedEnterprises = enterpriseAdapter.transformDbEnterprisesToApiFormatForLanguage(dbEnterprises, DEFAULT_LANGUAGE);
+  let tranformedEnterprises = enterpriseAdapter.transformDbEnterprisesToApiFormatForLanguage(dbEnterprises, language);
   res.set('Cache-Control', 'max-age=' + ENTERPRISE_CACHE_CONTROL);
   res.status(200).json(tranformedEnterprises);
 }
 
-function performLocationSearch(res, locationSearch, limit, offset) {
+function performLocationSearch(res, locationSearch, limit, offset, language) {
   let point = locationParamToPointObject(locationSearch);
   if (!point) {
     res.status(400).json({'message': 'Invalid location parameter'});
@@ -54,12 +52,28 @@ function performLocationSearch(res, locationSearch, limit, offset) {
       { '$limit': limit }
     ])
   .then(dbEnterprises => {
-    processDirectoryResults(res, dbEnterprises);
+    processDirectoryResults(res, dbEnterprises, language);
   })
   .catch(err => {
     logger.error('Error finding enterprises ' + err);
     res.status(500).json({'message': err});
   });
+}
+
+
+function performBrowseDirectory(res, limit, offset, language) {
+  let sortValue = {};
+  sortValue[language + '.lowercase_name'] = 1;
+  enterpriseInternationalPublicModel
+    .find()
+    .sort(sortValue)
+    .limit(limit)
+    .skip(offset)
+    .then(dbEnterprises => processDirectoryResults(res, dbEnterprises, language))
+    .catch(err => {
+      logger.error('Error browsing enterprises ' + err);
+      res.status(500).json({'message': err});
+    });
 }
 
 module.exports.getAllEnterprisesPublic = function(req, res) {
@@ -71,26 +85,29 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
   let limit = req.swagger.params.count.value || 500;
   let offset = req.swagger.params.offset.value || 0;
 
+  let lang = getLanguage(req);
+
   if (locationSearch) {
-    performLocationSearch(res, locationSearch, limit, offset);
+    performLocationSearch(res, locationSearch, limit, offset, lang);
     return;
   }
 
   if (!search) {
-    query = enterpriseInternationalPublicModel.find().sort({lowercase_name: 1});
-  } else {
-    let keywords = search.replace(/\+/g, ' ');
-    query = enterpriseInternationalPublicModel
-      .find(
-        { $text : { $search : keywords } },
-        { score : { $meta: 'textScore' } })
-      .sort({ score : { $meta : 'textScore' } });
+    performBrowseDirectory(res, limit, offset, lang);
+    return;
   }
+
+  let keywords = search.replace(/\+/g, ' ');
+  query = enterpriseInternationalPublicModel
+    .find(
+      { $text : { $search : keywords } },
+      { score : { $meta: 'textScore' } })
+    .sort({ score : { $meta : 'textScore' } });
 
   query
     .limit(limit)
     .skip(offset)
-    .then(dbEnterprises => processDirectoryResults(res, dbEnterprises))
+    .then(dbEnterprises => processDirectoryResults(res, dbEnterprises, lang))
     .catch(err => {
       logger.error('Error finding enterprises ' + err);
       res.status(500).json({'message': err});
