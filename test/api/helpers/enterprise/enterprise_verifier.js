@@ -11,6 +11,7 @@ const testEnterprise3_public_fr = require('../../helpers/data/enterprise/testEnt
 const testEnterprise3_complete = require('../../helpers/data/enterprise/testEnterprise3_complete');
 
 const DEFAULT_LANGUAGE = require('../../helpers/language/language_test_constants').DEFAULT_LANGUAGE;
+const FRENCH = require('../../helpers/language/language_test_constants').FRENCH;
 
 const enterpriseFields = [
   'name',
@@ -99,7 +100,7 @@ let verifyEnterprise1 = function(enterprise) {
 };
 let verifyEnterprise1Public = function(enterprise, language) {
   let expected = testEnterprise1_public_en;
-  if (language === 'fr') {
+  if (language === FRENCH) {
     expected = testEnterprise1_public_fr;
   }
   verifyEnterprisePublic(expected, enterprise);
@@ -110,7 +111,7 @@ let verifyEnterprise2 = function(enterprise) {
 };
 let verifyEnterprise2Public = function(enterprise, language) {
   let expected = testEnterprise2_public_en;
-  if (language === 'fr') {
+  if (language === FRENCH) {
     expected = testEnterprise2_public_fr;
   }
   verifyEnterprisePublic(expected, enterprise);
@@ -121,7 +122,7 @@ let verifyEnterprise3 = function(enterprise) {
 };
 let verifyEnterprise3Public = function(enterprise, language) {
   let expected = testEnterprise3_public_en;
-  if (language === 'fr') {
+  if (language === FRENCH) {
     expected = testEnterprise3_public_fr;
   }
   verifyEnterprisePublic(expected, enterprise);
