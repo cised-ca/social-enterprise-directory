@@ -1,5 +1,4 @@
 /* eslint-env node, mocha */
-const should = require('should');
 const requestUtil = require('../../helpers/request_util');
 const postUtil = require('../../helpers/enterprise/post_util');
 const enterpriseVerifier = require('../../helpers/enterprise/enterprise_verifier');
