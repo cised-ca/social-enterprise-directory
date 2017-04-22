@@ -1,28 +1,11 @@
 const publicFields = require('../data/enterprise.model').enterprisePublicFields;
 const privateFields = require('../data/enterprise.model').enterprisePrivateFields;
+const SUPPORTED_LANGUAGES = require('../helpers/language/constants').SUPPORTED_LANGUAGES;
 
-function transformDbEnterprisesToRestFormat(dbEnterprises) {
-  let enterprises = [];
-  dbEnterprises.forEach(
-      function(currentItem) {
-        enterprises.push(transformDbEnterpriseToRestFormat(currentItem));
-      }
-  );
-  return enterprises;
-}
-
-function transformDbEnterpriseToRestFormat(dbEnterprise) {
+function transformDbEnterprisesToApiFormat(dbEnterprise) {
 
   // clone the object
   let apiEnterprise = JSON.parse(JSON.stringify(dbEnterprise));
-
-  // remove the __v and __t fields that are auto created by Mongo
-  delete apiEnterprise.__v;
-  delete apiEnterprise.__t;
-
-  // switch "_id" to "id"
-  apiEnterprise.id = dbEnterprise._id.toString();
-  delete apiEnterprise._id;
 
   delete apiEnterprise.lowercase_name;
 
@@ -35,9 +18,81 @@ function transformDbEnterpriseToRestFormat(dbEnterprise) {
   return apiEnterprise;
 }
 
-// Throws exception on error.
-module.exports.transformCompleteEnterpriseToPublicDBFormat = function(enterprise) {
+function copyLocations(source, dest) {
+  if (source['locations']) {
+    dest['locations'] = source['locations'];
+  }
+}
 
+function transformDbEnterpriseToApiFormatForLanguage(dbInternationalEnterprise, language) {
+  let apiEnterprise = {};
+
+  if (dbInternationalEnterprise[language]) {
+    let enterpriseFields = transformDbEnterprisesToApiFormat(dbInternationalEnterprise[language]);
+    apiEnterprise = enterpriseFields;
+  }
+
+  apiEnterprise['id'] = dbInternationalEnterprise._id.toString();
+  copyLocations(dbInternationalEnterprise, apiEnterprise);
+
+  return apiEnterprise;
+}
+
+module.exports.transformDBIntlEnterpriseToApiFormatForLanguage = function(dbInternationalEnterprise, language) {
+  return transformDbEnterpriseToApiFormatForLanguage(dbInternationalEnterprise, language);
+};
+
+module.exports.transformDbEnterprisesToApiFormatForLanguage = function(dbInternationalEnterprises, language) {
+  let apiEnterprises = [];
+  dbInternationalEnterprises.forEach(
+    function(dbInternationalEnterprise) {
+      apiEnterprises.push(transformDbEnterpriseToApiFormatForLanguage(dbInternationalEnterprise, language));
+    }
+  );
+  return apiEnterprises;
+};
+
+module.exports.transformDbEnterprisesToApiFormat = function(dbEnterprises) {
+  let enterprises = [];
+  dbEnterprises.forEach(
+      function(currentItem) {
+        enterprises.push(transformDbEnterprisesToApiFormat(currentItem));
+      }
+  );
+  return enterprises;
+};
+
+module.exports.transformDbIntlEnterpriseToApiIntlFormat = function(dbEnterprise) {
+  let apiInternationalEnterprise = {};
+
+  apiInternationalEnterprise['id'] = dbEnterprise._id.toString();
+  copyLocations(dbEnterprise, apiInternationalEnterprise);
+
+  SUPPORTED_LANGUAGES.forEach( function(language) {
+    if (dbEnterprise[language]) {
+      let apiEnterprise = transformDbEnterprisesToApiFormat(dbEnterprise[language]);
+      apiInternationalEnterprise[language] = apiEnterprise;
+    }
+  });
+  return apiInternationalEnterprise;
+};
+
+// Throws exception on error.
+module.exports.transformCompleteEnterpriseToInternationalPublicDBFormat = function(enterprise) {
+  let dbInternationalPublicEnterprise = {};
+  copyLocations(enterprise, dbInternationalPublicEnterprise);
+
+  SUPPORTED_LANGUAGES.forEach( function(language) {
+    if (enterprise[language]) {
+      let dbEnterprise = transformCompleteEnterpriseToPublicDBFormat(enterprise[language]);
+      dbInternationalPublicEnterprise[language] = dbEnterprise;
+    }
+  });
+
+  return dbInternationalPublicEnterprise;
+};
+
+function transformCompleteEnterpriseToPublicDBFormat(enterprise) {
   let dbPublicEnterprise = {};
   publicFields.forEach( function(field) {
     if (enterprise[field]) {
@@ -55,10 +110,26 @@ module.exports.transformCompleteEnterpriseToPublicDBFormat = function(enterprise
   filterPrivateEntriesForArray(dbPublicEnterprise.addresses);
 
   return dbPublicEnterprise;
-};
+}
 
 // Throws exception on error.
-module.exports.transformCompleteEnterpriseToPrivateDBFormat = function(enterprise) {
+module.exports.transformCompleteEnterpriseToInternationalPrivateDBFormat = function(enterprise) {
+  let dbInternationalPrivateEnterprise = {};
+  if (dbInternationalPrivateEnterprise['admin_emails']) {
+    dbInternationalPrivateEnterprise['admin_emails'] = enterprise['admin_emails'];
+  }
+
+  SUPPORTED_LANGUAGES.forEach( function(language) {
+    if (enterprise[language]) {
+      let dbPrivateEnterprise = transformCompleteEnterpriseToPrivateDBFormat(enterprise[language]);
+      dbInternationalPrivateEnterprise[language] = dbPrivateEnterprise;
+    }
+  });
+
+  return dbInternationalPrivateEnterprise;
+};
+
+function transformCompleteEnterpriseToPrivateDBFormat(enterprise) {
 
   let dbPrivateEnterprise = {};
   privateFields.forEach( field => {
@@ -74,7 +145,7 @@ module.exports.transformCompleteEnterpriseToPrivateDBFormat = function(enterpris
   filterPublicEntriesForArray(dbPrivateEnterprise.addresses);
 
   return dbPrivateEnterprise;
-};
+}
 
 // Throws exception on error.
 module.exports.appendPrivateInfo = function(enterprise, privateInfo) {
@@ -117,7 +188,3 @@ function filterPublicEntriesForArray(array) {
     array.splice(i,1);
   }
 }
-
-
-exports.transformDbEnterprisesToRestFormat = transformDbEnterprisesToRestFormat;
-exports.transformDbEnterpriseToRestFormat = transformDbEnterpriseToRestFormat;

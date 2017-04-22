@@ -1,5 +1,6 @@
 const logger = require('../../lib/logger');
 const mongoose = require('mongoose');
+const SUPPORTED_LANGUAGES = require('../helpers/language/constants').SUPPORTED_LANGUAGES;
 
 let directoryAdministratorsSchema = new mongoose.Schema({
   email: String
@@ -8,8 +9,6 @@ let directoryAdministratorsSchema = new mongoose.Schema({
 directoryAdministratorsSchema.index({email: 1});
 
 let enterprisePrivateFieldsSchema = new mongoose.Schema({
-  admin_emails: [String],
-  enterprise_id: mongoose.Schema.Types.ObjectId,
   clusters: [String],
   segments: [String],
   parent_organization: String,
@@ -40,9 +39,18 @@ let enterprisePrivateFieldsSchema = new mongoose.Schema({
     tags: [String],
     public: Boolean
   }]
-});
+}, {_id: false});
 
-enterprisePrivateFieldsSchema.index({admin_emails: 1});
+let internationalPrivateFields = {
+  enterprise_id: mongoose.Schema.Types.ObjectId,
+  admin_emails: [String]
+};
+SUPPORTED_LANGUAGES.forEach(lang => {
+  internationalPrivateFields[lang] = { type: enterprisePrivateFieldsSchema, _id: false };
+});
+let enterpriseInternationalPrivateFieldsSchema = new mongoose.Schema(internationalPrivateFields);
+
+enterpriseInternationalPrivateFieldsSchema.index({admin_emails: 1});
 
 let locationSchema = new mongoose.Schema({
   type: {
@@ -87,15 +95,11 @@ let enterprisePublicSchema = new mongoose.Schema({
     address: {type: String, required: true},
     tags: [String],
     public: Boolean
-  }],
-  locations: locationSchema,
-  private_info: mongoose.Schema.Types.ObjectId
-});
+  }]
+}, { _id : false });
 
 // Create index for sorting by name
 enterprisePublicSchema.index({lowercase_name: 1});
-
-enterprisePublicSchema.index({ locations : '2dsphere' });
 
 // Create text index for searching enterprise by keyword
 enterprisePublicSchema.index(
@@ -126,6 +130,17 @@ enterprisePublicSchema.index(
   }
 );
 
+let internationalFields = {
+  locations: { type: locationSchema, _id : false },
+  private_info: mongoose.Schema.Types.ObjectId
+};
+SUPPORTED_LANGUAGES.forEach(lang => {
+  internationalFields[lang] = { type: enterprisePublicSchema, _id: false };
+});
+let enterpriseInternationalPublicSchema = new mongoose.Schema(internationalFields);
+
+enterpriseInternationalPublicSchema.index({ locations : '2dsphere' });
+
 let enterpriseLogoSchema = new mongoose.Schema({
   enterpriseId: { type: mongoose.Schema.Types.ObjectId, required: true, unique: true },
   image: {type: Buffer, required: true},
@@ -133,8 +148,8 @@ let enterpriseLogoSchema = new mongoose.Schema({
 });
 
 let DirectoryAdministratorsModel = mongoose.model('DirectoryAdministrators', directoryAdministratorsSchema, 'directoryAdministrators');
-let EnterprisePublicModel = mongoose.model('EnterprisePublic', enterprisePublicSchema, 'enterprises');
-let EnterprisePrivateModel = mongoose.model('EnterprisePrivateFields', enterprisePrivateFieldsSchema, 'enterprisePrivateFields');
+let EnterpriseInternationalPublicModel = mongoose.model('EnterpriseInternationalPublic', enterpriseInternationalPublicSchema, 'enterprises');
+let EnterpriseInternationalPrivateModel = mongoose.model('EnterpriseInternationalPrivateFields', enterpriseInternationalPrivateFieldsSchema, 'enterprisePrivateFields');
 let EnterpriseLogoModel = mongoose.model('EnterpriseLogo', enterpriseLogoSchema, 'enterpriseLogos');
 
 DirectoryAdministratorsModel.on('index', function(err) {
@@ -145,15 +160,15 @@ DirectoryAdministratorsModel.on('index', function(err) {
   }
 });
 
-EnterprisePublicModel.on('index', function(err) {
+EnterpriseInternationalPublicModel.on('index', function(err) {
   if (err) {
-    logger.error('Error building indexes on Enterprise Public Model: ' + err);
+    logger.error('Error building indexes on Enterprise International Public Model: ' + err);
   } else {
-    logger.info('Built index on Enterprise Public Model');
+    logger.info('Built index on Enterprise International Public Model');
   }
 });
 
-EnterprisePrivateModel.on('index', function(err) {
+EnterpriseInternationalPrivateModel.on('index', function(err) {
   if (err) {
     logger.error('Error building indexes on Enterprise Private Model: ' + err);
   } else {

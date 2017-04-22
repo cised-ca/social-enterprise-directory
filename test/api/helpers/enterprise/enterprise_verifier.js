@@ -1,5 +1,6 @@
 const should = require('should');
-const testEnterprise1_public = require('../../helpers/data/enterprise/testEnterprise1_public');
+const testEnterprise1_public_en = require('../../helpers/data/enterprise/testEnterprise1_public_en');
+const testEnterprise1_public_fr = require('../../helpers/data/enterprise/testEnterprise1_public_fr');
 const testEnterprise1_complete = require('../../helpers/data/enterprise/testEnterprise1_complete');
 const testEnterprise2_public = require('../../helpers/data/enterprise/testEnterprise2_public');
 const testEnterprise2_complete = require('../../helpers/data/enterprise/testEnterprise2_complete');
@@ -91,8 +92,12 @@ let verifyArrayContainsEnterprise3 = function(enterpriseArray) {
 let verifyEnterprise1 = function(enterprise) {
   verifyEnterprise(testEnterprise1_complete, enterprise);
 };
-let verifyEnterprise1Public = function(enterprise) {
-  verifyEnterprisePublic(testEnterprise1_public, enterprise);
+let verifyEnterprise1Public = function(enterprise, language) {
+  let expected = testEnterprise1_public_en;
+  if (language === 'fr') {
+    expected = testEnterprise1_public_fr;
+  }
+  verifyEnterprisePublic(expected, enterprise);
 };
 
 let verifyEnterprise2 = function(enterprise) {

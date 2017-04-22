@@ -5,7 +5,7 @@ const logger = require('../../../../lib/logger');
 var indexBuiltCallback = function() {};
 
 before(function(done){
-  mongoose.model('EnterprisePublic').on('index', handleIndexBuild);
+  mongoose.model('EnterpriseInternationalPublic').on('index', handleIndexBuild);
   done();
 });
 
@@ -24,7 +24,7 @@ function handleIndexBuild(err) {
 
 function rebuildIndexes(done) {
   indexBuiltCallback = done;
-  mongoose.model('EnterprisePublic').ensureIndexes();
+  mongoose.model('EnterpriseInternationalPublic').ensureIndexes();
 }
 
 module.exports.cleanDatabase = function(done) {

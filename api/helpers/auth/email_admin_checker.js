@@ -1,7 +1,7 @@
 const logger = require('../../../lib/logger');
 const mongoose = require('mongoose');
 const directoryAdministratorsModel = mongoose.model('DirectoryAdministrators');
-const enterprisePrivateFieldsModel = mongoose.model('EnterprisePrivateFields');
+const enterpriseInternationalPrivateFieldsModel = mongoose.model('EnterpriseInternationalPrivateFields');
 const enterpriseNameResolver = require('../enterprise/enterprise_name_resolver');
 
 function checkIfEmailIsDirectoryAdmin(email) {
@@ -23,7 +23,7 @@ function checkIfEmailIsDirectoryAdmin(email) {
 function checkIfEmailIsRegisteredWithEnterprises(email) {
   return new Promise( (resolve) => {
     if (!email) resolve(false);
-    enterprisePrivateFieldsModel
+    enterpriseInternationalPrivateFieldsModel
       .find({admin_emails : email})
       .then( results => {
         resolve(
