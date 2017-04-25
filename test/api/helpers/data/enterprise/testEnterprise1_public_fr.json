@@ -1,0 +1,61 @@
+{
+  "name" : "Cyclette de Salvation",
+  "short_description" : "C'est un mot en francais",
+  "description" : "On y va",
+  "offering" : "Jean Alumette",
+
+  "phones" : [
+        {
+          "number": "27777777777",
+          "public": true,
+          "tags": ["centrale"]
+        },
+
+        {
+          "number": "44777777777",
+          "public": true,
+          "tags": ["marche #1"]
+        }
+
+      ],
+  "emails" : [
+        {
+          "email": "test1@test.com",
+          "public": true,
+          "tags": ["centrale"]
+        }
+      ],
+
+  "faxes" : [
+        {
+          "fax": "8887776666",
+          "public": true,
+          "tags": ["centrale"]
+        }
+      ],
+
+  "addresses" : [
+          {
+            "address": "855 rue Fake, Ottawa, ON, K6Y 6H5",
+            "public": true,
+            "tags": ["centrale"]
+          }
+  ],
+
+  "locations" : {
+      "type": "MultiPoint",
+      "coordinates": [
+        [45.425, -75.692],
+        [45.901, -76.005]
+      ]
+  },
+
+  "purposes": [
+    "Aider peuples"
+  ],
+  "website" : "http://google.com/fr",
+  "year_started" : 1995,
+  "facebook" : "abcDE_Fr",
+  "instagram" : "ddddddddFr",
+  "twitter" : "abhoneyFr"
+}

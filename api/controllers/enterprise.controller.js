@@ -3,12 +3,12 @@ const logger = require('../../lib/logger');
 const coordsUtil = require('../../lib/coords_util');
 const conf = require('../../config/config.js');
 
-const enterprisePublicModel = mongoose.model('EnterprisePublic');
-const enterprisePrivateFieldsModel = mongoose.model('EnterprisePrivateFields');
+const enterpriseInternationalPublicModel = mongoose.model('EnterpriseInternationalPublic');
+const enterpriseInternationalPrivateFieldsModel = mongoose.model('EnterpriseInternationalPrivateFields');
 const enterpriseLogoModel = mongoose.model('EnterpriseLogo');
 const enterpriseAdapter = require('./enterprise.adapter');
-
-const publicFields = require('../data/enterprise.model').enterprisePublicFields.join(' ');
+const SUPPORTED_LANGUAGES = require('../helpers/language/constants').SUPPORTED_LANGUAGES;
+const DEFAULT_LANGUAGE = require('../helpers/language/constants').DEFAULT_LANGUAGE;
 
 const ENTERPRISE_CACHE_CONTROL = conf.get('enterpriseCacheControl');
 
@@ -23,25 +23,25 @@ function locationParamToPointObject(locationSearch) {
   return point;
 }
 
-function processDirectoryResults(res, dbEnterprises) {
+function processDirectoryResults(res, dbEnterprises, language) {
   if (!dbEnterprises) {
     res.status(200).json({});
     return;
   }
 
-  let tranformedEnterprises = enterpriseAdapter.transformDbEnterprisesToRestFormat(dbEnterprises);
+  let tranformedEnterprises = enterpriseAdapter.transformDbEnterprisesToApiFormatForLanguage(dbEnterprises, language);
   res.set('Cache-Control', 'max-age=' + ENTERPRISE_CACHE_CONTROL);
   res.status(200).json(tranformedEnterprises);
 }
 
-function performLocationSearch(res, locationSearch, limit, offset) {
+function performLocationSearch(res, locationSearch, limit, offset, language) {
   let point = locationParamToPointObject(locationSearch);
   if (!point) {
     res.status(400).json({'message': 'Invalid location parameter'});
     return;
   }
 
-  enterprisePublicModel.aggregate(
+  enterpriseInternationalPublicModel.aggregate(
     [
       { '$geoNear': {
         'near': point,
@@ -52,12 +52,28 @@ function performLocationSearch(res, locationSearch, limit, offset) {
       { '$limit': limit }
     ])
   .then(dbEnterprises => {
-    processDirectoryResults(res, dbEnterprises);
+    processDirectoryResults(res, dbEnterprises, language);
   })
   .catch(err => {
     logger.error('Error finding enterprises ' + err);
     res.status(500).json({'message': err});
   });
+}
+
+
+function performBrowseDirectory(res, limit, offset, language) {
+  let sortValue = {};
+  sortValue[language + '.lowercase_name'] = 1;
+  enterpriseInternationalPublicModel
+    .find()
+    .sort(sortValue)
+    .limit(limit)
+    .skip(offset)
+    .then(dbEnterprises => processDirectoryResults(res, dbEnterprises, language))
+    .catch(err => {
+      logger.error('Error browsing enterprises ' + err);
+      res.status(500).json({'message': err});
+    });
 }
 
 module.exports.getAllEnterprisesPublic = function(req, res) {
@@ -69,53 +85,65 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
   let limit = req.swagger.params.count.value || 500;
   let offset = req.swagger.params.offset.value || 0;
 
+  let lang = getLanguage(req);
+
   if (locationSearch) {
-    performLocationSearch(res, locationSearch, limit, offset);
+    performLocationSearch(res, locationSearch, limit, offset, lang);
     return;
   }
 
   if (!search) {
-    query = enterprisePublicModel.find().sort({lowercase_name: 1});
-  } else {
-    let keywords = search.replace(/\+/g, ' ');
-    query = enterprisePublicModel
-      .find(
-        { $text : { $search : keywords } },
-        { score : { $meta: 'textScore' } })
-      .sort({ score : { $meta : 'textScore' } });
+    performBrowseDirectory(res, limit, offset, lang);
+    return;
   }
+
+  let keywords = search.replace(/\+/g, ' ');
+  query = enterpriseInternationalPublicModel
+    .find(
+      { $text : { $search : keywords } },
+      { score : { $meta: 'textScore' } })
+    .sort({ score : { $meta : 'textScore' } });
 
   query
     .limit(limit)
     .skip(offset)
-    .select(publicFields)
-    .then(dbEnterprises => processDirectoryResults(res, dbEnterprises))
+    .then(dbEnterprises => processDirectoryResults(res, dbEnterprises, lang))
     .catch(err => {
       logger.error('Error finding enterprises ' + err);
       res.status(500).json({'message': err});
     });
 };
 
+function getLanguage(req) {
+  let lang = DEFAULT_LANGUAGE;
+  if (req.swagger.params.lang &&
+      req.swagger.params.lang.value &&
+      SUPPORTED_LANGUAGES.indexOf(req.swagger.params.lang.value) > -1) {
+    lang = req.swagger.params.lang.value;
+  }
+  return lang;
+}
+
 module.exports.getOneEnterprisePublic = function(req, res) {
 
   let id = req.swagger.params.id.value;
-  enterprisePublicModel
+  let lang = getLanguage(req);
+
+  enterpriseInternationalPublicModel
     .findById(id)
-    .select(publicFields)
     .then(dbEnterprise => {
       if (!dbEnterprise) {
         logger.info('Enterprise not found for id ', id);
         res.status(404).json({'message': 'Enterprise not found for id ' + id});
-        return;
+        return Promise.resolve(null);
       }
 
       try {
-        let tranformedEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise);
+        let tranformedEnterprise = enterpriseAdapter.transformDBIntlEnterpriseToApiFormatForLanguage(dbEnterprise, lang);
         res.set('Cache-Control', 'max-age=' + ENTERPRISE_CACHE_CONTROL);
         res.status(200).json(tranformedEnterprise);
       } catch (e) {
-        res.status(500).json({'message': e});
-        return;
+        return Promise.reject(e);
       }
     })
     .catch(err => {
@@ -126,22 +154,21 @@ module.exports.getOneEnterprisePublic = function(req, res) {
 
 module.exports.getOneEnterpriseComplete = function(req, res) {
   let id = req.swagger.params.id.value;
-  enterprisePublicModel
+  enterpriseInternationalPublicModel
     .findById(id)
     .then(dbEnterprise => {
       if (!dbEnterprise) {
         logger.info('Enterprise not found for id ', id);
         res.status(404).json({'message': 'Enterprise not found for id ' + id});
-        return;
+        return Promise.resolve(null);
       }
 
       try {
-        let tranformedEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbEnterprise);
+        let tranformedEnterprise = enterpriseAdapter.transformDbEnterprisesToApiFormat(dbEnterprise);
         res.set('Cache-Control', 'max-age=' + ENTERPRISE_CACHE_CONTROL);
         res.status(200).json(tranformedEnterprise);
       } catch (e) {
-        res.status(500).json({'message': e});
-        return;
+        return Promise.reject(e);
       }
     })
     .catch(err => {
@@ -159,26 +186,26 @@ module.exports.createEnterprise = function(req, res) {
   let publicEnterprise;
   let privateEnterprise;
   try {
-    publicEnterprise = enterpriseAdapter.transformCompleteEnterpriseToPublicDBFormat(enterprise);
-    privateEnterprise = enterpriseAdapter.transformCompleteEnterpriseToPrivateDBFormat(enterprise);
+    publicEnterprise = enterpriseAdapter.transformCompleteEnterpriseToInternationalPublicDBFormat(enterprise);
+    privateEnterprise = enterpriseAdapter.transformCompleteEnterpriseToInternationalPrivateDBFormat(enterprise);
   } catch (e) {
     res.status(500).json({'message': e});
     return;
   }
 
   let dbPrivateEnterpriseInfo;
-  enterprisePrivateFieldsModel.create(privateEnterprise)
+  enterpriseInternationalPrivateFieldsModel.create(privateEnterprise)
     // create public enterprise info
     .then(dbPrivateEnterprise => {
       dbPrivateEnterpriseInfo = dbPrivateEnterprise;
       publicEnterprise['private_info'] = dbPrivateEnterprise['_id'];
-      return enterprisePublicModel.create(publicEnterprise);
+      return enterpriseInternationalPublicModel.create(publicEnterprise);
     })
     // create api response
     .then( dbPublicEnterprise => {
-      let apiEnterprise = enterpriseAdapter.transformDbEnterpriseToRestFormat(dbPublicEnterprise);
+      let apiEnterprise = enterpriseAdapter.transformDbIntlEnterpriseToApiIntlFormat(dbPublicEnterprise);
       enterpriseAdapter.appendPrivateInfo(apiEnterprise, dbPrivateEnterpriseInfo);
-      logger.info(`Enterprise created (name=${apiEnterprise['name']} id=${apiEnterprise['id']})`);
+      logger.info(`Enterprise created (name=${apiEnterprise[DEFAULT_LANGUAGE]['name']} id=${apiEnterprise['id']})`);
       res.status(201).json(apiEnterprise);
     })
     .catch(err => {
@@ -195,7 +222,7 @@ module.exports.getEnterpriseLogo = function(req, res) {
       if (!dbLogo) {
         logger.info('Enterprise logo not found for id ', id);
         res.status(404).json({'message': 'Enterprise logo not found for id ' + id});
-        return;
+        return Promise.resolve(null);
       }
 
       res.set('Content-Type', dbLogo.contentType);

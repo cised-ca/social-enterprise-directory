@@ -194,6 +194,11 @@ paths:
           description: Location. Eg. ?at=longitude,latitude
           required: false
           type: string
+        - name: lang
+          in: query
+          description: language to use
+          required: false
+          type: string
 
       responses:
         "200":
@@ -219,6 +224,11 @@ paths:
           in: path
           description: ID of enterprise to fetch
           required: true
+          type: string
+        - name: lang
+          in: query
+          description: language to use
+          required: false
           type: string
       responses:
         "200":
@@ -290,13 +300,12 @@ paths:
       # call this method name on the controller
       operationId: createEnterprise
       parameters:
-        -
-          name: Enterprise
+        - name: Enterprise
           in: body
           description: Enterprise to be added to the directory
           required: true
           schema:
-            $ref: "#/definitions/NewEnterprise"
+            $ref: "#/definitions/NewInternationalEnterprise"
 
       responses:
         "201":
@@ -396,11 +405,20 @@ definitions:
       - $ref: '#/definitions/EnterprisePublic' # inherit all the public fields
       - $ref: '#/definitions/EnterprisePrivateFields'
 
-  # full view of an enterprise (including private fields)
   NewEnterprise:
-    allOf:
-      - $ref: '#/definitions/EnterprisePublicWithoutID' # inherit all the public fields
-      - $ref: '#/definitions/EnterprisePrivateFields'
+      allOf:
+        - $ref: '#/definitions/EnterprisePublicWithoutID' # inherit all the public fields
+        - $ref: '#/definitions/EnterprisePrivateFields'
+
+  # full view of an enterprise (including private fields)
+  NewInternationalEnterprise:
+    properties:
+      locations:
+        $ref: "#/definitions/Locations"
+      en:
+        $ref: "#/definitions/NewEnterprise"
+      fr:
+        $ref: "#/definitions/NewEnterprise"
 
 
   PhoneNumber:

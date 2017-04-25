@@ -10,7 +10,6 @@ module.exports.install = function() {
       callbackURL: oauthConfig.get('instagramCallbackURL')
     },
       function(accessToken, refreshToken, profile, cb) {
-        console.log(profile);
         return cb(null, profile);
       }
     ));

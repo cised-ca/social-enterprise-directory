@@ -1,0 +1,35 @@
+{
+  "name" : "Bon Nature Groundskeeping",
+  "description" : "Bon Nature Groundskeeping est un firme sociale",
+  "offering" : "Jean Levesque",
+  "phones" : [
+        {
+          "number": "27777777777",
+          "public": true,
+          "tags": ["centrale"]
+        },
+
+        {
+          "number": "44777777777",
+          "public": true,
+          "tags": ["branche #1"]
+        }
+      ],
+  "emails" : [
+        {
+          "email": "test1@test.com",
+          "public": true,
+          "tags": ["centrale"]
+        }
+      ],
+  "purposes": [
+    "Sauter les injustices"
+  ],
+  "locations" : {
+      "type": "MultiPoint",
+      "coordinates": [
+        [43.425, -75.692]
+      ]
+  },
+  "website" : "http://google.com/FR"
+}
