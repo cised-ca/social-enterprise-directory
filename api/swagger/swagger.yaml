@@ -240,27 +240,86 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
-#  /enterprise/{id}/complete:
-#    x-swagger-router-controller: enterprise.controller
-#    get:
-#      description: Returns *all* details about one social enterprise in the directory
+    patch:
+      consumes:
+        - application/merge-patch+json
+      description: JSON Merge Patch style edit request for the enteprise
+      #security:
+      #  - oauth-directory-admin: []
       # call this method name on the controller
-#      operationId: getOneEnterpriseComplete
-#      parameters:
-#        - name: id
-#          in: path
-#          description: ID of enterprise to fetch
-#          required: true
-#          type: string
-#      responses:
-#        "200":
-#          description: Success
-#          schema:
-#            $ref: "#/definitions/EnterpriseComplete"
-#        default:
-#          description: Error
-#          schema:
-#            $ref: "#/definitions/ErrorResponse"
+      operationId: editEnterprise
+      parameters:
+        - name: id
+          in: path
+          description: ID of enterprise to fetch
+          required: true
+          type: string
+        - name: EnterpriseMerge
+          in: body
+          description: JSON Merge Patch style edit request for the enteprise
+          required: true
+          schema:
+            $ref: "#/definitions/EditInternationalEnterprise"
+
+      responses:
+        "204":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /enterprise/{id}/admin:
+    x-swagger-router-controller: enterprise.controller
+    get:
+      description: Returns a list of administrators for this enterprise
+      # call this method name on the controller
+      operationId: getEnterpriseAdmins
+      parameters:
+        - name: id
+          in: path
+          description: ID of enterprise to fetch
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: array
+            items:
+              type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+    patch:
+      consumes:
+        - application/merge-patch+json
+      description: JSON Merge Patch style edit request for the enteprise private info
+      #security:
+      #  - oauth-directory-admin: []
+      # call this method name on the controller
+      operationId: editEnterprisePrivateFields
+      parameters:
+        - name: id
+          in: path
+          description: ID of enterprise to fetch
+          required: true
+          type: string
+        - name: EnterpriseMerge
+          in: body
+          description: JSON Merge Patch style edit request for the enteprise
+          required: true
+          schema:
+            $ref: "#/definitions/EditInternationalPrivateEnterprise"
+      responses:
+        "204":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
 
   /enterprise/{id}/logo:
     x-swagger-router-controller: enterprise.controller
@@ -321,8 +380,6 @@ paths:
 definitions:
 
   EnterprisePublicWithoutID:
-    required:
-      - name
     properties:
       name:
         type: string
@@ -409,6 +466,13 @@ definitions:
       allOf:
         - $ref: '#/definitions/EnterprisePublicWithoutID' # inherit all the public fields
         - $ref: '#/definitions/EnterprisePrivateFields'
+      required:
+      - name
+
+  EditEnterprise:
+      allOf:
+        - $ref: '#/definitions/EnterprisePublicWithoutID' # inherit all the public fields
+        - $ref: '#/definitions/EnterprisePrivateFields'
 
   # full view of an enterprise (including private fields)
   NewInternationalEnterprise:
@@ -420,6 +484,18 @@ definitions:
       fr:
         $ref: "#/definitions/NewEnterprise"
 
+  EditInternationalEnterprise:
+    properties:
+      locations:
+        $ref: "#/definitions/Locations"
+      en:
+        $ref: "#/definitions/EditEnterprise"
+      fr:
+        $ref: "#/definitions/EditEnterprise"
+
+  EditInternationalPrivateEnterprise:
+      allOf:
+        - $ref: '#/definitions/EnterprisePrivateFields'
 
   PhoneNumber:
     required:

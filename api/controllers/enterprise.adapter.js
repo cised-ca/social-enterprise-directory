@@ -1,6 +1,7 @@
 const publicFields = require('../data/enterprise.model').enterprisePublicFields;
 const privateFields = require('../data/enterprise.model').enterprisePrivateFields;
 const SUPPORTED_LANGUAGES = require('../helpers/language/constants').SUPPORTED_LANGUAGES;
+const jsonMergePatch = require('json8-merge-patch');
 
 function transformDbEnterprisesToApiFormat(dbEnterprise) {
 
@@ -115,7 +116,7 @@ function transformCompleteEnterpriseToPublicDBFormat(enterprise) {
 // Throws exception on error.
 module.exports.transformCompleteEnterpriseToInternationalPrivateDBFormat = function(enterprise) {
   let dbInternationalPrivateEnterprise = {};
-  if (dbInternationalPrivateEnterprise['admin_emails']) {
+  if (enterprise['admin_emails']) {
     dbInternationalPrivateEnterprise['admin_emails'] = enterprise['admin_emails'];
   }
 
@@ -161,6 +162,12 @@ module.exports.appendPrivateInfo = function(enterprise, privateInfo) {
     }
   });
 };
+
+module.exports.applyMerge = function(dbEnterprise, mergeRequest) {
+  let mergedEnterprise = jsonMergePatch.apply(dbEnterprise, mergeRequest);
+  return mergedEnterprise;
+};
+
 
 
 function filterPrivateEntriesForArray(array) {

@@ -1,4 +1,5 @@
 {
+  "admin_emails": ["admin1@test.com", "admin2@test.com"],
   "locations" : {
       "type": "MultiPoint",
       "coordinates": [

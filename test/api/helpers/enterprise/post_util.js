@@ -1,4 +1,5 @@
 const should = require('should');
+const logger = require('../../../../lib/logger');
 const testEnterprise1 = require('../../helpers/data/enterprise/testEnterprise1_complete');
 const testEnterprise2 = require('../../helpers/data/enterprise/testEnterprise2_complete');
 const testEnterprise3 = require('../../helpers/data/enterprise/testEnterprise3_complete');
@@ -56,6 +57,9 @@ function postEnterprise(resolve, enterprise, verifyMethod) {
   requestUtil.buildPostRequest(url)
     .send(enterprise)
     .end( function(err, res) {
+      if (err) {
+        logger.error(res.body);
+      }
       should.not.exist(err);
       verifyMethod(res.body);
       postIds[enterprise[DEFAULT_LANGUAGE]['name']] = res.body['id'];

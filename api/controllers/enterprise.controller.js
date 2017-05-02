@@ -133,9 +133,7 @@ module.exports.getOneEnterprisePublic = function(req, res) {
     .findById(id)
     .then(dbEnterprise => {
       if (!dbEnterprise) {
-        logger.info('Enterprise not found for id ', id);
-        res.status(404).json({'message': 'Enterprise not found for id ' + id});
-        return Promise.resolve(null);
+        return Promise.reject({NotFoundError: true});
       }
 
       try {
@@ -147,31 +145,11 @@ module.exports.getOneEnterprisePublic = function(req, res) {
       }
     })
     .catch(err => {
-      logger.error('Error finding enterprise', id, ':', err);
-      res.status(500).json({'message': err});
-    });
-};
-
-module.exports.getOneEnterpriseComplete = function(req, res) {
-  let id = req.swagger.params.id.value;
-  enterpriseInternationalPublicModel
-    .findById(id)
-    .then(dbEnterprise => {
-      if (!dbEnterprise) {
+      if (err.NotFoundError) {
         logger.info('Enterprise not found for id ', id);
         res.status(404).json({'message': 'Enterprise not found for id ' + id});
-        return Promise.resolve(null);
+        return;
       }
-
-      try {
-        let tranformedEnterprise = enterpriseAdapter.transformDbEnterprisesToApiFormat(dbEnterprise);
-        res.set('Cache-Control', 'max-age=' + ENTERPRISE_CACHE_CONTROL);
-        res.status(200).json(tranformedEnterprise);
-      } catch (e) {
-        return Promise.reject(e);
-      }
-    })
-    .catch(err => {
       logger.error('Error finding enterprise', id, ':', err);
       res.status(500).json({'message': err});
     });
@@ -201,12 +179,22 @@ module.exports.createEnterprise = function(req, res) {
       publicEnterprise['private_info'] = dbPrivateEnterprise['_id'];
       return enterpriseInternationalPublicModel.create(publicEnterprise);
     })
-    // create api response
     .then( dbPublicEnterprise => {
-      let apiEnterprise = enterpriseAdapter.transformDbIntlEnterpriseToApiIntlFormat(dbPublicEnterprise);
-      enterpriseAdapter.appendPrivateInfo(apiEnterprise, dbPrivateEnterpriseInfo);
-      logger.info(`Enterprise created (name=${apiEnterprise[DEFAULT_LANGUAGE]['name']} id=${apiEnterprise['id']})`);
-      res.status(201).json(apiEnterprise);
+      // update private db entry with pointer to public entry
+      enterpriseInternationalPrivateFieldsModel.findByIdAndUpdate(
+        dbPublicEnterprise['private_info'],
+        {$set: {enterprise_id: dbPublicEnterprise['_id']}},
+        function(err) {
+          if (err) {
+            Promise.reject(err);
+          }
+          // create api response
+          let apiEnterprise = enterpriseAdapter.transformDbIntlEnterpriseToApiIntlFormat(dbPublicEnterprise);
+          enterpriseAdapter.appendPrivateInfo(apiEnterprise, dbPrivateEnterpriseInfo);
+          logger.info(`Enterprise created (name=${apiEnterprise[DEFAULT_LANGUAGE]['name']} id=${apiEnterprise['id']})`);
+          res.status(201).json(apiEnterprise);
+        }
+      );
     })
     .catch(err => {
       logger.error('Error creating enterprise in db ', err, enterprise);
@@ -220,9 +208,7 @@ module.exports.getEnterpriseLogo = function(req, res) {
     .findOne({enterpriseId : id})
     .then( dbLogo => {
       if (!dbLogo) {
-        logger.info('Enterprise logo not found for id ', id);
-        res.status(404).json({'message': 'Enterprise logo not found for id ' + id});
-        return Promise.resolve(null);
+        return Promise.reject({NotFoundError: true});
       }
 
       res.set('Content-Type', dbLogo.contentType);
@@ -230,7 +216,113 @@ module.exports.getEnterpriseLogo = function(req, res) {
       res.status(200).send(dbLogo.image);
     })
     .catch( err => {
+      if (err.NotFoundError) {
+        logger.info('Enterprise logo not found for id ', id);
+        res.status(404).json({'message': 'Enterprise logo not found for id ' + id});
+        return;
+      }
       logger.error('Error finding enterprise logo', id, ':', err);
+      res.status(500).json({'message': err});
+    });
+};
+
+
+module.exports.editEnterprise = function(req, res) {
+  if (conf.get('env') != 'test') {
+    res.status(403).json({'message': 'Not supported yet'});
+    return;
+  }
+
+  let id = req.swagger.params.id.value;
+  let mergeRequest = req.swagger.params.EnterpriseMerge.value;
+
+  enterpriseInternationalPublicModel
+    .findById(id)
+    .then(dbEnterprise => {
+      if (!dbEnterprise) {
+        return Promise.reject({NotFoundError: true});
+      }
+      return Promise.resolve(dbEnterprise);
+    })
+    .then(dbEnterprise => {
+      let mergedEnterprise = enterpriseAdapter.applyMerge(dbEnterprise, mergeRequest);
+      return enterpriseInternationalPublicModel.findOneAndUpdate({_id: dbEnterprise._id}, mergedEnterprise);
+    })
+    .then(result => {
+      if (!result) {
+        res.status(500).json({'message': 'Failed to update db'});
+        return;
+      }
+      res.status(200).json({});
+    })
+    .catch(err => {
+      if (err.NotFoundError) {
+        logger.info('Enterprise not found for id ', id);
+        res.status(404).json({'message': 'Enterprise not found for id ' + id});
+        return;
+      }
+      logger.error('Error updating enterprise', id, ':', err);
+      res.status(500).json({'message': err});
+    });
+};
+
+module.exports.getEnterpriseAdmins = function(req, res) {
+  let id = req.swagger.params.id.value;
+  enterpriseInternationalPrivateFieldsModel
+    .findOne({enterprise_id: id})
+    .then(dbEnterprise => {
+      if (!dbEnterprise) {
+        return Promise.reject({NotFoundError: true});
+      }
+      res.status(200).json({admin_emails: dbEnterprise.admin_emails});
+    })
+    .catch(err => {
+      if (err.NotFoundError) {
+        logger.info('Enterprise admin info not found for id ', id);
+        res.status(404).json({'message': 'Enterprise admin info not found for id ' + id});
+        return;
+      }
+      logger.error('Error finding enterprise admins', id, ':', err);
+      res.status(500).json({'message': err});
+    });
+};
+
+module.exports.editEnterprisePrivateFields = function(req, res) {
+  if (conf.get('env') != 'test') {
+    res.status(403).json({'message': 'Not supported yet'});
+    return;
+  }
+
+  let id = req.swagger.params.id.value;
+  let mergeRequest = req.swagger.params.EnterpriseMerge.value;
+
+  enterpriseInternationalPrivateFieldsModel
+    .findOne({enterprise_id: id})
+    .then(dbEnterprise => {
+      if (!dbEnterprise) {
+        return Promise.reject({NotFoundError: true});
+      }
+      return Promise.resolve(dbEnterprise);
+    })
+    .then(dbEnterprise => {
+      let mergedEnterprise = enterpriseAdapter.applyMerge(dbEnterprise, mergeRequest);
+      return enterpriseInternationalPrivateFieldsModel.findOneAndUpdate({_id: dbEnterprise._id}, mergedEnterprise);
+    })
+    .then(result => {
+      if (!result) {
+        res.status(500).json({'message': 'Failed to update db'});
+        return;
+      }
+      res.status(200).json({});
+      return Promise.resolve(null);
+    })
+    .catch(err => {
+      if (err.NotFoundError) {
+        logger.info('Enterprise admin info not found for id ', id);
+        res.status(404).json({'message': 'Enterprise admin info not found for id ' + id});
+        return;
+      }
+      logger.error('Error updating enterprise admins', id, ':', err);
       res.status(500).json({'message': err});
     });
 };

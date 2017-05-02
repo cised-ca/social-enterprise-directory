@@ -21,6 +21,14 @@ module.exports.buildPostRequest = function(url) {
       .expect(201);
 };
 
+module.exports.buildPatchRequest = function(url) {
+  return request(App)
+      .patch(URL_PREFIX + url)
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200);
+};
+
 module.exports.performGetRequest = function(url, statusCode) {
   return function() {
     return new Promise((resolve, reject) => {
