@@ -1,145 +1,200 @@
  [
     {
       "_id": {"$oid":"58014c003762820bc88b86d8"},
-      "name" : "African Bronze Honey",
-      "lowercase_name" : "african bronze honey",
-      "short_description" : "We market and sell products on behalf of 10,000 traditional forest beekeepers in Zambia.",
-      "description" : "15 years ago, Zambian Canadian Dan Ball went into a remote forest to work with two dozen beekeepers. Today they have trained over 10,000 beekeepers and exported 1,200 tons of organic bulk honey to Europe last year. Longtime friend Dan asked us to develop a retail market in North America to help value add their honey and create additional sustainable profit to train more beekeepers. This is the African Bronze Honey Company.",
-      "year_started" : 2015,
-      "offering" : "Packaged Honey",
-      "purposes": [
-        "Work Skills Training for Hard-to-Employ Individuals"
-      ],
-      "website" : "www.africanbronzehoney.com",
-      "facebook" : "AfricanBronzeHoney",
-      "instagram" : "africanbhoney",
-      "twitter" : "africanbhoney",
-      "private_info" : {"$oid":"77774c003762820bc88b8600"}
+      "private_info" : {"$oid":"77774c003762820bc88b8600"},
+      "locations" : {
+          "type": "MultiPoint",
+          "coordinates": [
+            [45.425, -75.692],
+            [45.901, -76.005]
+          ]
+      },
+      "en": {
+        "name" : "African Bronze Honey",
+        "lowercase_name" : "african bronze honey",
+        "short_description" : "We market and sell products on behalf of 10,000 traditional forest beekeepers in Zambia.",
+        "description" : "15 years ago, Zambian Canadian Dan Ball went into a remote forest to work with two dozen beekeepers. Today they have trained over 10,000 beekeepers and exported 1,200 tons of organic bulk honey to Europe last year. Longtime friend Dan asked us to develop a retail market in North America to help value add their honey and create additional sustainable profit to train more beekeepers. This is the African Bronze Honey Company.",
+        "year_started" : 2015,
+        "offering" : "Packaged Honey",
+        "purposes": [
+          "Work Skills Training for Hard-to-Employ Individuals"
+        ],
+        "website" : "www.africanbronzehoney.com",
+        "facebook" : "AfricanBronzeHoney",
+        "instagram" : "africanbhoney",
+        "twitter" : "africanbhoney"
+      },
+      "fr": {
+        "name" : "Miel Bronze Africain",
+        "lowercase_name" : "miel bronze africain",
+        "short_description" : "On cherche le bon miel",
+        "description" : "15 years ago, Zambian Canadian Dan Ball went into a remote forest to work with two dozen beekeepers. Today they have trained over 10,000 beekeepers and exported 1,200 tons of organic bulk honey to Europe last year. Longtime friend Dan asked us to develop a retail market in North America to help value add their honey and create additional sustainable profit to train more beekeepers. This is the African Bronze Honey Company.",
+        "year_started" : 2015,
+        "offering" : "Miel packager",
+        "purposes": [
+          "Aider les vulnerables"
+        ],
+        "website" : "www.africanbronzehoney.com/fr",
+        "facebook" : "AfricanBronzeHoneyFR",
+        "instagram" : "africanbhoneyfr",
+        "twitter" : "africanbhoneyfr"
+      }
     },
 
     {
       "_id": {"$oid":"58014c003762820bc88b86d9"},
-      "name" : "Beads of Awareness",
-      "lowercase_name" : "beads of awareness",
-      "postal_code" : "J9B 2A9",
-      "website" : "beadsofawareness.org",
-      "short_description" : "Beads of Awareness sells handmade paper bead products to support women's cooperatives and encourage economic empowerment in Uganda.",
-      "description" : "Launched in 2009, Beads of Awareness currently works with over 50 artisans in the Gulu region of Northern Uganda. We buy paper bead necklaces, bracelets, earrings, bookmarks and ornaments from women's groups at a fair price that enables them to support their families. Our proceeds are reinvested in a micro-finance initiative that offers small loans to the same women, empowering them to build and grow micro-enterprises to supplement their income. In Canada we are entirely volunteer run, and in Uganda we have two local staff to manage our operations on the ground.",
-      "year_started" : 2009,
-      "offering" : "Paper bead products",
-      "purposes": [
-        "Work Skills Training for Hard-to-Employ Individuals",
-        "Social Inclusion"
-      ],
+      "private_info" : {"$oid":"77774c003762820bc88b8601"},
+      "locations" : {
+          "type": "MultiPoint",
+          "coordinates": [
+            [45.225, -75.692],
+            [45.701, -76.005]
+          ]
+      },
+      "en": {
+        "name" : "Beads of Awareness",
+        "lowercase_name" : "beads of awareness",
+        "postal_code" : "J9B 2A9",
+        "website" : "beadsofawareness.org",
+        "short_description" : "Beads of Awareness sells handmade paper bead products to support women's cooperatives and encourage economic empowerment in Uganda.",
+        "description" : "Launched in 2009, Beads of Awareness currently works with over 50 artisans in the Gulu region of Northern Uganda. We buy paper bead necklaces, bracelets, earrings, bookmarks and ornaments from women's groups at a fair price that enables them to support their families. Our proceeds are reinvested in a micro-finance initiative that offers small loans to the same women, empowering them to build and grow micro-enterprises to supplement their income. In Canada we are entirely volunteer run, and in Uganda we have two local staff to manage our operations on the ground.",
+        "year_started" : 2009,
+        "offering" : "Paper bead products",
+        "purposes": [
+          "Work Skills Training for Hard-to-Employ Individuals",
+          "Social Inclusion"
+        ],
 
-      "facebook" : "beadsofawareness",
-      "instagram" : "beadsofawareness",
-      "private_info" : {"$oid":"77774c003762820bc88b8601"}
+        "facebook" : "beadsofawareness",
+        "instagram" : "beadsofawareness"
+      }
     },
 
     {
       "_id": {
         "$oid": "58014c003762820bc88b8012"
       },
-      "name": "Canada Corporate Sports",
-      "lowercase_name": "canada corporate sports",
-      "parent_organization": "Enactus uOttawa",
-      "postal_code": "K1N 6N5",
-      "website": "",
-      "short_description": "Canada Corporate Sports is a corporate sports league for corporations to provide job opportunities to homeless & newcomer men and women.",
-      "description": "Canada Corporate Sports league that players can join, that is refereed by members of the program Canada Sports Officials. The program that provides microloans to homeless men and women to learn how to referee soccer games and then employes them through a corporate league owned by the organization. Referees then go off and work within the regular leaves once they've refereed for one season with the corporate league.",
-      "year_started": 2015,
-      "offering": "Corporate sports league",
-      "purposes": [
-        "Work Skills Training for Hard-to-Employ Individuals",
-        "Work Skills Training for New Canadians"
-      ],
-      "facebook": "EnactusCSO",
-      "instagram": "",
-      "twitter": "EnactusCSO"
+      "private_info" : {"$oid":"77774c003762820bc88b8602"},
+      "locations" : {
+          "type": "MultiPoint",
+          "coordinates": [
+            [45.445, -75.692],
+            [45.801, -76.005]
+          ]
+      },
+      "en": {
+        "name": "Canada Corporate Sports",
+        "lowercase_name": "canada corporate sports",
+        "parent_organization": "Enactus uOttawa",
+        "postal_code": "K1N 6N5",
+        "website": "",
+        "short_description": "Canada Corporate Sports is a corporate sports league for corporations to provide job opportunities to homeless & newcomer men and women.",
+        "description": "Canada Corporate Sports league that players can join, that is refereed by members of the program Canada Sports Officials. The program that provides microloans to homeless men and women to learn how to referee soccer games and then employes them through a corporate league owned by the organization. Referees then go off and work within the regular leaves once they've refereed for one season with the corporate league.",
+        "year_started": 2015,
+        "offering": "Corporate sports league",
+        "purposes": [
+          "Work Skills Training for Hard-to-Employ Individuals",
+          "Work Skills Training for New Canadians"
+        ],
+        "facebook": "EnactusCSO",
+        "instagram": "",
+        "twitter": "EnactusCSO"
+      }
     },
     {
       "_id": {
         "$oid": "58014c003762820bc88b8014"
       },
-      "name": "CigBins",
-      "lowercase_name": "cigbins",
-      "parent_organization": "",
-      "postal_code": "K2P 0V4",
-      "website": "http://www.cigbins.com/",
-      "short_description": "Cigarette butt collection and recycling service for property owners that provides job opportunities to individuals with a mental illness.",
-      "description": "CigBins is a social enterprise with its main objective being to reduce and recycle cigarette butt litter. This is done through the collection of cigarette butts from customized cigarette butt disposal units in a private, public and consumer market. Also, CigBins is dedicated to hiring individuals with a mental illness who are marginalized in the workplace, to provide them with meaningful employment opportunities. Because of this, CigBins encompasses the triple bottom line of having a social, environmental and economic impact.",
-      "year_started": 2013,
-      "offering": "Cigarette butt clean up",
-      "purposes": [
-        "Environmental",
-        "Work Skills Training for Hard-to-Employ Individuals"
-      ],
-      "facebook": "CigBins",
-      "instagram": "",
-      "twitter": "CigBins"
+      "private_info" : {"$oid":"77774c003762820bc88b8603"},
+      "en": {
+        "name": "CigBins",
+        "lowercase_name": "cigbins",
+        "parent_organization": "",
+        "postal_code": "K2P 0V4",
+        "website": "http://www.cigbins.com/",
+        "short_description": "Cigarette butt collection and recycling service for property owners that provides job opportunities to individuals with a mental illness.",
+        "description": "CigBins is a social enterprise with its main objective being to reduce and recycle cigarette butt litter. This is done through the collection of cigarette butts from customized cigarette butt disposal units in a private, public and consumer market. Also, CigBins is dedicated to hiring individuals with a mental illness who are marginalized in the workplace, to provide them with meaningful employment opportunities. Because of this, CigBins encompasses the triple bottom line of having a social, environmental and economic impact.",
+        "year_started": 2013,
+        "offering": "Cigarette butt clean up",
+        "purposes": [
+          "Environmental",
+          "Work Skills Training for Hard-to-Employ Individuals"
+        ],
+        "facebook": "CigBins",
+        "instagram": "",
+        "twitter": "CigBins"
+      }
     },
     {
       "_id": {
         "$oid": "58014c003762820bc88b8051"
       },
-      "name": "MakerHouse Co",
-      "lowercase_name": "makerhouse co",
-      "parent_organization": "",
-      "postal_code": "K1Y 2Y1",
-      "website": "http://www.makerhouse.co/password",
-      "short_description": "Maker House Co. is a new social enterprise for local artisans to sell handmade furniture and homewares to the community.",
-      "description": "What started as a \"\"Pop up\"\" shop is now permanent at 987 Wellington St. W. in Ottawa. Maker House Co. sells a vast but curated collection of handmade furniture and homewares from over 100 local artisans around Ottawa and Canada. The store is a pure slice of rustic and creative Canadiana. Know the story of your stuff, meet the makers, and #CraftChange with every purchase as the fast growing company donates 2% of all purchases to non profit community projects.",
-      "year_started": "TBD",
-      "offering": "TBD",
-      "purposes": [
-        "Generate Income for Parent Organization"
-      ],
-      "facebook": "MakerHouseCo",
-      "instagram": "makerhouseco",
-      "twitter": "makerhouseco"
+      "private_info" : {"$oid":"77774c003762820bc88b8604"},
+      "en": {
+        "name": "MakerHouse Co",
+        "lowercase_name": "makerhouse co",
+        "parent_organization": "",
+        "postal_code": "K1Y 2Y1",
+        "website": "http://www.makerhouse.co/password",
+        "short_description": "Maker House Co. is a new social enterprise for local artisans to sell handmade furniture and homewares to the community.",
+        "description": "What started as a \"\"Pop up\"\" shop is now permanent at 987 Wellington St. W. in Ottawa. Maker House Co. sells a vast but curated collection of handmade furniture and homewares from over 100 local artisans around Ottawa and Canada. The store is a pure slice of rustic and creative Canadiana. Know the story of your stuff, meet the makers, and #CraftChange with every purchase as the fast growing company donates 2% of all purchases to non profit community projects.",
+        "year_started": "TBD",
+        "offering": "TBD",
+        "purposes": [
+          "Generate Income for Parent Organization"
+        ],
+        "facebook": "MakerHouseCo",
+        "instagram": "makerhouseco",
+        "twitter": "makerhouseco"
+      }
     },
     {
       "_id": {
         "$oid": "58014c003762820bc88b8052"
       },
-      "name": "MarketMobile",
-      "lowercase_name": "marketmobile",
-      "parent_organization": "Rideau Rockliffe Community Resources Centre",
-      "postal_code": "",
-      "website": "www.marketmobileottawa.ca ",
-      "short_description": "MarketMobile is a mobile grocery store selling fresh, affordable produce and dried goods to eight Ottawa neighbourhoods.",
-      "description": "The MarketMobile is a not-for-profit mobile grocery store which operates out of a retro-fit trailer and truck. The MarketMobile brings fresh, affordable, and culturally-appropriate vegetables, fruit and dried goods to eight Ottawa neighbourhoods that have limited access to healthy food. The MarketMobile visits the following Ottawa communities: Bayshore, Caldwell, Morrison Gardens, Mechanicsville, Sandy Hill, Overbrook, Hunt-Club East and Vars. Visit www.marketmobileottawa.ca for the MarketMobile schedule. The MarketMobile is an initiative of the Coalition of Community Health and Resource Centres, in collaboration with multiple public, private and community partners. The MarketMobile is managed and operated by the Rideau-Rockcliffe Community Resource Centre.",
-      "year_started": 2013,
-      "offering": "Fresh Produce",
-      "purposes": [
-        "Environmental",
-        "Social Inclusion"
-      ],
-      "facebook": "MarketMobileOttawa",
-      "instagram": "",
-      "twitter": "marketmobileott"
+      "private_info" : {"$oid":"77774c003762820bc88b8605"},
+      "en": {
+        "name": "MarketMobile",
+        "lowercase_name": "marketmobile",
+        "parent_organization": "Rideau Rockliffe Community Resources Centre",
+        "postal_code": "",
+        "website": "www.marketmobileottawa.ca ",
+        "short_description": "MarketMobile is a mobile grocery store selling fresh, affordable produce and dried goods to eight Ottawa neighbourhoods.",
+        "description": "The MarketMobile is a not-for-profit mobile grocery store which operates out of a retro-fit trailer and truck. The MarketMobile brings fresh, affordable, and culturally-appropriate vegetables, fruit and dried goods to eight Ottawa neighbourhoods that have limited access to healthy food. The MarketMobile visits the following Ottawa communities: Bayshore, Caldwell, Morrison Gardens, Mechanicsville, Sandy Hill, Overbrook, Hunt-Club East and Vars. Visit www.marketmobileottawa.ca for the MarketMobile schedule. The MarketMobile is an initiative of the Coalition of Community Health and Resource Centres, in collaboration with multiple public, private and community partners. The MarketMobile is managed and operated by the Rideau-Rockcliffe Community Resource Centre.",
+        "year_started": 2013,
+        "offering": "Fresh Produce",
+        "purposes": [
+          "Environmental",
+          "Social Inclusion"
+        ],
+        "facebook": "MarketMobileOttawa",
+        "instagram": "",
+        "twitter": "marketmobileott"
+      }
     },
     {
       "_id": {
         "$oid": "58014c003762820bc88b8078"
       },
-      "name": "Tucker House Renewal Centre",
-      "lowercase_name": "tucker house renewal centre",
-      "parent_organization": "",
-      "postal_code": "K1S 5B4",
-      "website": "www.maisontuckerhouse.ca",
-      "short_description": "Eco-friendly retreat centre perfect for groups of up to 20 indoors or 100 for outdoor events. ",
-      "description": "Less than an hour from downtown Ottawa, Tucker House is a great place for spiritual retreats, team visioning retreats, family reunions, and intimate weddings! This historic beauty on 30 acres of diverse ecosystems, has all the modern amenities, thanks to our Green Design renovations supported by the Ontario Trillium Foundation. The house is a Confederation-era, Georgian-style mansion originally built by the Tucker family. In the house, you have full access to two large meeting rooms suitable for up to 20 people, one great for breakout groups, one great for board room style presentations or a meal. The house features an accessible washroom downstairs, his and hers full bathrooms upstairs and shared bedroom accommodations.",
-      "year_started": 2005,
-      "offering": "Retreat Centre Bookings",
-      "purposes": [
-        "Environmental",
-        "Generate Income for Parent Organization"
-      ],
-      "facebook": "MaisonTuckerHouse",
-      "instagram": "",
-      "twitter": "Tucker_House"
+      "private_info" : {"$oid":"77774c003762820bc88b8606"},
+      "en": {
+        "name": "Tucker House Renewal Centre",
+        "lowercase_name": "tucker house renewal centre",
+        "parent_organization": "",
+        "postal_code": "K1S 5B4",
+        "website": "www.maisontuckerhouse.ca",
+        "short_description": "Eco-friendly retreat centre perfect for groups of up to 20 indoors or 100 for outdoor events. ",
+        "description": "Less than an hour from downtown Ottawa, Tucker House is a great place for spiritual retreats, team visioning retreats, family reunions, and intimate weddings! This historic beauty on 30 acres of diverse ecosystems, has all the modern amenities, thanks to our Green Design renovations supported by the Ontario Trillium Foundation. The house is a Confederation-era, Georgian-style mansion originally built by the Tucker family. In the house, you have full access to two large meeting rooms suitable for up to 20 people, one great for breakout groups, one great for board room style presentations or a meal. The house features an accessible washroom downstairs, his and hers full bathrooms upstairs and shared bedroom accommodations.",
+        "year_started": 2005,
+        "offering": "Retreat Centre Bookings",
+        "purposes": [
+          "Environmental",
+          "Generate Income for Parent Organization"
+        ],
+        "facebook": "MaisonTuckerHouse",
+        "instagram": "",
+        "twitter": "Tucker_House"
+      }
     }
 
 ]

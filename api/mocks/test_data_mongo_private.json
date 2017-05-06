@@ -1,29 +1,81 @@
  [
     {
       "_id" : {"$oid":"77774c003762820bc88b8600"},
-      "phones" : [
-            {
-              "number": "6667777788",
-              "public": false,
-              "tags": ["CEO phpne"]
-            }
-          ],
-      "emails" : [
-            {
-              "email": "privateEmail@test.com",
-              "public": false,
-              "tags": ["CEO email"]
-            }
-          ],
+      "enterprise_id" : {"$oid":"58014c003762820bc88b86d8"},
+      "admin_emails": ["admin1@test.com", "admin2@test.com"],
+      "en": {
+        "phones" : [
+              {
+                "number": "6667777788",
+                "public": false,
+                "tags": ["CEO phpne"]
+              }
+            ],
+        "emails" : [
+              {
+                "email": "privateEmail@test.com",
+                "public": false,
+                "tags": ["CEO email"]
+              }
+            ],
 
-      "faxes" : [
-            {
-              "fax": "1112223333",
-              "public": false,
-              "tags": ["CEO fax"]
-            }
-          ],
-      "clusters" : ["cluster#1", "cluster#2"],
-      "segments" : ["SuperSegment"]
+        "faxes" : [
+              {
+                "fax": "1112223333",
+                "public": false,
+                "tags": ["CEO fax"]
+              }
+            ],
+        "clusters" : ["cluster#1", "cluster#2"],
+        "segments" : ["SuperSegment"]
+      }
+    },
+
+    {
+      "_id" : {"$oid":"77774c003762820bc88b8601"},
+      "enterprise_id" : {"$oid":"58014c003762820bc88b86d9"},
+      "admin_emails": ["admin3@test.com"],
+      "en": {},
+      "fr": {}
+    },
+
+    {
+      "_id" : {"$oid":"77774c003762820bc88b8602"},
+      "enterprise_id" : {"$oid":"58014c003762820bc88b8012"},
+      "admin_emails": ["admin4@test.com"],
+      "en": {},
+      "fr": {}
+    },
+
+    {
+      "_id" : {"$oid":"77774c003762820bc88b8603"},
+      "enterprise_id" : {"$oid":"58014c003762820bc88b8014"},
+      "admin_emails": ["admin5@test.com"],
+      "en": {},
+      "fr": {}
+    },
+
+    {
+      "_id" : {"$oid":"77774c003762820bc88b8604"},
+      "enterprise_id" : {"$oid":"58014c003762820bc88b8051"},
+      "admin_emails": ["admin6@test.com"],
+      "en": {},
+      "fr": {}
+    },
+
+    {
+      "_id" : {"$oid":"77774c003762820bc88b8605"},
+      "enterprise_id" : {"$oid":"58014c003762820bc88b8052"},
+      "admin_emails": ["admin6@test.com"],
+      "en": {},
+      "fr": {}
+    },
+
+    {
+      "_id" : {"$oid":"77774c003762820bc88b8606"},
+      "enterprise_id" : {"$oid":"58014c003762820bc88b8078"},
+      "admin_emails": ["admin7@test.com"],
+      "en": {},
+      "fr": {}
     }
   ]
