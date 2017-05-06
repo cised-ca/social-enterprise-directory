@@ -198,6 +198,40 @@ module.exports.createEnterprise = function(req, res) {
     });
 };
 
+
+module.exports.deleteEnterprise = function(req, res) {
+  let id = req.swagger.params.id.value;
+  enterpriseInternationalPublicModel
+    .findById(id)
+    .then(dbEnterprise => {
+      if (!dbEnterprise) {
+        return Promise.reject({NotFoundError: true});
+      }
+      return Promise.resolve(dbEnterprise);
+    })
+    .then(dbEnterprise => {
+      return enterpriseInternationalPrivateFieldsModel.remove({ _id: dbEnterprise['private_info'] });
+    })
+    .then(() => {
+      return enterpriseLogoModel.remove({enterpriseId : id});
+    })
+    .then(() => {
+      return enterpriseInternationalPublicModel.remove({_id : id});
+    })
+    .then(() => {
+      res.status(200).json({});
+    })
+    .catch(err => {
+      if (err.NotFoundError) {
+        logger.info('Enterprise not found for id ', id);
+        res.status(404).json({'message': 'Enterprise not found for id ' + id});
+        return;
+      }
+      logger.error('Error deleting enterprise', id, ':', err);
+      res.status(500).json({'message': err});
+    });
+};
+
 module.exports.getEnterpriseLogo = function(req, res) {
   let id = req.swagger.params.id.value;
   enterpriseLogoModel

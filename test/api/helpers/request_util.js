@@ -31,6 +31,15 @@ module.exports.buildPatchRequest = function(url, statusCode) {
       .expect(statusCode);
 };
 
+module.exports.buildDeleteRequest = function(url, statusCode) {
+  statusCode = statusCode || 200;
+  return request(App)
+      .delete(URL_PREFIX + url)
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(statusCode);
+};
+
 module.exports.performGetRequest = function(url, statusCode) {
   return function() {
     return new Promise((resolve, reject) => {
