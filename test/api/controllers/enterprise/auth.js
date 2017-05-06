@@ -25,6 +25,7 @@ describe('GET /account/permissions', function() {
   });
 
   it('should have directoryAdmin flag set when it is a directory admin', function(done) {
+    mockAuthHandler.handler.loggedIn = true;
     mockAuthHandler.handler.isDirectoryAdmin = true;
 
     requestUtil.performGetRequest(url)()
@@ -36,6 +37,7 @@ describe('GET /account/permissions', function() {
   });
 
   it('should have directoryAdmin flag set to false when not a directory admin', function(done) {
+    mockAuthHandler.handler.loggedIn = true;
     mockAuthHandler.handler.isDirectoryAdmin = false;
 
     requestUtil.performGetRequest(url)()
@@ -47,6 +49,7 @@ describe('GET /account/permissions', function() {
   });
 
   it('should return list of authenticated enterprises when not a directory admin', function(done) {
+    mockAuthHandler.handler.loggedIn = true;
     mockAuthHandler.handler.isDirectoryAdmin = false;
     mockAuthHandler.handler.authenticatedEnterprises = ['1', '2', '3'];
 

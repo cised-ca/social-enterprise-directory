@@ -13,20 +13,22 @@ function buildGetRequest(url, statusCode) {
       .expect(statusCode);
 }
 
-module.exports.buildPostRequest = function(url) {
+module.exports.buildPostRequest = function(url, statusCode) {
+  statusCode = statusCode || 201;
   return request(App)
       .post(URL_PREFIX + url)
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(201);
+      .expect(statusCode);
 };
 
-module.exports.buildPatchRequest = function(url) {
+module.exports.buildPatchRequest = function(url, statusCode) {
+  statusCode = statusCode || 200;
   return request(App)
       .patch(URL_PREFIX + url)
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200);
+      .expect(statusCode);
 };
 
 module.exports.performGetRequest = function(url, statusCode) {

@@ -7,19 +7,19 @@ module.exports.handler = {
     return this.isDirectoryAdmin;
   },
   isRequestEnterpriseAdmin: function() {
-    return this.isEnterpriseAdmin;
+    return (this.isDirectoryAdmin || this.isEnterpriseAdmin);
   },
   getAuthenticatedEnterprisesByRequest: function(){ return this.authenticatedEnterprises; },
 
-  loggedIn: true,
-  isDirectoryAdmin: true,
-  isEnterpriseAdmin: true,
+  loggedIn: false,
+  isDirectoryAdmin: false,
+  isEnterpriseAdmin: false,
   authenticatedEnterprises: []
 };
 
 module.exports.reset = function() {
-  this.handler.loggedIn = true;
-  this.handler.isDirectoryAdmin = true;
-  this.handler.isEnterpriseAdmin = true;
+  this.handler.loggedIn = false;
+  this.handler.isDirectoryAdmin = false;
+  this.handler.isEnterpriseAdmin = false;
   this.handler.authenticatedEnterprises = [];
 };

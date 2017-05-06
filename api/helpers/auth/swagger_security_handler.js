@@ -11,7 +11,7 @@ function authenticateDirectoryAdmin(req, res, next) {
 function authenticateEnterpriseAdmin(req, res, next) {
   let enterpriseId = extractExterpriseFromRequest(req);
   if (adminChecker.isRequestEnterpriseAdmin(req, enterpriseId)) {
-    next();
+    return next();
   }
   handleNotAuthorized(res);
 }

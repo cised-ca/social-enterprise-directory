@@ -244,8 +244,8 @@ paths:
       consumes:
         - application/merge-patch+json
       description: JSON Merge Patch style edit request for the enteprise
-      #security:
-      #  - oauth-directory-admin: []
+      security:
+        - oauth-directory-admin: []
       # call this method name on the controller
       operationId: editEnterprise
       parameters:
@@ -273,6 +273,8 @@ paths:
     x-swagger-router-controller: enterprise.controller
     get:
       description: Returns a list of administrators for this enterprise
+      security:
+        - oauth-enterprise-admin: []
       # call this method name on the controller
       operationId: getEnterpriseAdmins
       parameters:
@@ -297,8 +299,8 @@ paths:
       consumes:
         - application/merge-patch+json
       description: JSON Merge Patch style edit request for the enteprise private info
-      #security:
-      #  - oauth-directory-admin: []
+      security:
+        - oauth-enterprise-admin: []
       # call this method name on the controller
       operationId: editEnterprisePrivateFields
       parameters:

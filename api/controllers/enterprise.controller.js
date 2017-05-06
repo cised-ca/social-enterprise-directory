@@ -156,10 +156,6 @@ module.exports.getOneEnterprisePublic = function(req, res) {
 };
 
 module.exports.createEnterprise = function(req, res) {
-  if (conf.get('env') != 'test') {
-    res.status(403).json({'message': 'Not supported yet'});
-    return;
-  }
   let enterprise = req.swagger.params.Enterprise.value;
   let publicEnterprise;
   let privateEnterprise;
@@ -228,11 +224,6 @@ module.exports.getEnterpriseLogo = function(req, res) {
 
 
 module.exports.editEnterprise = function(req, res) {
-  if (conf.get('env') != 'test') {
-    res.status(403).json({'message': 'Not supported yet'});
-    return;
-  }
-
   let id = req.swagger.params.id.value;
   let mergeRequest = req.swagger.params.EnterpriseMerge.value;
 
@@ -288,11 +279,6 @@ module.exports.getEnterpriseAdmins = function(req, res) {
 };
 
 module.exports.editEnterprisePrivateFields = function(req, res) {
-  if (conf.get('env') != 'test') {
-    res.status(403).json({'message': 'Not supported yet'});
-    return;
-  }
-
   let id = req.swagger.params.id.value;
   let mergeRequest = req.swagger.params.EnterpriseMerge.value;
 

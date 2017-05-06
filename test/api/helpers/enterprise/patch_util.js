@@ -5,27 +5,27 @@ const postUtil = require('../../helpers/enterprise/post_util');
 
 const baseURL = '/enterprise/';
 
-module.exports.editEnterprise1 = function(enterpriseModifications) {
+module.exports.editEnterprise1 = function(enterpriseModifications, statusCode) {
   return new Promise( (resolve) => {
-    editEnterprise(resolve, baseURL + postUtil.getTestEnterprise1Id(), enterpriseModifications);
+    editEnterprise(resolve, baseURL + postUtil.getTestEnterprise1Id(), enterpriseModifications, statusCode);
   });
 };
 
-module.exports.editEnterprise2 = function(enterpriseModifications) {
+module.exports.editEnterprise2 = function(enterpriseModifications, statusCode) {
   return new Promise( (resolve) => {
-    editEnterprise(resolve, baseURL + postUtil.getTestEnterprise2Id(), enterpriseModifications);
+    editEnterprise(resolve, baseURL + postUtil.getTestEnterprise2Id(), enterpriseModifications, statusCode);
   });
 };
 
-module.exports.editEnterprise1Admins = function(enterpriseModifications) {
+module.exports.editEnterprise1Admins = function(enterpriseModifications, statusCode) {
   return new Promise( (resolve) => {
-    editEnterprise(resolve, baseURL + postUtil.getTestEnterprise1Id() + '/admin', enterpriseModifications);
+    editEnterprise(resolve, baseURL + postUtil.getTestEnterprise1Id() + '/admin', enterpriseModifications, statusCode);
   });
 };
 
 
-function editEnterprise(resolve, url, enterpriseModifications) {
-  requestUtil.buildPatchRequest(url)
+function editEnterprise(resolve, url, enterpriseModifications, statusCode) {
+  requestUtil.buildPatchRequest(url, statusCode)
     .send(enterpriseModifications)
     .end( function(err, res) {
       if (err) {
