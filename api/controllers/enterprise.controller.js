@@ -9,6 +9,7 @@ const enterpriseLogoModel = mongoose.model('EnterpriseLogo');
 const enterpriseAdapter = require('./enterprise.adapter');
 const SUPPORTED_LANGUAGES = require('../helpers/language/constants').SUPPORTED_LANGUAGES;
 const DEFAULT_LANGUAGE = require('../helpers/language/constants').DEFAULT_LANGUAGE;
+const SUPPORTED_IMAGE_TYPES = ['image/png', 'image/gif', 'image/jpeg', 'image/svg+xml'];
 
 const ENTERPRISE_CACHE_CONTROL = conf.get('enterpriseCacheControl');
 
@@ -232,31 +233,6 @@ module.exports.deleteEnterprise = function(req, res) {
     });
 };
 
-module.exports.getEnterpriseLogo = function(req, res) {
-  let id = req.swagger.params.id.value;
-  enterpriseLogoModel
-    .findOne({enterpriseId : id})
-    .then( dbLogo => {
-      if (!dbLogo) {
-        return Promise.reject({NotFoundError: true});
-      }
-
-      res.set('Content-Type', dbLogo.contentType);
-      res.set('Cache-Control', 'max-age=' + ENTERPRISE_CACHE_CONTROL);
-      res.status(200).send(dbLogo.image);
-    })
-    .catch( err => {
-      if (err.NotFoundError) {
-        logger.info('Enterprise logo not found for id ', id);
-        res.status(404).json({'message': 'Enterprise logo not found for id ' + id});
-        return;
-      }
-      logger.error('Error finding enterprise logo', id, ':', err);
-      res.status(500).json({'message': err});
-    });
-};
-
-
 module.exports.editEnterprise = function(req, res) {
   let id = req.swagger.params.id.value;
   let mergeRequest = req.swagger.params.EnterpriseMerge.value;
@@ -343,6 +319,134 @@ module.exports.editEnterprisePrivateFields = function(req, res) {
         return;
       }
       logger.error('Error updating enterprise admins', id, ':', err);
+      res.status(500).json({'message': err});
+    });
+};
+
+module.exports.getEnterpriseLogo = function(req, res) {
+  let id = req.swagger.params.id.value;
+  enterpriseLogoModel
+    .findOne({enterpriseId : id})
+    .then( dbLogo => {
+      if (!dbLogo) {
+        return Promise.reject({NotFoundError: true});
+      }
+
+      res.set('Content-Type', dbLogo.contentType);
+      res.set('Cache-Control', 'max-age=' + ENTERPRISE_CACHE_CONTROL);
+      res.status(200).send(dbLogo.image);
+    })
+    .catch( err => {
+      if (err.NotFoundError) {
+        logger.info('Enterprise logo not found for id ', id);
+        res.status(404).json({'message': 'Enterprise logo not found for id ' + id});
+        return;
+      }
+      logger.error('Error finding enterprise logo', id, ':', err);
+      res.status(500).json({'message': err});
+    });
+};
+
+function validateLogoFileType(contentType, res) {
+  contentType = contentType.toLowerCase();
+  if (!SUPPORTED_IMAGE_TYPES.includes(contentType)) {
+    res.status(400).json({
+      message: 'Specified content type is not supported. Supported values: ' +
+      SUPPORTED_IMAGE_TYPES
+    });
+    return false;
+  }
+  return true;
+}
+
+module.exports.createEnterpriseLogo = function(req, res) {
+  let id = req.swagger.params.id.value;
+  let logoParam = req.swagger.params.logo.value;
+  let contentType = logoParam.content_type;
+  if (!validateLogoFileType(contentType, res)) {
+    return;
+  }
+
+  let dbLogo = {
+    enterpriseId: new mongoose.mongo.ObjectId(id),
+    image: Buffer.from(logoParam.logo, 'base64'),
+    contentType: contentType
+  };
+
+  enterpriseLogoModel
+    .create(dbLogo)
+    .then( () => {
+      res.status(201).send({});
+    })
+    .catch( err => {
+      logger.error('Error creating enterprise logo', id, ':', err);
+      res.status(500).json({'message': err});
+    });
+};
+
+
+module.exports.editEnterpriseLogo = function(req, res) {
+  let id = req.swagger.params.id.value;
+  let logoParam = req.swagger.params.logo.value;
+  let contentType = logoParam.content_type;
+  if (!validateLogoFileType(contentType, res)) {
+    return;
+  }
+
+  let updatedLogo = {
+    enterpriseId: new mongoose.mongo.ObjectId(id),
+    image: Buffer.from(logoParam.logo, 'base64'),
+    contentType: contentType
+  };
+
+  enterpriseLogoModel
+    .find({enterpriseId : id})
+    .then(dbLogo => {
+      if (!dbLogo) {
+        return Promise.reject({NotFoundError: true});
+      }
+      return Promise.resolve(dbLogo);
+    })
+    .then(() => {
+      return enterpriseLogoModel.findOneAndUpdate({enterpriseId : id}, updatedLogo);
+    })
+    .then(() => {
+      res.status(200).json({});
+    })
+    .catch(err => {
+      if (err.NotFoundError) {
+        logger.info('Enterprise logo not found for id ', id);
+        res.status(404).json({'message': 'Enterprise logo not found for id ' + id});
+        return;
+      }
+      logger.error('Error updating enterprise logo', id, ':', err);
+      res.status(500).json({'message': err});
+    });
+};
+
+module.exports.deleteEnterpriseLogo = function(req, res) {
+  let id = req.swagger.params.id.value;
+  enterpriseLogoModel
+    .find({enterpriseId : id})
+    .then(dbLogo => {
+      if (!dbLogo) {
+        return Promise.reject({NotFoundError: true});
+      }
+      return Promise.resolve(dbLogo);
+    })
+    .then(() => {
+      return enterpriseLogoModel.remove({enterpriseId : id});
+    })
+    .then(() => {
+      res.status(200).json({});
+    })
+    .catch(err => {
+      if (err.NotFoundError) {
+        logger.info('Enterprise logo not found for id ', id);
+        res.status(404).json({'message': 'Enterprise logo not found for id ' + id});
+        return;
+      }
+      logger.error('Error deleting enterprise logo', id, ':', err);
       res.status(500).json({'message': err});
     });
 };

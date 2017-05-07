@@ -76,3 +76,21 @@ function postEnterprise(resolve, enterprise, verifyMethod, statusCode) {
       }
     });
 }
+
+module.exports.postLogo = function(enterpriseId, contentType, logoData, statusCode) {
+  return new Promise( (resolve) => {
+    let logoURL = url + '/' + enterpriseId + '/logo';
+    requestUtil.buildPostRequest(logoURL, statusCode)
+    .send({
+      content_type: contentType,
+      logo: new Buffer(logoData).toString('base64')
+    })
+    .end( function(err, res) {
+      if (err) {
+        logger.error(res.body);
+        should.not.exist(err);
+      }
+      resolve();
+    });
+  });
+};

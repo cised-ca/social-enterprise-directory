@@ -30,3 +30,19 @@ function deleteEnterprise(resolve, url, statusCode) {
       }
     });
 }
+
+module.exports.deleteLogo = function(enterpriseId, statusCode) {
+  return new Promise( (resolve, reject) => {
+    let logoURL = baseURL + enterpriseId + '/logo';
+    requestUtil.buildDeleteRequest(logoURL, statusCode)
+      .send()
+      .end( function(err, res) {
+        if (err) {
+          logger.error(res.body);
+          reject(err);
+        }
+        should.not.exist(err);
+        resolve();
+      });
+  });
+};
