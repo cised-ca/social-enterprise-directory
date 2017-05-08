@@ -1,4 +1,5 @@
 const should = require('should');
+const logger = require('../../../../lib/logger');
 const testEnterprise1 = require('../../helpers/data/enterprise/testEnterprise1_complete');
 const testEnterprise2 = require('../../helpers/data/enterprise/testEnterprise2_complete');
 const testEnterprise3 = require('../../helpers/data/enterprise/testEnterprise3_complete');
@@ -32,6 +33,12 @@ module.exports.postTestEnterprise3 = function() {
   });
 };
 
+module.exports.postTestEnterprise1ExpectError = function(statusCode) {
+  return new Promise( (resolve) => {
+    postEnterprise(resolve, testEnterprise1, null, statusCode);
+  });
+};
+
 module.exports.postAllEnterprises = function() {
   return new Promise ( resolve => {
     module.exports.postTestEnterprise1()
@@ -52,13 +59,18 @@ module.exports.getTestEnterprise3Id = function() {
   return postIds[testEnterprise3[DEFAULT_LANGUAGE]['name']];
 };
 
-function postEnterprise(resolve, enterprise, verifyMethod) {
-  requestUtil.buildPostRequest(url)
+function postEnterprise(resolve, enterprise, verifyMethod, statusCode) {
+  requestUtil.buildPostRequest(url, statusCode)
     .send(enterprise)
     .end( function(err, res) {
+      if (err) {
+        logger.error(res.body);
+      }
       should.not.exist(err);
-      verifyMethod(res.body);
-      postIds[enterprise[DEFAULT_LANGUAGE]['name']] = res.body['id'];
+      if (verifyMethod) {
+        verifyMethod(res.body);
+        postIds[enterprise[DEFAULT_LANGUAGE]['name']] = res.body['id'];
+      }
       if (resolve) {
         resolve();
       }

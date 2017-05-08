@@ -1081,6 +1081,16 @@
       "from": "json5@0.4.0",
       "resolved": "https://registry.npmjs.org/json5/-/json5-0.4.0.tgz"
     },
+    "json8": {
+      "version": "0.9.2",
+      "from": "json8@>=0.9.0 <0.10.0",
+      "resolved": "https://registry.npmjs.org/json8/-/json8-0.9.2.tgz"
+    },
+    "json8-merge-patch": {
+      "version": "1.0.0",
+      "from": "json8-merge-patch@latest",
+      "resolved": "https://registry.npmjs.org/json8-merge-patch/-/json8-merge-patch-1.0.0.tgz"
+    },
     "jsonify": {
       "version": "0.0.0",
       "from": "jsonify@>=0.0.0 <0.1.0",
