@@ -70,6 +70,6 @@ let oauthConfig = convict({
 });
 
 oauthConfig.loadFile('./config/oauth/oauth.json');
-oauthConfig.validate({strict: true});
+oauthConfig.validate({allowed: 'strict'});
 
 module.exports = oauthConfig;
