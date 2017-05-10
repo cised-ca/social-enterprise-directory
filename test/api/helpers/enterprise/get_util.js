@@ -23,6 +23,18 @@ function getEnterpriseById(language, getIdFunc, verifyFunc) {
   });
 }
 
+function getEnterpriseByIdExpectError(statusCode, getIdFunc) {
+  return new Promise( (resolve) => {
+    let fullURL = url + getIdFunc();
+    requestUtil.performGetRequest(fullURL, statusCode)()
+    .then(() => {resolve();})
+    .catch( (err) => {
+      logger.error(err);
+      should.fail(err);
+    });
+  });
+}
+
 function getEnterpriseBody(language, getIdFunc) {
   return new Promise( (resolve) => {
     let fullURL = url + getIdFunc();
@@ -54,6 +66,32 @@ function getEnterpriseAdminsBody(getIdFunc) {
   });
 }
 
+module.exports.getLogo = function(enterpriseId, contentType) {
+  return new Promise( (resolve) => {
+    let fullURL = url + enterpriseId + '/logo';
+    requestUtil.performGetRequestWithContentType(fullURL, contentType)()
+    .then( res => {
+      resolve(res.body);
+    })
+    .catch( (err) => {
+      logger.error(err);
+      should.fail(err);
+    });
+  });
+};
+
+module.exports.getLogoExpectErrorCode = function(enterpriseId, statusCode) {
+  return new Promise( (resolve) => {
+    let fullURL = url + enterpriseId + '/logo';
+    requestUtil.performGetRequest(fullURL, statusCode)()
+    .then(() => {resolve();})
+    .catch( (err) => {
+      logger.error(err);
+      should.fail(err);
+    });
+  });
+};
+
 module.exports.getByIdEnterprise1 = function (language) {
   return getEnterpriseById(language, postUtil.getTestEnterprise1Id,
                       enterpriseVerifier.verifyEnterprise1Public);
@@ -67,6 +105,18 @@ module.exports.getByIdEnterprise2 = function (language) {
 module.exports.getByIdEnterprise3 = function (language) {
   return getEnterpriseById(language, postUtil.getTestEnterprise3Id,
                       enterpriseVerifier.verifyEnterprise3Public);
+};
+
+module.exports.getByIdEnterprise1ExpectError = function (statusCode) {
+  return getEnterpriseByIdExpectError(statusCode, postUtil.getTestEnterprise1Id);
+};
+
+module.exports.getByIdEnterprise2ExpectError = function (statusCode) {
+  return getEnterpriseByIdExpectError(statusCode, postUtil.getTestEnterprise2Id);
+};
+
+module.exports.getByIdEnterprise3ExpectError = function (statusCode) {
+  return getEnterpriseByIdExpectError(statusCode, postUtil.getTestEnterprise3Id);
 };
 
 module.exports.getEnterprise1 = function (language) {

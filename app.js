@@ -10,6 +10,7 @@ require('./api/helpers/auth/directory_admin_bootstrapper').bootstrap();
 const passport = require('./api/helpers/auth/passport_factory');
 var SwaggerExpress = require('swagger-express-mw');
 var app = require('express')();
+const bodyParser = require('body-parser');
 module.exports = app; // for testing
 
 const session = require('express-session');
@@ -31,6 +32,9 @@ app.use(session(sess));
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+// increase request size to 1MB to support logos
+app.use(bodyParser.json({limit: '1mb'}));
 
 var expressConfig = {
   appRoot: __dirname // required config
