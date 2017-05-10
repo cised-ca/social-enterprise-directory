@@ -55,6 +55,6 @@ let env = conf.get('env');
 conf.loadFile('./config/' + env + '.json');
 
 // Perform validation
-conf.validate({strict: true});
+conf.validate({allowed: 'strict'});
 
 module.exports = conf;

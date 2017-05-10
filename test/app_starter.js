@@ -17,7 +17,7 @@ function forceTestEnvironment() {
   const conf = require('../config/config.js');
   conf.set('env', 'test');
   conf.loadFile('config/test.json');
-  conf.validate({strict: true});
+  conf.validate({allowed: 'strict'});
 }
 
 function installMockAuthHandler() {
