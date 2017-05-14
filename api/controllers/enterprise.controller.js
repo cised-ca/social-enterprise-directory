@@ -24,15 +24,19 @@ function locationParamToPointObject(locationSearch) {
   return point;
 }
 
-function processDirectoryResults(res, dbEnterprises, language) {
+function processDirectoryResults(res, dbEnterprises, language, page, pages) {
   if (!dbEnterprises) {
     res.status(200).json({});
     return;
   }
 
-  let tranformedEnterprises = enterpriseAdapter.transformDbEnterprisesToApiFormatForLanguage(dbEnterprises, language);
+  let transformedEnterprises = enterpriseAdapter.transformDbEnterprisesToApiFormatForLanguage(dbEnterprises, language);
   res.set('Cache-Control', 'max-age=' + ENTERPRISE_CACHE_CONTROL);
-  res.status(200).json(tranformedEnterprises);
+  res.status(200).json({
+    enterprises: transformedEnterprises,
+    page: page,
+    pages: pages
+  });
 }
 
 function performLocationSearch(res, locationSearch, limit, offset, language) {
@@ -83,8 +87,8 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
   let search = req.swagger.params.q.value;
   let locationSearch = req.swagger.params.at.value;
 
-  let limit = req.swagger.params.count.value || 500;
-  let offset = req.swagger.params.offset.value || 0;
+  let limit = req.swagger.params.count.value || 25;
+  let page = req.swagger.params.page.value || 1;
 
   let lang = getLanguage(req);
 
@@ -98,17 +102,17 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
     return;
   }
 
-  let keywords = search.replace(/\+/g, ' ');
-  query = enterpriseInternationalPublicModel
-    .find(
-      { $text : { $search : keywords } },
-      { score : { $meta: 'textScore' } })
-    .sort({ score : { $meta : 'textScore' } });
+  let queryOptions = {
+    limit: limit,
+    page: page
+  };
 
-  query
-    .limit(limit)
-    .skip(offset)
-    .then(dbEnterprises => processDirectoryResults(res, dbEnterprises, lang))
+  enterpriseInternationalPublicModel.paginate(query, queryOptions)
+    .then(results => {
+      let dbEnterprises = results.docs;
+
+      processDirectoryResults(res, dbEnterprises, lang, results.page, results.pages);
+    })
     .catch(err => {
       logger.error('Error finding enterprises ' + err);
       res.status(500).json({'message': err});
