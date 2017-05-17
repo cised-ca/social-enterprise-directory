@@ -66,15 +66,22 @@ function performLocationSearch(res, locationSearch, limit, offset, language) {
 }
 
 
-function performBrowseDirectory(res, limit, offset, language) {
+function performBrowseDirectory(res, limit, page, language) {
   let sortValue = {};
   sortValue[language + '.lowercase_name'] = 1;
-  enterpriseInternationalPublicModel
-    .find()
-    .sort(sortValue)
-    .limit(limit)
-    .skip(offset)
-    .then(dbEnterprises => processDirectoryResults(res, dbEnterprises, language))
+
+  let queryOptions = {
+    limit: limit,
+    page: page,
+    sort: sortValue
+  };
+
+  enterpriseInternationalPublicModel.paginate("", queryOptions)
+    .then(results => {
+      let dbEnterprises = results.docs;
+
+      processDirectoryResults(res, dbEnterprises, language, results.page, results.pages);
+    })
     .catch(err => {
       logger.error('Error browsing enterprises ' + err);
       res.status(500).json({'message': err});
@@ -82,8 +89,6 @@ function performBrowseDirectory(res, limit, offset, language) {
 }
 
 module.exports.getAllEnterprisesPublic = function(req, res) {
-  let query;
-
   let search = req.swagger.params.q.value;
   let locationSearch = req.swagger.params.at.value;
 
@@ -98,13 +103,19 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
   }
 
   if (!search) {
-    performBrowseDirectory(res, limit, offset, lang);
+    performBrowseDirectory(res, limit, page, lang);
     return;
   }
 
   let queryOptions = {
     limit: limit,
     page: page
+  };
+
+  let query = {
+    '$text': {
+      '$search': search
+    }
   };
 
   enterpriseInternationalPublicModel.paginate(query, queryOptions)
