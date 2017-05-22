@@ -2,6 +2,7 @@ const logger = require('../../lib/logger');
 const mongoose = require('mongoose');
 const SUPPORTED_LANGUAGES = require('../helpers/language/constants').SUPPORTED_LANGUAGES;
 const mongoosePaginate = require('mongoose-paginate');
+const mongoosePaginateAggregate = require('mongoose-aggregate-paginate');
 
 let directoryAdministratorsSchema = new mongoose.Schema({
   email: String
@@ -100,6 +101,7 @@ let enterprisePublicSchema = new mongoose.Schema({
 }, { _id : false });
 
 enterprisePublicSchema.plugin(mongoosePaginate);
+enterprisePublicSchema.plugin(mongoosePaginateAggregate);
 
 // Create index for sorting by name
 enterprisePublicSchema.index({lowercase_name: 1});
@@ -143,6 +145,7 @@ SUPPORTED_LANGUAGES.forEach(lang => {
 let enterpriseInternationalPublicSchema = new mongoose.Schema(internationalFields);
 
 enterpriseInternationalPublicSchema.plugin(mongoosePaginate);
+enterpriseInternationalPublicSchema.plugin(mongoosePaginateAggregate);
 
 enterpriseInternationalPublicSchema.index({ locations : '2dsphere' });
 

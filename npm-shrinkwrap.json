@@ -97,12 +97,12 @@
     },
     "bson": {
       "version": "1.0.4",
-      "from": "bson@>=1.0.4 <1.1.0",
+      "from": "bson@>=1.0.1 <1.1.0",
       "resolved": "https://registry.npmjs.org/bson/-/bson-1.0.4.tgz"
     },
     "buffer-shims": {
       "version": "1.0.0",
-      "from": "buffer-shims@>=1.0.0 <1.1.0",
+      "from": "buffer-shims@>=1.0.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/buffer-shims/-/buffer-shims-1.0.0.tgz"
     },
     "busboy": {
@@ -159,17 +159,17 @@
     },
     "commander": {
       "version": "2.9.0",
-      "from": "commander@>=2.9.0 <3.0.0",
+      "from": "commander@2.9.0",
       "resolved": "https://registry.npmjs.org/commander/-/commander-2.9.0.tgz"
     },
     "component-emitter": {
       "version": "1.2.1",
-      "from": "component-emitter@>=1.2.0 <2.0.0",
+      "from": "component-emitter@>=1.2.0 <1.3.0",
       "resolved": "https://registry.npmjs.org/component-emitter/-/component-emitter-1.2.1.tgz"
     },
     "concat-stream": {
       "version": "1.6.0",
-      "from": "concat-stream@>=1.5.0 <2.0.0",
+      "from": "concat-stream@>=1.4.6 <2.0.0",
       "resolved": "https://registry.npmjs.org/concat-stream/-/concat-stream-1.6.0.tgz"
     },
     "config": {
@@ -179,7 +179,7 @@
     },
     "connect-mongo": {
       "version": "1.3.2",
-      "from": "connect-mongo@1.3.2",
+      "from": "connect-mongo@latest",
       "resolved": "https://registry.npmjs.org/connect-mongo/-/connect-mongo-1.3.2.tgz"
     },
     "content-disposition": {
@@ -612,7 +612,7 @@
     },
     "json-stable-stringify": {
       "version": "1.0.1",
-      "from": "json-stable-stringify@>=1.0.1 <2.0.0",
+      "from": "json-stable-stringify@>=1.0.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/json-stable-stringify/-/json-stable-stringify-1.0.1.tgz"
     },
     "json-stringify-safe": {
@@ -664,7 +664,7 @@
     },
     "lodash": {
       "version": "4.17.4",
-      "from": "lodash@>=4.14.0 <5.0.0",
+      "from": "lodash@>=4.0.0 <5.0.0",
       "resolved": "https://registry.npmjs.org/lodash/-/lodash-4.17.4.tgz"
     },
     "lodash.get": {
@@ -772,7 +772,7 @@
     },
     "mkdirp": {
       "version": "0.5.1",
-      "from": "mkdirp@>=0.5.1 <0.6.0",
+      "from": "mkdirp@>=0.5.0 <0.6.0",
       "resolved": "https://registry.npmjs.org/mkdirp/-/mkdirp-0.5.1.tgz"
     },
     "mongodb": {
@@ -790,9 +790,14 @@
       "from": "mongoose@4.9.8",
       "resolved": "https://registry.npmjs.org/mongoose/-/mongoose-4.9.8.tgz"
     },
+    "mongoose-aggregate-paginate": {
+      "version": "1.0.5",
+      "from": "mongoose-aggregate-paginate@>=1.0.5 <2.0.0",
+      "resolved": "https://registry.npmjs.org/mongoose-aggregate-paginate/-/mongoose-aggregate-paginate-1.0.5.tgz"
+    },
     "mongoose-paginate": {
       "version": "5.0.3",
-      "from": "mongoose-paginate@>=5.0.3 <6.0.0",
+      "from": "mongoose-paginate@latest",
       "resolved": "https://registry.npmjs.org/mongoose-paginate/-/mongoose-paginate-5.0.3.tgz",
       "dependencies": {
         "bluebird": {
@@ -908,7 +913,7 @@
     },
     "os-homedir": {
       "version": "1.0.2",
-      "from": "os-homedir@1.0.2",
+      "from": "os-homedir@>=1.0.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/os-homedir/-/os-homedir-1.0.2.tgz"
     },
     "parseurl": {
@@ -918,17 +923,17 @@
     },
     "passport": {
       "version": "0.3.2",
-      "from": "passport@0.3.2",
+      "from": "passport@latest",
       "resolved": "https://registry.npmjs.org/passport/-/passport-0.3.2.tgz"
     },
     "passport-facebook": {
       "version": "2.1.1",
-      "from": "passport-facebook@2.1.1",
+      "from": "passport-facebook@latest",
       "resolved": "https://registry.npmjs.org/passport-facebook/-/passport-facebook-2.1.1.tgz"
     },
     "passport-instagram": {
       "version": "1.0.0",
-      "from": "passport-instagram@1.0.0",
+      "from": "passport-instagram@latest",
       "resolved": "https://registry.npmjs.org/passport-instagram/-/passport-instagram-1.0.0.tgz"
     },
     "passport-oauth1": {
@@ -948,7 +953,7 @@
     },
     "passport-twitter": {
       "version": "1.0.4",
-      "from": "passport-twitter@1.0.4",
+      "from": "passport-twitter@latest",
       "resolved": "https://registry.npmjs.org/passport-twitter/-/passport-twitter-1.0.4.tgz"
     },
     "path-loader": {
@@ -1122,7 +1127,7 @@
     },
     "statuses": {
       "version": "1.3.1",
-      "from": "statuses@>=1.3.1 <1.4.0",
+      "from": "statuses@>=1.3.0 <1.4.0",
       "resolved": "https://registry.npmjs.org/statuses/-/statuses-1.3.1.tgz"
     },
     "streamsearch": {
@@ -1229,12 +1234,12 @@
     },
     "typedarray": {
       "version": "0.0.6",
-      "from": "typedarray@>=0.0.6 <0.0.7",
+      "from": "typedarray@>=0.0.5 <0.1.0",
       "resolved": "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz"
     },
     "uid-safe": {
       "version": "2.1.4",
-      "from": "uid-safe@>=2.1.4 <2.2.0",
+      "from": "uid-safe@>=2.1.3 <2.2.0",
       "resolved": "https://registry.npmjs.org/uid-safe/-/uid-safe-2.1.4.tgz"
     },
     "uid2": {

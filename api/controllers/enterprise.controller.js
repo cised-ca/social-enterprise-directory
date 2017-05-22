@@ -39,32 +39,42 @@ function processDirectoryResults(res, dbEnterprises, language, page, pages) {
   });
 }
 
-function performLocationSearch(res, locationSearch, limit, offset, language) {
+function performLocationSearch(res, locationSearch, limit, page, language) {
   let point = locationParamToPointObject(locationSearch);
   if (!point) {
     res.status(400).json({'message': 'Invalid location parameter'});
     return;
   }
 
-  enterpriseInternationalPublicModel.aggregate(
-    [
-      { '$geoNear': {
-        'near': point,
-        'spherical': true,
-        'distanceField': 'dis'
-      }},
-      { '$skip': offset },
-      { '$limit': limit }
-    ])
-  .then(dbEnterprises => {
-    processDirectoryResults(res, dbEnterprises, language);
-  })
-  .catch(err => {
-    logger.error('Error finding enterprises ' + err);
-    res.status(500).json({'message': err});
-  });
-}
+  let aggregate = enterpriseInternationalPublicModel.aggregate(
+      [{
+        '$geoNear': {
+          'near': point,
+          'spherical': true,
+          'distanceField': 'dis'
+        }
+      }]
+    );
 
+  let options = {
+    page: page,
+    limit: limit
+  };
+
+  enterpriseInternationalPublicModel
+    .aggregatePaginate(aggregate, options, function(err, results, pageCount, count) {
+      if (err) {
+        res.status(500).json({'message': err});
+        logger.error('Error finding enterprises ' + err);
+
+        return;
+      }
+
+      let dbEnterprises = results;
+
+      processDirectoryResults(res, dbEnterprises, language, page, pageCount);
+    });
+}
 
 function performBrowseDirectory(res, limit, page, language) {
   let sortValue = {};
@@ -98,7 +108,7 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
   let lang = getLanguage(req);
 
   if (locationSearch) {
-    performLocationSearch(res, locationSearch, limit, offset, lang);
+    performLocationSearch(res, locationSearch, limit, page, lang);
     return;
   }
 
