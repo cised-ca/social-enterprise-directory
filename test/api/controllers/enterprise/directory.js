@@ -18,7 +18,7 @@ describe('GET /directory', function() {
   it('should return empty directory', function(done) {
     requestUtil.performGetRequest(url)()
     .then( res => {
-      res.body.should.be.empty();
+      res.body.enterprises.should.be.instanceof(Array).and.have.lengthOf(0);
     })
     .then(done)
     .catch(failTest(done));
@@ -28,7 +28,7 @@ describe('GET /directory', function() {
     postUtil.postTestEnterprise1()
     .then(requestUtil.performGetRequest(url))
     .then( res => {
-      enterpriseVerifier.verifyEnterprise1Public(res.body[0]);
+      enterpriseVerifier.verifyEnterprise1Public(res.body.enterprises[0]);
     })
     .then(done)
     .catch(failTest(done));
@@ -38,9 +38,9 @@ describe('GET /directory', function() {
     postUtil.postAllEnterprises()
     .then(requestUtil.performGetRequest(url))
     .then( res => {
-      enterpriseVerifier.verifyEnterprise3Public(res.body[0]);
-      enterpriseVerifier.verifyEnterprise1Public(res.body[1]);
-      enterpriseVerifier.verifyEnterprise2Public(res.body[2]);
+      enterpriseVerifier.verifyEnterprise3Public(res.body.enterprises[0]);
+      enterpriseVerifier.verifyEnterprise1Public(res.body.enterprises[1]);
+      enterpriseVerifier.verifyEnterprise2Public(res.body.enterprises[2]);
     })
     .then(done)
     .catch(failTest(done));
@@ -50,18 +50,18 @@ describe('GET /directory', function() {
     postUtil.postAllEnterprises()
     .then(requestUtil.performGetRequest(url + '?count=2'))
     .then( res => {
-      res.body.length.should.equal(2);
+      res.body.enterprises.length.should.equal(2);
     })
     .then(done)
     .catch(failTest(done));
   });
 
-  it('should offset enterprises when offset parameter set', function(done) {
+  it('should offset enterprises when page parameter set', function(done) {
     postUtil.postAllEnterprises()
-    .then(requestUtil.performGetRequest(url + '?count=1&offset=2'))
+    .then(requestUtil.performGetRequest(url + '?count=1&page=3'))
     .then( res => {
-      res.body.length.should.equal(1);
-      enterpriseVerifier.verifyArrayContainsEnterprise2(res.body);
+      res.body.enterprises.length.should.equal(1);
+      enterpriseVerifier.verifyArrayContainsEnterprise2(res.body.enterprises);
     })
     .then(done)
     .catch(failTest(done));
