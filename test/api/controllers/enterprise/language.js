@@ -51,7 +51,7 @@ describe('Testing internationalization', function() {
     postUtil.postTestEnterprise1()
     .then(requestUtil.performGetRequest(DIRECTORY_URL + '?lang=' + FRENCH))
     .then( res => {
-      enterpriseVerifier.verifyEnterprise1Public(res.body[0], FRENCH);
+      enterpriseVerifier.verifyEnterprise1Public(res.body.enterprises[0], FRENCH);
     })
     .then(done)
     .catch(failTest(done));
@@ -61,9 +61,9 @@ describe('Testing internationalization', function() {
     postUtil.postAllEnterprises()
     .then(requestUtil.performGetRequest(DIRECTORY_URL + '?lang=' + FRENCH))
     .then( res => {
-      enterpriseVerifier.verifyEnterprise3Public(res.body[0], FRENCH);
-      enterpriseVerifier.verifyEnterprise2Public(res.body[1], FRENCH);
-      enterpriseVerifier.verifyEnterprise1Public(res.body[2], FRENCH);
+      enterpriseVerifier.verifyEnterprise3Public(res.body.enterprises[0], FRENCH);
+      enterpriseVerifier.verifyEnterprise2Public(res.body.enterprises[1], FRENCH);
+      enterpriseVerifier.verifyEnterprise1Public(res.body.enterprises[2], FRENCH);
     })
     .then(done)
     .catch(failTest(done));
@@ -73,9 +73,9 @@ describe('Testing internationalization', function() {
     postUtil.postAllEnterprises()
     .then(requestUtil.performGetRequest(DIRECTORY_URL + '?at=45.425,-75.692&lang=' + FRENCH))
     .then( res => {
-      enterpriseVerifier.verifyEnterprise1Public(res.body[0], FRENCH);
-      enterpriseVerifier.verifyEnterprise2Public(res.body[1], FRENCH);
-      enterpriseVerifier.verifyArrayDoesNotContainEnterprise3(res.body);
+      enterpriseVerifier.verifyEnterprise1Public(res.body.enterprises[0], FRENCH);
+      enterpriseVerifier.verifyEnterprise2Public(res.body.enterprises[1], FRENCH);
+      enterpriseVerifier.verifyArrayDoesNotContainEnterprise3(res.body.enterprises);
     })
     .then(done)
     .catch(failTest(done));

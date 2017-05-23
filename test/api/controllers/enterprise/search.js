@@ -19,8 +19,8 @@ describe('Search /directory', function() {
     postUtil.postAllEnterprises()
     .then(requestUtil.performGetRequest(url + '?q=cycle'))
     .then( res => {
-      res.body.length.should.equal(1);
-      enterpriseVerifier.verifyArrayContainsEnterprise1(res.body);
+      res.body.enterprises.length.should.equal(1);
+      enterpriseVerifier.verifyArrayContainsEnterprise1(res.body.enterprises);
     })
     .then(done)
     .catch(failTest(done));
@@ -30,9 +30,9 @@ describe('Search /directory', function() {
     postUtil.postAllEnterprises()
     .then(requestUtil.performGetRequest(url + '?q=social'))
     .then( res => {
-      res.body.length.should.equal(2);
-      enterpriseVerifier.verifyArrayContainsEnterprise1(res.body);
-      enterpriseVerifier.verifyArrayContainsEnterprise2(res.body);
+      res.body.enterprises.length.should.equal(2);
+      enterpriseVerifier.verifyArrayContainsEnterprise1(res.body.enterprises);
+      enterpriseVerifier.verifyArrayContainsEnterprise2(res.body.enterprises);
     })
     .then(done)
     .catch(failTest(done));
@@ -43,9 +43,9 @@ describe('Search /directory', function() {
     postUtil.postAllEnterprises()
     .then(requestUtil.performGetRequest(url + '?q=cycle+good'))
     .then( res => {
-      res.body.length.should.equal(2);
-      enterpriseVerifier.verifyArrayContainsEnterprise1(res.body);
-      enterpriseVerifier.verifyArrayContainsEnterprise2(res.body);
+      res.body.enterprises.length.should.equal(2);
+      enterpriseVerifier.verifyArrayContainsEnterprise1(res.body.enterprises);
+      enterpriseVerifier.verifyArrayContainsEnterprise2(res.body.enterprises);
     })
     .then(done)
     .catch(failTest(done));
@@ -55,11 +55,11 @@ describe('Search /directory', function() {
     postUtil.postAllEnterprises()
     .then(requestUtil.performGetRequest(url + '?q=good+social'))
     .then( res => {
-      res.body.length.should.equal(2);
+      res.body.enterprises.length.should.equal(2);
 
       // expect results in this exact order
-      enterpriseVerifier.verifyEnterprise2Public(res.body[0]);
-      enterpriseVerifier.verifyEnterprise1Public(res.body[1]);
+      enterpriseVerifier.verifyEnterprise2Public(res.body.enterprises[0]);
+      enterpriseVerifier.verifyEnterprise1Public(res.body.enterprises[1]);
     })
     .then(done)
     .catch(failTest(done));
@@ -70,8 +70,8 @@ describe('Search /directory', function() {
     postUtil.postAllEnterprises()
     .then(requestUtil.performGetRequest(url + '?q=abhoney'))
     .then( res => {
-      res.body.length.should.equal(1);
-      enterpriseVerifier.verifyEnterprise1Public(res.body[0]);
+      res.body.enterprises.length.should.equal(1);
+      enterpriseVerifier.verifyEnterprise1Public(res.body.enterprises[0]);
     })
     .then(done)
     .catch(failTest(done));
