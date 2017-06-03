@@ -5,6 +5,7 @@ var logger = require('./lib/logger');
 logger.info('Running in NODE_ENV mode: ' + process.env.NODE_ENV);
 
 require('./api/data/db.js');
+require('./lib/lunr').init();
 require('./api/helpers/auth/directory_admin_bootstrapper').bootstrap();
 
 const passport = require('./api/helpers/auth/passport_factory');
