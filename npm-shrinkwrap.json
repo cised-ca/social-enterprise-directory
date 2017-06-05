@@ -682,6 +682,11 @@
       "from": "lodash.isequal@>=4.4.0 <5.0.0",
       "resolved": "https://registry.npmjs.org/lodash.isequal/-/lodash.isequal-4.5.0.tgz"
     },
+    "lunr-languages": {
+      "version": "0.0.4",
+      "from": "git+https://github.com/weixsong/lunr-languages.git#5361cb7b3249a77a08bb644f0ad7927a1d157abc",
+      "resolved": "git+https://github.com/weixsong/lunr-languages.git#5361cb7b3249a77a08bb644f0ad7927a1d157abc"
+    },
     "machine": {
       "version": "10.4.0",
       "from": "machine@>=10.3.1 <11.0.0",
