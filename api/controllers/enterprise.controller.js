@@ -49,14 +49,14 @@ function performLocationSearch(res, locationSearch, limit, page, language) {
   }
 
   let aggregate = enterpriseInternationalPublicModel.aggregate(
-      [{
-        '$geoNear': {
-          'near': point,
-          'spherical': true,
-          'distanceField': 'dis'
-        }
-      }]
-    );
+    [{
+      '$geoNear': {
+        'near': point,
+        'spherical': true,
+        'distanceField': 'dis'
+      }
+    }]
+  );
 
   let options = {
     page: page,
@@ -64,7 +64,7 @@ function performLocationSearch(res, locationSearch, limit, page, language) {
   };
 
   enterpriseInternationalPublicModel
-    .aggregatePaginate(aggregate, options, function(err, results, pageCount, count) {
+    .aggregatePaginate(aggregate, options, function(err, results, pageCount) {
       if (err) {
         res.status(500).json({'message': err});
         logger.error('Error finding enterprises ' + err);
@@ -88,7 +88,7 @@ function performBrowseDirectory(res, limit, page, language) {
     sort: sortValue
   };
 
-  enterpriseInternationalPublicModel.paginate("", queryOptions)
+  enterpriseInternationalPublicModel.paginate({}, queryOptions)
     .then(results => {
       let dbEnterprises = results.docs;
 
