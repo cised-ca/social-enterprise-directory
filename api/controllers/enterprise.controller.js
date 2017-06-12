@@ -13,6 +13,8 @@ const SUPPORTED_IMAGE_TYPES = ['image/png', 'image/gif', 'image/jpeg', 'image/sv
 
 const ENTERPRISE_CACHE_CONTROL = conf.get('enterpriseCacheControl');
 
+const lunr = require('../../lib/lunr');
+
 function locationParamToPointObject(locationSearch) {
   let [longStr, latStr] = locationSearch.split(',');
   let long = parseFloat(longStr);
@@ -47,14 +49,14 @@ function performLocationSearch(res, locationSearch, limit, page, language) {
   }
 
   let aggregate = enterpriseInternationalPublicModel.aggregate(
-      [{
-        '$geoNear': {
-          'near': point,
-          'spherical': true,
-          'distanceField': 'dis'
-        }
-      }]
-    );
+    [{
+      '$geoNear': {
+        'near': point,
+        'spherical': true,
+        'distanceField': 'dis'
+      }
+    }]
+  );
 
   let options = {
     page: page,
@@ -62,7 +64,7 @@ function performLocationSearch(res, locationSearch, limit, page, language) {
   };
 
   enterpriseInternationalPublicModel
-    .aggregatePaginate(aggregate, options, function(err, results, pageCount, count) {
+    .aggregatePaginate(aggregate, options, function(err, results, pageCount) {
       if (err) {
         res.status(500).json({'message': err});
         logger.error('Error finding enterprises ' + err);
@@ -86,7 +88,7 @@ function performBrowseDirectory(res, limit, page, language) {
     sort: sortValue
   };
 
-  enterpriseInternationalPublicModel.paginate("", queryOptions)
+  enterpriseInternationalPublicModel.paginate({}, queryOptions)
     .then(results => {
       let dbEnterprises = results.docs;
 
@@ -117,26 +119,34 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
     return;
   }
 
-  let queryOptions = {
+  let options = {
     limit: limit,
     page: page
   };
 
-  let query = {
-    '$text': {
-      '$search': search
-    }
-  };
+  let ids = lunr.search(search, lang);
 
-  enterpriseInternationalPublicModel.paginate(query, queryOptions)
-    .then(results => {
-      let dbEnterprises = results.docs;
+  // Return mongo results in the same order as the lunr results
+  // Note: requires mongodb v3.4+
+  // http://www.kamsky.org/stupid-tricks-with-mongodb/using-34-aggregation-to-return-documents-in-same-order-as-in-expression
+  let m = { '$match' : { '_id' : { '$in' : ids } } };
+  let a = { '$addFields' : { '__order' : { '$indexOfArray' : [ ids, '$_id' ] } } };
+  let s = { '$sort' : { '__order' : 1 } };
 
-      processDirectoryResults(res, dbEnterprises, lang, results.page, results.pages);
-    })
-    .catch(err => {
-      logger.error('Error finding enterprises ' + err);
-      res.status(500).json({'message': err});
+  let aggregate = enterpriseInternationalPublicModel.aggregate([m,a,s]);
+
+  enterpriseInternationalPublicModel
+    .aggregatePaginate(aggregate, options, (err, results, pageCount) => {
+      if (err) {
+        logger.error('Error finding enterprises ' + err);
+        res.status(500).json({'message': err});
+
+        return;
+      }
+
+      let dbEnterprises = results;
+
+      processDirectoryResults(res, dbEnterprises, lang, page, pageCount);
     });
 };
 
@@ -202,6 +212,9 @@ module.exports.createEnterprise = function(req, res) {
       return enterpriseInternationalPublicModel.create(publicEnterprise);
     })
     .then( dbPublicEnterprise => {
+      // Add public enterprise to lunr index
+      lunr.add(dbPublicEnterprise);
+
       // update private db entry with pointer to public entry
       enterpriseInternationalPrivateFieldsModel.findByIdAndUpdate(
         dbPublicEnterprise['private_info'],
@@ -245,6 +258,7 @@ module.exports.deleteEnterprise = function(req, res) {
       return enterpriseInternationalPublicModel.remove({_id : id});
     })
     .then(() => {
+      lunr.remove(id);
       res.status(200).json({});
     })
     .catch(err => {
@@ -279,6 +293,7 @@ module.exports.editEnterprise = function(req, res) {
         res.status(500).json({'message': 'Failed to update db'});
         return;
       }
+      lunr.update(id, result);
       res.status(200).json({});
     })
     .catch(err => {
