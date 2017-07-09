@@ -23,9 +23,51 @@ function getEnterpriseById(language, getIdFunc, verifyFunc) {
   });
 }
 
+function getEnterpriseByIdComplete(getIdFunc, verifyFunc) {
+  return new Promise( (resolve) => {
+    let fullURL = url + getIdFunc() + '/complete';
+    requestUtil.performGetRequest(fullURL)()
+    .then( res => {
+      verifyFunc(res.body);
+    })
+    .then(resolve)
+    .catch( (err) => {
+      logger.error(err);
+      should.fail(err);
+    });
+  });
+}
+
+function getPendingEnterpriseById(getIdFunc, verifyFunc) {
+  return new Promise( (resolve) => {
+    let fullURL = url + getIdFunc() + '/pending';
+    requestUtil.performGetRequest(fullURL)()
+    .then( res => {
+      verifyFunc(res.body);
+    })
+    .then(resolve)
+    .catch( (err) => {
+      logger.error(err);
+      should.fail(err);
+    });
+  });
+}
+
 function getEnterpriseByIdExpectError(statusCode, getIdFunc) {
   return new Promise( (resolve) => {
     let fullURL = url + getIdFunc();
+    requestUtil.performGetRequest(fullURL, statusCode)()
+    .then(() => {resolve();})
+    .catch( (err) => {
+      logger.error(err);
+      should.fail(err);
+    });
+  });
+}
+
+function getPendingEnterpriseByIdExpectError(statusCode, getIdFunc) {
+  return new Promise( (resolve) => {
+    let fullURL = url + getIdFunc() + '/pending';
     requestUtil.performGetRequest(fullURL, statusCode)()
     .then(() => {resolve();})
     .catch( (err) => {
@@ -41,6 +83,20 @@ function getEnterpriseBody(language, getIdFunc) {
     if (language) {
       fullURL += '?lang=' + language;
     }
+    requestUtil.performGetRequest(fullURL)()
+    .then( res => {
+      resolve(res.body);
+    })
+    .catch( (err) => {
+      logger.error(err);
+      should.fail(err);
+    });
+  });
+}
+
+function getPendingEnterpriseBody(getIdFunc) {
+  return new Promise( (resolve) => {
+    let fullURL = url + getIdFunc() + '/pending';
     requestUtil.performGetRequest(fullURL)()
     .then( res => {
       resolve(res.body);
@@ -129,4 +185,22 @@ module.exports.getEnterprise2 = function (language) {
 
 module.exports.getEnterprise1Admins = function () {
   return getEnterpriseAdminsBody(postUtil.getTestEnterprise1Id);
+};
+
+module.exports.getByIdEnterprise1Complete = function () {
+  return getEnterpriseByIdComplete(postUtil.getTestEnterprise1Id,
+                      enterpriseVerifier.verifyEnterprise1);
+};
+
+module.exports.getByIdPendingEnterprise1 = function () {
+  return getPendingEnterpriseById(postUtil.getTestEnterprise1Id,
+                      enterpriseVerifier.verifyEnterprise1);
+};
+
+module.exports.getPendingEnterprise1Body = function () {
+  return getPendingEnterpriseBody(postUtil.getTestEnterprise1Id);
+};
+
+module.exports.getByIdPendingEnterprise1ExpectError = function (statusCode) {
+  return getPendingEnterpriseByIdExpectError(statusCode, postUtil.getTestEnterprise1Id);
 };

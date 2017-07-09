@@ -159,6 +159,9 @@ let DirectoryAdministratorsModel = mongoose.model('DirectoryAdministrators', dir
 let EnterpriseInternationalPublicModel = mongoose.model('EnterpriseInternationalPublic', enterpriseInternationalPublicSchema, 'enterprises');
 let EnterpriseInternationalPrivateModel = mongoose.model('EnterpriseInternationalPrivateFields', enterpriseInternationalPrivateFieldsSchema, 'enterprisePrivateFields');
 let EnterpriseLogoModel = mongoose.model('EnterpriseLogo', enterpriseLogoSchema, 'enterpriseLogos');
+let PendingEnterpriseInternationalPublicModel = mongoose.model('PendingEnterpriseInternationalPublic', enterpriseInternationalPublicSchema, 'pendingEnterprises');
+let PendingEnterpriseInternationalPrivateModel = mongoose.model('PendingEnterpriseInternationalPrivateFields', enterpriseInternationalPrivateFieldsSchema, 'pendingEnterprisePrivateFields');
+
 
 DirectoryAdministratorsModel.on('index', function(err) {
   if (err) {
@@ -189,6 +192,22 @@ EnterpriseLogoModel.on('index', function(err) {
     logger.error('Error building indexes on Enterprise Logo Model: ' + err);
   } else {
     logger.info('Built index on Enterprise Logo Model');
+  }
+});
+
+PendingEnterpriseInternationalPublicModel.on('index', function(err) {
+  if (err) {
+    logger.error('Error building indexes on Pending Enterprise International Public Model: ' + err);
+  } else {
+    logger.info('Built index on Pending Enterprise International Public Model');
+  }
+});
+
+PendingEnterpriseInternationalPrivateModel.on('index', function(err) {
+  if (err) {
+    logger.error('Error building indexes on Pending Enterprise Private Model: ' + err);
+  } else {
+    logger.info('Built index on Pending Enterprise Private Model');
   }
 });
 

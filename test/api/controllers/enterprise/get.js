@@ -28,4 +28,11 @@ describe('GET /enterprise', function() {
     .catch(failTest(done));
   });
 
+  it('should return complete enterprise', function(done) {
+    postUtil.postTestEnterprise1()
+    .then(getUtil.getByIdEnterprise1Complete)
+    .then(done)
+    .catch(failTest(done));
+  });
+
 });

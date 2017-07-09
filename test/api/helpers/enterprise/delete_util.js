@@ -17,6 +17,12 @@ module.exports.deleteEnterprise2 = function(statusCode) {
   });
 };
 
+module.exports.deletePendingEnterprise1 = function(statusCode) {
+  return new Promise( (resolve) => {
+    deleteEnterprise(resolve, baseURL + postUtil.getTestEnterprise1Id() + '/pending', statusCode);
+  });
+};
+
 function deleteEnterprise(resolve, url, statusCode) {
   requestUtil.buildDeleteRequest(url, statusCode)
     .send()
