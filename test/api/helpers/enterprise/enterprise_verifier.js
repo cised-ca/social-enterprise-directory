@@ -174,6 +174,7 @@ function areUndefinedValuesPresentAndEquivalent(expected, actual) {
 }
 
 module.exports = {
+  verifyEnterprisePublic : verifyEnterprisePublic,
   verifyArrayContainsEnterprise1 : verifyArrayContainsEnterprise1,
   verifyArrayContainsEnterprise2 : verifyArrayContainsEnterprise2,
   verifyArrayContainsEnterprise3 : verifyArrayContainsEnterprise3,

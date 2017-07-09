@@ -307,6 +307,48 @@ module.exports.editEnterprise = function(req, res) {
     });
 };
 
+module.exports.replaceEnterprise = function(req, res) {
+  let id = req.swagger.params.id.value;
+  let enterprise = req.swagger.params.Enterprise.value;
+  let publicEnterprise;
+  // TODO: private enterprise data needs handling here too
+  try {
+    publicEnterprise = enterpriseAdapter.transformCompleteEnterpriseToInternationalPublicDBFormat(enterprise);
+  } catch (e) {
+    res.status(500).json({'message': e});
+    return;
+  }
+
+  enterpriseInternationalPublicModel
+    .findById(id)
+    .then(dbEnterprise => {
+      if (!dbEnterprise) {
+        return Promise.reject({NotFoundError: true});
+      }
+      return Promise.resolve(dbEnterprise);
+    })
+    .then(dbEnterprise => {
+      return enterpriseInternationalPublicModel.findOneAndUpdate({_id: dbEnterprise._id}, publicEnterprise, {new: true});
+    })
+    .then(result => {
+      if (!result) {
+        res.status(500).json({'message': 'Failed to replace enterprise in db'});
+        return;
+      }
+      lunr.update(id, result);
+      res.status(200).json({});
+    })
+    .catch(err => {
+      if (err.NotFoundError) {
+        logger.info('Enterprise not found for id ', id);
+        res.status(404).json({'message': 'Enterprise not found for id ' + id});
+        return;
+      }
+      logger.error('Error replacing enterprise', id, ':', err);
+      res.status(500).json({'message': err});
+    });
+};
+
 module.exports.getEnterpriseAdmins = function(req, res) {
   let id = req.swagger.params.id.value;
   enterpriseInternationalPrivateFieldsModel

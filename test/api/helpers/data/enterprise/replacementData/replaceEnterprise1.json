@@ -1,0 +1,137 @@
+{
+  "admin_emails": ["admin1@test.com", "admin2@test.com"],
+  "locations" : {
+      "type": "MultiPoint",
+      "coordinates": [
+        [45.325, -75.792],
+        [45.801, -76.105]
+      ]
+  },
+
+  "en": {
+    "name" : "Cycle Salvation2",
+    "short_description" : "This is a short description for cycle salvation2",
+    "description" : "Cycle Salvation is a social enterprise operating under the umbrella of Causeway Work Centre. Our business strivesto achieve a triple bottom line (profit, people, planet) by providing training and employment in the field of bike mechanics to people who are economically disadvantaged, while at the same time diverting bikes destined for scrap and landfill sites2.",
+    "offering" : "Bob Smith2",
+
+    "phones" : [
+          {
+            "number": "27777777778",
+            "public": true,
+            "tags": ["main2"]
+          },
+
+          {
+            "number": "44777777778",
+            "public": true,
+            "tags": ["branch #1"]
+          },
+
+          {
+            "number": "6667777789",
+            "public": false,
+            "tags": ["CEO phone2"]
+          }
+        ],
+    "emails" : [
+          {
+            "email": "test1@test2.com",
+            "public": true,
+            "tags": ["main2"]
+          },
+          {
+            "email": "privateEmail@test2.com",
+            "public": false,
+            "tags": ["CEO email2"]
+          }
+        ],
+
+    "faxes" : [
+          {
+            "fax": "8887776665",
+            "public": true,
+            "tags": ["main2"]
+          },
+          {
+            "fax": "1112223333",
+            "public": false,
+            "tags": ["CEO fax2"]
+          }
+        ],
+
+    "addresses" : [
+            {
+              "address": "856 Fake st, Ottawa, ON, K6Y 6H5",
+              "public": true,
+              "tags": ["main2"]
+            }
+    ],
+
+    "purposes": [
+      "Helping disadvantaged peoples2",
+      "Raising money for parent company2"
+    ],
+    "year_started" : 1996,
+    "website" : "http://google.com2",
+    "facebook" : "abcDEF2",
+    "instagram" : "dddddddd2",
+    "twitter" : "abhoney2",
+    "clusters" : ["cluster#1", "cluster#3"],
+    "segments" : ["SuperSegment2"]
+  },
+
+  "fr": {
+    "name" : "Cyclette de Salvation2",
+    "short_description" : "C'est un mot en francais2",
+    "description" : "On y va2",
+    "offering" : "Jean Alumette2",
+
+    "phones" : [
+          {
+            "number": "27777777778",
+            "public": true,
+            "tags": ["centrale2"]
+          },
+
+          {
+            "number": "44777777778",
+            "public": true,
+            "tags": ["marche #12"]
+          }
+
+        ],
+    "emails" : [
+          {
+            "email": "test1@test2.com",
+            "public": true,
+            "tags": ["centrale2"]
+          }
+        ],
+
+    "faxes" : [
+          {
+            "fax": "8887776668",
+            "public": true,
+            "tags": ["centrale2"]
+          }
+        ],
+
+    "addresses" : [
+            {
+              "address": "856 rue Fake, Ottawa, ON, K6Y 6H5",
+              "public": true,
+              "tags": ["centrale"]
+            }
+    ],
+
+    "purposes": [
+      "Aider peuples2"
+    ],
+    "website" : "http://google.com/fr2",
+    "year_started" : 1996,
+    "facebook" : "abcDE_Fr2",
+    "instagram" : "ddddddddFr2",
+    "twitter" : "abhoneyFr2"
+  }
+
+}

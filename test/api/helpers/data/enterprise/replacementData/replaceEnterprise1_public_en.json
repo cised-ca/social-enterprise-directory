@@ -1,0 +1,62 @@
+{
+  "name" : "Cycle Salvation2",
+  "short_description" : "This is a short description for cycle salvation2",
+  "description" : "Cycle Salvation is a social enterprise operating under the umbrella of Causeway Work Centre. Our business strivesto achieve a triple bottom line (profit, people, planet) by providing training and employment in the field of bike mechanics to people who are economically disadvantaged, while at the same time diverting bikes destined for scrap and landfill sites2.",
+  "offering" : "Bob Smith2",
+
+  "phones" : [
+        {
+          "number": "27777777778",
+          "public": true,
+          "tags": ["main2"]
+        },
+
+        {
+          "number": "44777777778",
+          "public": true,
+          "tags": ["branch #1"]
+        }
+
+      ],
+  "emails" : [
+        {
+          "email": "test1@test2.com",
+          "public": true,
+          "tags": ["main2"]
+        }
+      ],
+
+  "faxes" : [
+        {
+          "fax": "8887776665",
+          "public": true,
+          "tags": ["main2"]
+        }
+      ],
+
+  "addresses" : [
+          {
+            "address": "856 Fake st, Ottawa, ON, K6Y 6H5",
+            "public": true,
+            "tags": ["main2"]
+          }
+  ],
+
+  "locations" : {
+      "type": "MultiPoint",
+      "coordinates": [
+        [45.325, -75.792],
+        [45.801, -76.105]
+      ]
+  },
+
+  "purposes": [
+    "Helping disadvantaged peoples2",
+    "Raising money for parent company2"
+  ],
+  "website" : "http://google.com2",
+  "year_started" : 1996,
+  "facebook" : "abcDEF2",
+  "instagram" : "dddddddd2",
+  "twitter" : "abhoney2"
+}

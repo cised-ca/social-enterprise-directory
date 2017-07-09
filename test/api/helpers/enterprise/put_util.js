@@ -21,3 +21,18 @@ module.exports.putLogo = function(enterpriseId, contentType, logoData, statusCod
     });
   });
 };
+
+module.exports.putEnterprise = function(enterpriseId, enterpriseData, statusCode) {
+  return new Promise( (resolve) => {
+    let logoURL = url + '/' + enterpriseId;
+    requestUtil.buildPutRequest(logoURL, statusCode)
+    .send(enterpriseData)
+    .end( function(err, res) {
+      if (err) {
+        logger.error(res.body);
+        should.not.exist(err);
+      }
+      resolve();
+    });
+  });
+};
