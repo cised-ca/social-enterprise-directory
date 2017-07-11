@@ -1,5 +1,6 @@
 /* eslint-env node, mocha */
 const postUtil = require('../../helpers/enterprise/post_util');
+const requestUtil = require('../../helpers/request_util');
 const patchUtil = require('../../helpers/enterprise/patch_util');
 const getUtil = require('../../helpers/enterprise/get_util');
 const TEST_TIMEOUT = require('../../../test_constants').TEST_TIMEOUT;
@@ -7,6 +8,8 @@ const FRENCH = require('../../helpers/language/language_test_constants').FRENCH;
 const testInitializer = require('../../../test_initializer');
 const failTest = require('../../helpers/test_util').failTest;
 let mockAuthHandler = require('../../helpers/auth/mock_auth_handler');
+
+const DIRECTORY_URL = '/directory';
 
 describe('PATCH /enterprise/{id}', function() {
   this.timeout(TEST_TIMEOUT);
@@ -192,6 +195,28 @@ describe('PATCH /enterprise/{id}', function() {
       mockAuthHandler.handler.isDirectoryAdmin = false;
       mockAuthHandler.handler.isEnterpriseAdmin = false;
       return patchUtil.editEnterprise1Admins({admin_emails: newAdminEmails}, 403);
+    })
+    .then(done)
+    .catch(failTest(done));
+  });
+
+  it('should affect search results when change testEnterprise1 english description', function(done) {
+    let newDescription = 'New description involving zoology';
+    postUtil.postTestEnterprise1()
+    .then(requestUtil.performGetRequest(DIRECTORY_URL + '?q=zoology'))
+    .then( res => {
+      res.body.enterprises.length.should.equal(0);
+    })
+    .then(() => {
+      return patchUtil.editEnterprise1({
+        en: { description: newDescription }
+      });
+    })
+    .then(requestUtil.performGetRequest(DIRECTORY_URL + '?q=zoology'))
+    .then( res => {
+      res.body.enterprises.length.should.equal(1);
+      res.body.enterprises[0].description.should.eql(newDescription);
+      return Promise.resolve();
     })
     .then(done)
     .catch(failTest(done));

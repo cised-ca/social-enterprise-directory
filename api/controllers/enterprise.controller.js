@@ -286,7 +286,7 @@ module.exports.editEnterprise = function(req, res) {
     })
     .then(dbEnterprise => {
       let mergedEnterprise = enterpriseAdapter.applyMerge(dbEnterprise, mergeRequest);
-      return enterpriseInternationalPublicModel.findOneAndUpdate({_id: dbEnterprise._id}, mergedEnterprise);
+      return enterpriseInternationalPublicModel.findOneAndUpdate({_id: dbEnterprise._id}, mergedEnterprise, {new: true});
     })
     .then(result => {
       if (!result) {
