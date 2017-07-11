@@ -222,4 +222,26 @@ describe('PATCH /enterprise/{id}', function() {
     .catch(failTest(done));
   });
 
+  it('should affect search results when change testEnterprise1 french description', function(done) {
+    let newDescription = 'New description involving zoology';
+    postUtil.postTestEnterprise1()
+    .then(requestUtil.performGetRequest(DIRECTORY_URL + '?lang=fr&q=zoology'))
+    .then( res => {
+      res.body.enterprises.length.should.equal(0);
+    })
+    .then(() => {
+      return patchUtil.editEnterprise1({
+        fr: { description: newDescription }
+      });
+    })
+    .then(requestUtil.performGetRequest(DIRECTORY_URL + '?lang=fr&q=zoology'))
+    .then( res => {
+      res.body.enterprises.length.should.equal(1);
+      res.body.enterprises[0].description.should.eql(newDescription);
+      return Promise.resolve();
+    })
+    .then(done)
+    .catch(failTest(done));
+  });
+
 });
