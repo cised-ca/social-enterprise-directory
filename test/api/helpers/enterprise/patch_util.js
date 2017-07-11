@@ -30,6 +30,12 @@ module.exports.editPendingEnterprise1 = function(enterpriseModifications, status
   });
 };
 
+module.exports.editUnpublishedEnterprise1 = function(enterpriseModifications, statusCode) {
+  return new Promise( (resolve) => {
+    editEnterprise(resolve, baseURL + postUtil.getTestEnterprise1Id() + '/unpublished',
+                    enterpriseModifications, statusCode);
+  });
+};
 
 function editEnterprise(resolve, url, enterpriseModifications, statusCode) {
   requestUtil.buildPatchRequest(url, statusCode)

@@ -7,6 +7,8 @@ const enterpriseInternationalPublicModel = mongoose.model('EnterpriseInternation
 const enterpriseInternationalPrivateFieldsModel = mongoose.model('EnterpriseInternationalPrivateFields');
 const pendingEnterpriseInternationalPublicModel = mongoose.model('PendingEnterpriseInternationalPublic');
 const pendingEnterpriseInternationalPrivateFieldsModel = mongoose.model('PendingEnterpriseInternationalPrivateFields');
+const unpublishedEnterpriseInternationalPublicModel = mongoose.model('UnpublishedEnterpriseInternationalPublic');
+const unpublishedEnterpriseInternationalPrivateFieldsModel = mongoose.model('UnpublishedEnterpriseInternationalPrivateFields');
 const enterpriseLogoModel = mongoose.model('EnterpriseLogo');
 const enterpriseAdapter = require('./enterprise.adapter');
 const SUPPORTED_LANGUAGES = require('../helpers/language/constants').SUPPORTED_LANGUAGES;
@@ -200,6 +202,10 @@ module.exports.getOnePendingEnterprise = function(req, res) {
   return getOneEnterpriseCompleteForModel(req, res, pendingEnterpriseInternationalPublicModel);
 };
 
+module.exports.getOneUnpublishedEnterprise = function(req, res) {
+  return getOneEnterpriseCompleteForModel(req, res, unpublishedEnterpriseInternationalPublicModel);
+};
+
 function getOneEnterpriseCompleteForModel(req, res, publicModel) {
   let id = req.swagger.params.id.value;
 
@@ -288,6 +294,12 @@ module.exports.deletePendingEnterprise = function(req, res) {
                                   pendingEnterpriseInternationalPrivateFieldsModel);
 };
 
+module.exports.deleteUnpublishedEnterprise = function(req, res) {
+  return deleteEnterpriseForModel(req, res, false,
+                                  unpublishedEnterpriseInternationalPublicModel,
+                                  unpublishedEnterpriseInternationalPrivateFieldsModel);
+};
+
 function deleteEnterpriseForModel(req, res, updateSearchIndex,
                                   publicModel, privateModel) {
   let id = req.swagger.params.id.value;
@@ -329,6 +341,11 @@ module.exports.editEnterprise = function(req, res) {
 module.exports.editPendingEnterprise = function(req, res) {
   return editEnterpriseForModel(req, res, false, pendingEnterpriseInternationalPublicModel);
 };
+
+module.exports.editUnpublishedEnterprise = function(req, res) {
+  return editEnterpriseForModel(req, res, false, unpublishedEnterpriseInternationalPublicModel);
+};
+
 
 function editEnterpriseForModel(req, res, updateSearchIndex, publicModel) {
   let id = req.swagger.params.id.value;
@@ -375,6 +392,10 @@ module.exports.replaceEnterprise = function(req, res) {
 
 module.exports.replacePendingEnterprise = function(req, res) {
   return replaceEnterpriseForModel(req, res, false, pendingEnterpriseInternationalPublicModel);
+};
+
+module.exports.replaceUnpublishedEnterprise = function(req, res) {
+  return replaceEnterpriseForModel(req, res, false, unpublishedEnterpriseInternationalPublicModel);
 };
 
 function replaceEnterpriseForModel(req, res, updateSearchIndex, publicModel) {

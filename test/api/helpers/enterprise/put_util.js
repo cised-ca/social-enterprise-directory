@@ -51,3 +51,18 @@ module.exports.putPendingEnterprise = function(enterpriseId, enterpriseData, sta
     });
   });
 };
+
+module.exports.putUnpublishedEnterprise = function(enterpriseId, enterpriseData, statusCode) {
+  return new Promise( (resolve) => {
+    let fullURL = url + '/' + enterpriseId + '/unpublished';
+    requestUtil.buildPutRequest(fullURL, statusCode)
+    .send(enterpriseData)
+    .end( function(err, res) {
+      if (err) {
+        logger.error(res.body);
+        should.not.exist(err);
+      }
+      resolve();
+    });
+  });
+};

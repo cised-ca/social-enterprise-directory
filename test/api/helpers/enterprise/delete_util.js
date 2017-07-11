@@ -23,6 +23,12 @@ module.exports.deletePendingEnterprise1 = function(statusCode) {
   });
 };
 
+module.exports.deleteUnpublishedEnterprise1 = function(statusCode) {
+  return new Promise( (resolve) => {
+    deleteEnterprise(resolve, baseURL + postUtil.getTestEnterprise1Id() + '/unpublished', statusCode);
+  });
+};
+
 function deleteEnterprise(resolve, url, statusCode) {
   requestUtil.buildDeleteRequest(url, statusCode)
     .send()

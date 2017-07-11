@@ -53,6 +53,21 @@ function getPendingEnterpriseById(getIdFunc, verifyFunc) {
   });
 }
 
+function getUnpublishedEnterpriseById(getIdFunc, verifyFunc) {
+  return new Promise( (resolve) => {
+    let fullURL = url + getIdFunc() + '/unpublished';
+    requestUtil.performGetRequest(fullURL)()
+    .then( res => {
+      verifyFunc(res.body);
+    })
+    .then(resolve)
+    .catch( (err) => {
+      logger.error(err);
+      should.fail(err);
+    });
+  });
+}
+
 function getEnterpriseByIdExpectError(statusCode, getIdFunc) {
   return new Promise( (resolve) => {
     let fullURL = url + getIdFunc();
@@ -68,6 +83,18 @@ function getEnterpriseByIdExpectError(statusCode, getIdFunc) {
 function getPendingEnterpriseByIdExpectError(statusCode, getIdFunc) {
   return new Promise( (resolve) => {
     let fullURL = url + getIdFunc() + '/pending';
+    requestUtil.performGetRequest(fullURL, statusCode)()
+    .then(() => {resolve();})
+    .catch( (err) => {
+      logger.error(err);
+      should.fail(err);
+    });
+  });
+}
+
+function getUnpublishedEnterpriseByIdExpectError(statusCode, getIdFunc) {
+  return new Promise( (resolve) => {
+    let fullURL = url + getIdFunc() + '/unpublished';
     requestUtil.performGetRequest(fullURL, statusCode)()
     .then(() => {resolve();})
     .catch( (err) => {
@@ -97,6 +124,20 @@ function getEnterpriseBody(language, getIdFunc) {
 function getPendingEnterpriseBody(getIdFunc) {
   return new Promise( (resolve) => {
     let fullURL = url + getIdFunc() + '/pending';
+    requestUtil.performGetRequest(fullURL)()
+    .then( res => {
+      resolve(res.body);
+    })
+    .catch( (err) => {
+      logger.error(err);
+      should.fail(err);
+    });
+  });
+}
+
+function getUnpublishedEnterpriseBody(getIdFunc) {
+  return new Promise( (resolve) => {
+    let fullURL = url + getIdFunc() + '/unpublished';
     requestUtil.performGetRequest(fullURL)()
     .then( res => {
       resolve(res.body);
@@ -203,4 +244,17 @@ module.exports.getPendingEnterprise1Body = function () {
 
 module.exports.getByIdPendingEnterprise1ExpectError = function (statusCode) {
   return getPendingEnterpriseByIdExpectError(statusCode, postUtil.getTestEnterprise1Id);
+};
+
+module.exports.getByIdUnpublishedEnterprise1 = function () {
+  return getUnpublishedEnterpriseById(postUtil.getTestEnterprise1Id,
+                      enterpriseVerifier.verifyEnterprise1);
+};
+
+module.exports.getUnpublishedEnterprise1Body = function () {
+  return getUnpublishedEnterpriseBody(postUtil.getTestEnterprise1Id);
+};
+
+module.exports.getByIdUnpublishedEnterprise1ExpectError = function (statusCode) {
+  return getUnpublishedEnterpriseByIdExpectError(statusCode, postUtil.getTestEnterprise1Id);
 };
