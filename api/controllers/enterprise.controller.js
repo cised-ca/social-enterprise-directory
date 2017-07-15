@@ -195,34 +195,57 @@ module.exports.getOneEnterprisePublic = function(req, res) {
 };
 
 module.exports.getOneEnterpriseComplete = function(req, res) {
-  return getOneEnterpriseCompleteForModel(req, res, enterpriseInternationalPublicModel);
+  return getOneEnterpriseCompleteForModel(req, res,
+                          enterpriseInternationalPublicModel,
+                          enterpriseInternationalPrivateFieldsModel);
 };
 
 module.exports.getOnePendingEnterprise = function(req, res) {
-  return getOneEnterpriseCompleteForModel(req, res, pendingEnterpriseInternationalPublicModel);
+  return getOneEnterpriseCompleteForModel(req, res,
+                            pendingEnterpriseInternationalPublicModel,
+                            pendingEnterpriseInternationalPrivateFieldsModel);
 };
 
 module.exports.getOneUnpublishedEnterprise = function(req, res) {
-  return getOneEnterpriseCompleteForModel(req, res, unpublishedEnterpriseInternationalPublicModel);
+  return getOneEnterpriseCompleteForModel(req, res,
+        unpublishedEnterpriseInternationalPublicModel,
+        unpublishedEnterpriseInternationalPrivateFieldsModel);
 };
 
-function getOneEnterpriseCompleteForModel(req, res, publicModel) {
+function getOneEnterpriseCompleteForModel(req, res, publicModel, privateModel) {
   let id = req.swagger.params.id.value;
 
   publicModel
     .findById(id)
-    .then(dbEnterprise => {
-      if (!dbEnterprise) {
+    .then(dbPublicEnterprise => {
+      if (!dbPublicEnterprise) {
         return Promise.reject({NotFoundError: true});
       }
 
+      // merge in private info
+      if (!dbPublicEnterprise['private_info']) {
+        logger.error('Enterprise encountered without private info field, during get one enterprise complete', id);
+        return Promise.resolve(dbPublicEnterprise);
+      }
+      return privateModel.findById(dbPublicEnterprise['private_info'])
+        .then(dbPrivateEnterpriseFields => {
+          if (!dbPrivateEnterpriseFields) {
+            logger.error('Enterprise could not find private model, during get one enterprise complete', dbPublicEnterprise['private_info']);
+          }
+          let mergedEnterprise = enterpriseAdapter.mergePublicAndPrivateDBInfo(dbPublicEnterprise, dbPrivateEnterpriseFields);
+          return Promise.resolve(mergedEnterprise);
+        })
+        .catch(err => {
+          return Promise.reject(err);
+        });
+    })
+    .then(mergedEnterprise => {
       try {
-        let tranformedEnterprise = enterpriseAdapter.transformDbIntlEnterpriseToApiIntlFormat(dbEnterprise);
+        let tranformedEnterprise = enterpriseAdapter.transformDbIntlEnterpriseToApiIntlFormat(mergedEnterprise);
         res.status(200).json(tranformedEnterprise);
       } catch (e) {
         return Promise.reject(e);
       }
-      // TODO: add private fields here once we start using them
     })
     .catch(err => {
       if (err.NotFoundError) {
@@ -243,24 +266,25 @@ module.exports.createEnterprise = function(req, res) {
     publicEnterprise = enterpriseAdapter.transformCompleteEnterpriseToInternationalPublicDBFormat(enterprise);
     privateEnterprise = enterpriseAdapter.transformCompleteEnterpriseToInternationalPrivateDBFormat(enterprise);
   } catch (e) {
+    logger.error('Failed to create enterprise: ', e);
     res.status(500).json({'message': e});
     return;
   }
 
   let dbPrivateEnterpriseInfo;
-  enterpriseInternationalPrivateFieldsModel.create(privateEnterprise)
+  unpublishedEnterpriseInternationalPrivateFieldsModel.create(privateEnterprise)
     // create public enterprise info
     .then(dbPrivateEnterprise => {
       dbPrivateEnterpriseInfo = dbPrivateEnterprise;
       publicEnterprise['private_info'] = dbPrivateEnterprise['_id'];
-      return enterpriseInternationalPublicModel.create(publicEnterprise);
+      return unpublishedEnterpriseInternationalPublicModel.create(publicEnterprise);
     })
     .then( dbPublicEnterprise => {
       // Add public enterprise to lunr index
       lunr.add(dbPublicEnterprise);
 
       // update private db entry with pointer to public entry
-      enterpriseInternationalPrivateFieldsModel.findByIdAndUpdate(
+      unpublishedEnterpriseInternationalPrivateFieldsModel.findByIdAndUpdate(
         dbPublicEnterprise['private_info'],
         {$set: {enterprise_id: dbPublicEnterprise['_id']}},
         function(err) {
@@ -269,7 +293,7 @@ module.exports.createEnterprise = function(req, res) {
           }
           // create api response
           let apiEnterprise = enterpriseAdapter.transformDbIntlEnterpriseToApiIntlFormat(dbPublicEnterprise);
-          enterpriseAdapter.appendPrivateInfo(apiEnterprise, dbPrivateEnterpriseInfo);
+          apiEnterprise = enterpriseAdapter.mergePublicAndPrivateDBInfo(apiEnterprise, dbPrivateEnterpriseInfo);
           logger.info(`Enterprise created (name=${apiEnterprise[DEFAULT_LANGUAGE]['name']} id=${apiEnterprise['id']})`);
           res.status(201).json(apiEnterprise);
         }
@@ -387,35 +411,67 @@ function editEnterpriseForModel(req, res, updateSearchIndex, publicModel) {
 
 
 module.exports.replaceEnterprise = function(req, res) {
-  return replaceEnterpriseForModel(req, res, true, enterpriseInternationalPublicModel);
+  return replaceEnterpriseForModel(req, res, true,
+                                  enterpriseInternationalPublicModel,
+                                  enterpriseInternationalPrivateFieldsModel);
 };
 
 module.exports.replacePendingEnterprise = function(req, res) {
-  return replaceEnterpriseForModel(req, res, false, pendingEnterpriseInternationalPublicModel);
+  return replaceEnterpriseForModel(req, res, false,
+                                  pendingEnterpriseInternationalPublicModel,
+                                  pendingEnterpriseInternationalPrivateFieldsModel);
 };
 
 module.exports.replaceUnpublishedEnterprise = function(req, res) {
-  return replaceEnterpriseForModel(req, res, false, unpublishedEnterpriseInternationalPublicModel);
+  return replaceEnterpriseForModel(req, res, false,
+                                unpublishedEnterpriseInternationalPublicModel,
+                                unpublishedEnterpriseInternationalPrivateFieldsModel);
 };
 
-function replaceEnterpriseForModel(req, res, updateSearchIndex, publicModel) {
+function replaceEnterpriseForModel(req, res, updateSearchIndex, publicModel, privateModel) {
   let id = req.swagger.params.id.value;
   let enterprise = req.swagger.params.Enterprise.value;
   let publicEnterprise;
-  // TODO: private enterprise data needs handling here too
+  let privateEnterprise;
   try {
     publicEnterprise = enterpriseAdapter.transformCompleteEnterpriseToInternationalPublicDBFormat(enterprise);
+    privateEnterprise = enterpriseAdapter.transformCompleteEnterpriseToInternationalPrivateDBFormat(enterprise);
   } catch (e) {
+    logger.error('Failed to replace enterprise: ', e);
     res.status(500).json({'message': e});
     return;
   }
 
-  publicModel
-    .findOneAndUpdate({_id: id}, publicEnterprise, {new: true, upsert: true})
+
+  publicModel.findOneAndUpdate({_id: id}, publicEnterprise, {new: true, upsert: true})
+    .then( dbPublicEnterprise => {
+      if (dbPublicEnterprise['private_info']) {
+        return privateModel.findByIdAndUpdate(dbPublicEnterprise['private_info'], privateEnterprise, {new: true, upsert: true})
+          .then(() => {
+            return Promise.resolve(dbPublicEnterprise);
+          })
+          .catch(err => {
+            logger.error('Error updating private fields while replacing enterprise', id, ':', err);
+            Promise.reject(err);
+          });
+      } else {
+        // create Private fields.
+        privateEnterprise['enterprise_id'] = dbPublicEnterprise['_id'];
+        return privateModel.create(privateEnterprise)
+          .then(dbPrivateEnterprise => {
+            publicEnterprise['private_info'] = dbPrivateEnterprise['_id'];
+            return publicModel.findOneAndUpdate({_id: id}, publicEnterprise, {new: true, upsert: true});
+          })
+          .catch(err => {
+            logger.error('Error creating private fields while replacing enterprise', id, ':', err);
+            Promise.reject(err);
+          });
+      }
+    })
     .then(result => {
       if (!result) {
         res.status(500).json({'message': 'Failed to replace enterprise in db'});
-        return;
+        return Promise.resolve();
       }
       if (updateSearchIndex) {
         lunr.update(id, result);

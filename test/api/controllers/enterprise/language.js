@@ -1,5 +1,5 @@
 /* eslint-env node, mocha */
-const postUtil = require('../../helpers/enterprise/post_util');
+const publishUtil = require('../../helpers/enterprise/publish_util');
 const getUtil = require('../../helpers/enterprise/get_util');
 const requestUtil = require('../../helpers/request_util');
 const enterpriseVerifier = require('../../helpers/enterprise/enterprise_verifier');
@@ -21,7 +21,7 @@ describe('Testing internationalization', function() {
   });
 
   it('should return only the french data when get one enterprise', function(done) {
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
       return getUtil.getByIdEnterprise1(FRENCH);
     })
@@ -30,7 +30,7 @@ describe('Testing internationalization', function() {
   });
 
   it('should return only the english data when get one enterprise', function(done) {
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
       return getUtil.getByIdEnterprise1(ENGLISH);
     })
@@ -39,7 +39,7 @@ describe('Testing internationalization', function() {
   });
 
   it('should return english data if requested language not supported', function(done) {
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
       return getUtil.getByIdEnterprise1(INVALID_LANGUAGE);
     })
@@ -48,7 +48,7 @@ describe('Testing internationalization', function() {
   });
 
   it('should return french data when browse directory with one enterprise', function(done) {
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(requestUtil.performGetRequest(DIRECTORY_URL + '?lang=' + FRENCH))
     .then( res => {
       enterpriseVerifier.verifyEnterprise1Public(res.body.enterprises[0], FRENCH);
@@ -58,7 +58,7 @@ describe('Testing internationalization', function() {
   });
 
   it('should return french data for multiple enterprises in alphabetical order', function(done) {
-    postUtil.postAllEnterprises()
+    publishUtil.createAndPublishAllEnterprises()
     .then(requestUtil.performGetRequest(DIRECTORY_URL + '?lang=' + FRENCH))
     .then( res => {
       enterpriseVerifier.verifyEnterprise3Public(res.body.enterprises[0], FRENCH);
@@ -70,7 +70,7 @@ describe('Testing internationalization', function() {
   });
 
   it('should return french data for location search (near enterprise 1)', function(done) {
-    postUtil.postAllEnterprises()
+    publishUtil.createAndPublishAllEnterprises()
     .then(requestUtil.performGetRequest(DIRECTORY_URL + '?at=45.425,-75.692&lang=' + FRENCH))
     .then( res => {
       enterpriseVerifier.verifyEnterprise1Public(res.body.enterprises[0], FRENCH);

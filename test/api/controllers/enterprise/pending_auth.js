@@ -1,5 +1,5 @@
 /* eslint-env node, mocha */
-const postUtil = require('../../helpers/enterprise/post_util');
+const publishUtil = require('../../helpers/enterprise/publish_util');
 const putUtil = require('../../helpers/enterprise/put_util');
 const getUtil = require('../../helpers/enterprise/get_util');
 const deleteUtil = require('../../helpers/enterprise/delete_util');
@@ -18,9 +18,9 @@ describe('Authentication on Pending Enterprises', function() {
   });
 
   it('should return 403 Forbidden if not logged in and GET pending', function(done) {
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
-      return putUtil.putPendingEnterprise(postUtil.getTestEnterprise1Id(), replaceEnterprise1);
+      return putUtil.putPendingEnterprise(publishUtil.getTestEnterprise1Id(), replaceEnterprise1);
     })
     .then(() => {
       mockAuthHandler.reset();
@@ -32,9 +32,9 @@ describe('Authentication on Pending Enterprises', function() {
   });
 
   it('should return 403 Forbidden if not proper enterprise admin and GET pending', function(done) {
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
-      return putUtil.putPendingEnterprise(postUtil.getTestEnterprise1Id(), replaceEnterprise1);
+      return putUtil.putPendingEnterprise(publishUtil.getTestEnterprise1Id(), replaceEnterprise1);
     })
     .then(() => {
       mockAuthHandler.reset();
@@ -48,9 +48,9 @@ describe('Authentication on Pending Enterprises', function() {
   });
 
   it('should return 403 Forbidden if not logged in and DELETE pending', function(done) {
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
-      return putUtil.putPendingEnterprise(postUtil.getTestEnterprise1Id(), replaceEnterprise1);
+      return putUtil.putPendingEnterprise(publishUtil.getTestEnterprise1Id(), replaceEnterprise1);
     })
     .then(() => {
       mockAuthHandler.reset();
@@ -62,9 +62,9 @@ describe('Authentication on Pending Enterprises', function() {
   });
 
   it('should return 403 Forbidden if not proper enterprise admin and DELETE pending', function(done) {
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
-      return putUtil.putPendingEnterprise(postUtil.getTestEnterprise1Id(), replaceEnterprise1);
+      return putUtil.putPendingEnterprise(publishUtil.getTestEnterprise1Id(), replaceEnterprise1);
     })
     .then(() => {
       mockAuthHandler.reset();
@@ -80,9 +80,9 @@ describe('Authentication on Pending Enterprises', function() {
   it('should return 403 Forbidden if not logged in and PATCH pending', function(done) {
     let newEnglishDescription = 'A new description for Cycle Salvation';
     let newFrenchDescription = 'Nouvelle description';
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
-      return putUtil.putPendingEnterprise(postUtil.getTestEnterprise1Id(), replaceEnterprise1);
+      return putUtil.putPendingEnterprise(publishUtil.getTestEnterprise1Id(), replaceEnterprise1);
     })
     .then(() => {
       mockAuthHandler.reset();
@@ -99,9 +99,9 @@ describe('Authentication on Pending Enterprises', function() {
   it('should return 403 Forbidden if not proper enterprise admin and PATCH pending', function(done) {
     let newEnglishDescription = 'A new description for Cycle Salvation';
     let newFrenchDescription = 'Nouvelle description';
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
-      return putUtil.putPendingEnterprise(postUtil.getTestEnterprise1Id(), replaceEnterprise1);
+      return putUtil.putPendingEnterprise(publishUtil.getTestEnterprise1Id(), replaceEnterprise1);
     })
     .then(() => {
       mockAuthHandler.reset();

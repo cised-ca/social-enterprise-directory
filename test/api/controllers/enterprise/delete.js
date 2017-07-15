@@ -1,5 +1,5 @@
 /* eslint-env node, mocha */
-const postUtil = require('../../helpers/enterprise/post_util');
+const publishUtil = require('../../helpers/enterprise/publish_util');
 const deleteUtil = require('../../helpers/enterprise/delete_util');
 const getUtil = require('../../helpers/enterprise/get_util');
 const TEST_TIMEOUT = require('../../../test_constants').TEST_TIMEOUT;
@@ -15,7 +15,7 @@ describe('DELETE /enterprise/{id}', function() {
   });
 
   it('should return 403 Forbidden if not logged in', function(done) {
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
       mockAuthHandler.reset();
       mockAuthHandler.handler.loggedIn = false;
@@ -26,7 +26,7 @@ describe('DELETE /enterprise/{id}', function() {
   });
 
   it('should return 403 Forbidden if not directory admin', function(done) {
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
       mockAuthHandler.reset();
       mockAuthHandler.handler.loggedIn = true;
@@ -38,7 +38,7 @@ describe('DELETE /enterprise/{id}', function() {
   });
 
   it('should delete enterprise 1', function(done) {
-    postUtil.postAllEnterprises()
+    publishUtil.createAndPublishAllEnterprises()
     .then(() => {
       return deleteUtil.deleteEnterprise1();
     })
@@ -53,7 +53,7 @@ describe('DELETE /enterprise/{id}', function() {
   });
 
   it('should delete enterprise 2', function(done) {
-    postUtil.postAllEnterprises()
+    publishUtil.createAndPublishAllEnterprises()
     .then(() => {
       return deleteUtil.deleteEnterprise2();
     })

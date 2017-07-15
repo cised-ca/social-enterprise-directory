@@ -29,6 +29,18 @@ module.exports.deleteUnpublishedEnterprise1 = function(statusCode) {
   });
 };
 
+module.exports.deleteUnpublishedEnterprise2 = function(statusCode) {
+  return new Promise( (resolve) => {
+    deleteEnterprise(resolve, baseURL + postUtil.getTestEnterprise2Id() + '/unpublished', statusCode);
+  });
+};
+
+module.exports.deleteUnpublishedEnterprise3 = function(statusCode) {
+  return new Promise( (resolve) => {
+    deleteEnterprise(resolve, baseURL + postUtil.getTestEnterprise3Id() + '/unpublished', statusCode);
+  });
+};
+
 function deleteEnterprise(resolve, url, statusCode) {
   requestUtil.buildDeleteRequest(url, statusCode)
     .send()

@@ -1,6 +1,6 @@
 /* eslint-env node, mocha */
 const requestUtil = require('../../helpers/request_util');
-const postUtil = require('../../helpers/enterprise/post_util');
+const publishUtil = require('../../helpers/enterprise/publish_util');
 const enterpriseVerifier = require('../../helpers/enterprise/enterprise_verifier');
 const TEST_TIMEOUT = require('../../../test_constants').TEST_TIMEOUT;
 const testInitializer = require('../../../test_initializer');
@@ -25,7 +25,7 @@ describe('GET /directory', function() {
   });
 
   it('should return one enterprise', function(done) {
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(requestUtil.performGetRequest(url))
     .then( res => {
       enterpriseVerifier.verifyEnterprise1Public(res.body.enterprises[0]);
@@ -35,7 +35,7 @@ describe('GET /directory', function() {
   });
 
   it('should return multiple enterprises in alphabetical order', function(done) {
-    postUtil.postAllEnterprises()
+    publishUtil.createAndPublishAllEnterprises()
     .then(requestUtil.performGetRequest(url))
     .then( res => {
       enterpriseVerifier.verifyEnterprise3Public(res.body.enterprises[0]);
@@ -47,7 +47,7 @@ describe('GET /directory', function() {
   });
 
   it('should limit enterprises when count parameter set', function(done) {
-    postUtil.postAllEnterprises()
+    publishUtil.createAndPublishAllEnterprises()
     .then(requestUtil.performGetRequest(url + '?count=2'))
     .then( res => {
       res.body.enterprises.length.should.equal(2);
@@ -57,7 +57,7 @@ describe('GET /directory', function() {
   });
 
   it('should offset enterprises when page parameter set', function(done) {
-    postUtil.postAllEnterprises()
+    publishUtil.createAndPublishAllEnterprises()
     .then(requestUtil.performGetRequest(url + '?count=1&page=3'))
     .then( res => {
       res.body.enterprises.length.should.equal(1);

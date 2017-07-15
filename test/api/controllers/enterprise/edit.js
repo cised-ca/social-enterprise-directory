@@ -1,5 +1,5 @@
 /* eslint-env node, mocha */
-const postUtil = require('../../helpers/enterprise/post_util');
+const publishUtil = require('../../helpers/enterprise/publish_util');
 const requestUtil = require('../../helpers/request_util');
 const patchUtil = require('../../helpers/enterprise/patch_util');
 const getUtil = require('../../helpers/enterprise/get_util');
@@ -20,7 +20,7 @@ describe('PATCH /enterprise/{id}', function() {
 
   it('should return 403 Forbidden if not logged in', function(done) {
     let newDescription = 'A new description for Cycle Salvation';
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
       mockAuthHandler.reset();
       mockAuthHandler.handler.loggedIn = false;
@@ -32,7 +32,7 @@ describe('PATCH /enterprise/{id}', function() {
 
   it('should return 403 Forbidden if not directory admin', function(done) {
     let newDescription = 'A new description for Cycle Salvation';
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
       mockAuthHandler.reset();
       mockAuthHandler.handler.loggedIn = true;
@@ -45,7 +45,7 @@ describe('PATCH /enterprise/{id}', function() {
 
   it('should change testEnterprise1 english description', function(done) {
     let newDescription = 'A new description for Cycle Salvation';
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
       return patchUtil.editEnterprise1({
         en: { description: newDescription }
@@ -69,7 +69,7 @@ describe('PATCH /enterprise/{id}', function() {
         [33.425, -70.692]
       ]
     };
-    postUtil.postTestEnterprise2()
+    publishUtil.createAndPublishTestEnterprise2()
     .then(() => {
       return patchUtil.editEnterprise2({
         locations : newLocations,
@@ -113,7 +113,7 @@ describe('PATCH /enterprise/{id}', function() {
       ]
     };
 
-    postUtil.postTestEnterprise2()
+    publishUtil.createAndPublishTestEnterprise2()
     .then(() => {
       return patchUtil.editEnterprise2({
         locations : newLocations,
@@ -150,7 +150,7 @@ describe('PATCH /enterprise/{id}', function() {
 
   it('should change testEnterprise1 admins when authed as directory admin', function(done) {
     let newAdminEmails = ['test1@test1.com', 'test2@test2.com'];
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
       return patchUtil.editEnterprise1Admins({
         admin_emails: newAdminEmails
@@ -167,7 +167,7 @@ describe('PATCH /enterprise/{id}', function() {
 
   it('should change testEnterprise1 admins when authed as enterprise admin', function(done) {
     let newAdminEmails = ['test1@test1.com', 'test2@test2.com'];
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
       mockAuthHandler.reset();
       mockAuthHandler.handler.loggedIn = true;
@@ -188,7 +188,7 @@ describe('PATCH /enterprise/{id}', function() {
 
   it('should return 403 Forbidden if not authed as admin', function(done) {
     let newAdminEmails = ['test1@test1.com', 'test2@test2.com'];
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
       mockAuthHandler.reset();
       mockAuthHandler.handler.loggedIn = true;
@@ -202,7 +202,7 @@ describe('PATCH /enterprise/{id}', function() {
 
   it('should affect search results when change testEnterprise1 english description', function(done) {
     let newDescription = 'New description involving zoology';
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(requestUtil.performGetRequest(DIRECTORY_URL + '?q=zoology'))
     .then( res => {
       res.body.enterprises.length.should.equal(0);
@@ -224,7 +224,7 @@ describe('PATCH /enterprise/{id}', function() {
 
   it('should affect search results when change testEnterprise1 french description', function(done) {
     let newDescription = 'New description involving zoology';
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(requestUtil.performGetRequest(DIRECTORY_URL + '?lang=fr&q=zoology'))
     .then( res => {
       res.body.enterprises.length.should.equal(0);

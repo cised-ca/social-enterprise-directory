@@ -1,5 +1,5 @@
 /* eslint-env node, mocha */
-const postUtil = require('../../helpers/enterprise/post_util');
+const publishUtil = require('../../helpers/enterprise/publish_util');
 const putUtil = require('../../helpers/enterprise/put_util');
 const getUtil = require('../../helpers/enterprise/get_util');
 const deleteUtil = require('../../helpers/enterprise/delete_util');
@@ -18,9 +18,9 @@ describe('Authentication on Unpublished Enterprises', function() {
   });
 
   it('should return 403 Forbidden if not logged in and GET unpublished', function(done) {
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
-      return putUtil.putUnpublishedEnterprise(postUtil.getTestEnterprise1Id(), replaceEnterprise1);
+      return putUtil.putUnpublishedEnterprise(publishUtil.getTestEnterprise1Id(), replaceEnterprise1);
     })
     .then(() => {
       mockAuthHandler.reset();
@@ -32,9 +32,9 @@ describe('Authentication on Unpublished Enterprises', function() {
   });
 
   it('should return 403 Forbidden if not directory enterprise admin and GET unpublished', function(done) {
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
-      return putUtil.putUnpublishedEnterprise(postUtil.getTestEnterprise1Id(), replaceEnterprise1);
+      return putUtil.putUnpublishedEnterprise(publishUtil.getTestEnterprise1Id(), replaceEnterprise1);
     })
     .then(() => {
       mockAuthHandler.reset();
@@ -48,9 +48,9 @@ describe('Authentication on Unpublished Enterprises', function() {
   });
 
   it('should return 403 Forbidden if not logged in and DELETE unpublished', function(done) {
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
-      return putUtil.putUnpublishedEnterprise(postUtil.getTestEnterprise1Id(), replaceEnterprise1);
+      return putUtil.putUnpublishedEnterprise(publishUtil.getTestEnterprise1Id(), replaceEnterprise1);
     })
     .then(() => {
       mockAuthHandler.reset();
@@ -62,9 +62,9 @@ describe('Authentication on Unpublished Enterprises', function() {
   });
 
   it('should return 403 Forbidden if not directory admin and DELETE unpublished', function(done) {
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
-      return putUtil.putUnpublishedEnterprise(postUtil.getTestEnterprise1Id(), replaceEnterprise1);
+      return putUtil.putUnpublishedEnterprise(publishUtil.getTestEnterprise1Id(), replaceEnterprise1);
     })
     .then(() => {
       mockAuthHandler.reset();
@@ -80,9 +80,9 @@ describe('Authentication on Unpublished Enterprises', function() {
   it('should return 403 Forbidden if not logged in and PATCH unpublished', function(done) {
     let newEnglishDescription = 'A new description for Cycle Salvation';
     let newFrenchDescription = 'Nouvelle description';
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
-      return putUtil.putUnpublishedEnterprise(postUtil.getTestEnterprise1Id(), replaceEnterprise1);
+      return putUtil.putUnpublishedEnterprise(publishUtil.getTestEnterprise1Id(), replaceEnterprise1);
     })
     .then(() => {
       mockAuthHandler.reset();
@@ -99,9 +99,9 @@ describe('Authentication on Unpublished Enterprises', function() {
   it('should return 403 Forbidden if not directory admin and PATCH unpublished', function(done) {
     let newEnglishDescription = 'A new description for Cycle Salvation';
     let newFrenchDescription = 'Nouvelle description';
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
-      return putUtil.putUnpublishedEnterprise(postUtil.getTestEnterprise1Id(), replaceEnterprise1);
+      return putUtil.putUnpublishedEnterprise(publishUtil.getTestEnterprise1Id(), replaceEnterprise1);
     })
     .then(() => {
       mockAuthHandler.reset();

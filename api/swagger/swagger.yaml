@@ -843,6 +843,12 @@ definitions:
 
   CompleteInternationalEnterpriseWithoutId:
     properties:
+      id:
+        type: string
+      admin_emails:
+        type: array
+        items:
+          type: string
       locations:
         $ref: "#/definitions/Locations"
       en:

@@ -1,6 +1,6 @@
 /* eslint-env node, mocha */
 const requestUtil = require('../../helpers/request_util');
-const postUtil = require('../../helpers/enterprise/post_util');
+const publishUtil = require('../../helpers/enterprise/publish_util');
 const enterpriseVerifier = require('../../helpers/enterprise/enterprise_verifier');
 const TEST_TIMEOUT = require('../../../test_constants').TEST_TIMEOUT;
 const testInitializer = require('../../../test_initializer');
@@ -16,7 +16,7 @@ describe('Search /directory', function() {
   });
 
   it('should return only the one enterprise matching search item', function(done) {
-    postUtil.postAllEnterprises()
+    publishUtil.createAndPublishAllEnterprises()
     .then(requestUtil.performGetRequest(url + '?q=cycle'))
     .then( res => {
       res.body.enterprises.length.should.equal(1);
@@ -27,7 +27,7 @@ describe('Search /directory', function() {
   });
 
   it('should return multiple enterprises matching search item', function(done) {
-    postUtil.postAllEnterprises()
+    publishUtil.createAndPublishAllEnterprises()
     .then(requestUtil.performGetRequest(url + '?q=social'))
     .then( res => {
       res.body.enterprises.length.should.equal(2);
@@ -40,7 +40,7 @@ describe('Search /directory', function() {
 
 
   it('should return enterprises matching multiple search items', function(done) {
-    postUtil.postAllEnterprises()
+    publishUtil.createAndPublishAllEnterprises()
     .then(requestUtil.performGetRequest(url + '?q=cycle+good'))
     .then( res => {
       res.body.enterprises.length.should.equal(2);
@@ -52,7 +52,7 @@ describe('Search /directory', function() {
   });
 
   it('should weight enterprise name over description for search', function(done) {
-    postUtil.postAllEnterprises()
+    publishUtil.createAndPublishAllEnterprises()
     .then(requestUtil.performGetRequest(url + '?q=good+social'))
     .then( res => {
       res.body.enterprises.length.should.equal(2);
@@ -67,7 +67,7 @@ describe('Search /directory', function() {
 
 
   it('should match search on twitter handle', function(done) {
-    postUtil.postAllEnterprises()
+    publishUtil.createAndPublishAllEnterprises()
     .then(requestUtil.performGetRequest(url + '?q=abhoney'))
     .then( res => {
       res.body.enterprises.length.should.equal(1);

@@ -224,13 +224,22 @@ module.exports.getEnterprise2 = function (language) {
   return getEnterpriseBody(language, postUtil.getTestEnterprise2Id);
 };
 
-module.exports.getEnterprise1Admins = function () {
-  return getEnterpriseAdminsBody(postUtil.getTestEnterprise1Id);
-};
-
 module.exports.getByIdEnterprise1Complete = function () {
   return getEnterpriseByIdComplete(postUtil.getTestEnterprise1Id,
                       enterpriseVerifier.verifyEnterprise1);
+};
+module.exports.getByIdEnterprise2Complete = function () {
+  return getEnterpriseByIdComplete(postUtil.getTestEnterprise2Id,
+                      enterpriseVerifier.verifyEnterprise2);
+};
+
+module.exports.getByIdEnterprise3Complete = function () {
+  return getEnterpriseByIdComplete(postUtil.getTestEnterprise3Id,
+                      enterpriseVerifier.verifyEnterprise3);
+};
+
+module.exports.getEnterprise1Admins = function () {
+  return getEnterpriseAdminsBody(postUtil.getTestEnterprise1Id);
 };
 
 module.exports.getByIdPendingEnterprise1 = function () {
@@ -251,10 +260,18 @@ module.exports.getByIdUnpublishedEnterprise1 = function () {
                       enterpriseVerifier.verifyEnterprise1);
 };
 
+module.exports.getByIdUnpublishedEnterprise1ExpectError = function (statusCode) {
+  return getUnpublishedEnterpriseByIdExpectError(statusCode, postUtil.getTestEnterprise1Id);
+};
+
 module.exports.getUnpublishedEnterprise1Body = function () {
   return getUnpublishedEnterpriseBody(postUtil.getTestEnterprise1Id);
 };
 
-module.exports.getByIdUnpublishedEnterprise1ExpectError = function (statusCode) {
-  return getUnpublishedEnterpriseByIdExpectError(statusCode, postUtil.getTestEnterprise1Id);
+module.exports.getUnpublishedEnterprise2Body = function () {
+  return getUnpublishedEnterpriseBody(postUtil.getTestEnterprise2Id);
+};
+
+module.exports.getUnpublishedEnterprise3Body = function () {
+  return getUnpublishedEnterpriseBody(postUtil.getTestEnterprise3Id);
 };

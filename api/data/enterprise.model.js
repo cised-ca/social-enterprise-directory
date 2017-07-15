@@ -231,3 +231,4 @@ UnpublishedEnterpriseInternationalPrivateModel.on('index', function(err) {
 
 module.exports.enterprisePublicFields = Object.keys(enterprisePublicSchema.paths);
 module.exports.enterprisePrivateFields = Object.keys(enterprisePrivateFieldsSchema.paths);
+module.exports.internationalEnterprisePrivateFields = Object.keys(internationalPrivateFields);

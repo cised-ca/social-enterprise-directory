@@ -1,5 +1,5 @@
 /* eslint-env node, mocha */
-const postUtil = require('../../helpers/enterprise/post_util');
+const publishUtil = require('../../helpers/enterprise/publish_util');
 const requestUtil = require('../../helpers/request_util');
 const putUtil = require('../../helpers/enterprise/put_util');
 const getUtil = require('../../helpers/enterprise/get_util');
@@ -20,9 +20,9 @@ describe('Operations on Pending Enterprises', function() {
   });
 
   it('should create pending entry for testEnterprise1', function(done) {
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
-      return putUtil.putPendingEnterprise(postUtil.getTestEnterprise1Id(), replaceEnterprise1);
+      return putUtil.putPendingEnterprise(publishUtil.getTestEnterprise1Id(), replaceEnterprise1);
     })
     .then(getUtil.getPendingEnterprise1)
     .then(done)
@@ -30,14 +30,14 @@ describe('Operations on Pending Enterprises', function() {
   });
 
   it('should not affect search results when create pending entry', function(done) {
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(requestUtil.performGetRequest(DIRECTORY_URL + '?q=abhoney2'))
     .then( res => {
       res.body.enterprises.length.should.equal(0);
     })
     .then(() => {
       // creates a pending entry that has value abhoney2
-      return putUtil.putPendingEnterprise(postUtil.getTestEnterprise1Id(), replaceEnterprise1);
+      return putUtil.putPendingEnterprise(publishUtil.getTestEnterprise1Id(), replaceEnterprise1);
     })
     .then(requestUtil.performGetRequest(DIRECTORY_URL + '?q=abhoney2'))
     .then( res => {
@@ -49,9 +49,9 @@ describe('Operations on Pending Enterprises', function() {
   });
 
   it('should delete pending entry for testEnterprise1', function(done) {
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
-      return putUtil.putPendingEnterprise(postUtil.getTestEnterprise1Id(), replaceEnterprise1);
+      return putUtil.putPendingEnterprise(publishUtil.getTestEnterprise1Id(), replaceEnterprise1);
     })
     .then(getUtil.getPendingEnterprise1)
     .then(() => {
@@ -65,9 +65,9 @@ describe('Operations on Pending Enterprises', function() {
   });
 
   it('should not affect search results when delete pending entry', function(done) {
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
-      return putUtil.putPendingEnterprise(postUtil.getTestEnterprise1Id(), replaceEnterprise1);
+      return putUtil.putPendingEnterprise(publishUtil.getTestEnterprise1Id(), replaceEnterprise1);
     })
     .then(requestUtil.performGetRequest(DIRECTORY_URL + '?q=abhoney'))
     .then( res => {
@@ -88,9 +88,9 @@ describe('Operations on Pending Enterprises', function() {
   it('should edit pending entry for testEnterprise1', function(done) {
     let newEnglishDescription = 'A new description for Cycle Salvation';
     let newFrenchDescription = 'Nouvelle description';
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
-      return putUtil.putPendingEnterprise(postUtil.getTestEnterprise1Id(), replaceEnterprise1);
+      return putUtil.putPendingEnterprise(publishUtil.getTestEnterprise1Id(), replaceEnterprise1);
     })
     .then(getUtil.getPendingEnterprise1)
     .then(() => {
@@ -112,9 +112,9 @@ describe('Operations on Pending Enterprises', function() {
   it('should not affect search results when patch pending entry', function(done) {
     let newEnglishDescription = 'A new description involving zoology';
     let newFrenchDescription = 'Nouvelle description de zoologie';
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
-      return putUtil.putPendingEnterprise(postUtil.getTestEnterprise1Id(), replaceEnterprise1);
+      return putUtil.putPendingEnterprise(publishUtil.getTestEnterprise1Id(), replaceEnterprise1);
     })
     .then(requestUtil.performGetRequest(DIRECTORY_URL + '?q=zoology'))
     .then( res => {
