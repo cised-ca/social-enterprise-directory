@@ -33,13 +33,13 @@ describe('test PUT /enterprise/{id}', function() {
     .catch(failTest(done));
   });
 
-  it('should return 403 Forbidden if not proper enterprise admin', function(done) {
+  it('should return 403 Forbidden if not directory admin', function(done) {
     publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
       mockAuthHandler.reset();
       mockAuthHandler.handler.loggedIn = true;
       mockAuthHandler.handler.isDirectoryAdmin = false;
-      mockAuthHandler.handler.isEnterpriseAdmin = false;
+      mockAuthHandler.handler.isEnterpriseAdmin = true;
       return putUtil.putEnterprise(publishUtil.getTestEnterprise1Id(), replaceEnterprise1, 403);
     })
     .then(done)

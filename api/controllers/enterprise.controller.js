@@ -497,9 +497,14 @@ module.exports.getEnterpriseAdmins = function(req, res) {
     });
 };
 
-module.exports.editEnterprisePrivateFields = function(req, res) {
+module.exports.editEnterpriseAdmins = function(req, res) {
   let id = req.swagger.params.id.value;
   let mergeRequest = req.swagger.params.EnterpriseMerge.value;
+
+  // strip the merge request down to only admin_emails fields
+  // so that other private fields don't get touched.
+  let strippedMerge = {};
+  strippedMerge['admin_emails'] = mergeRequest['admin_emails'];
 
   enterpriseInternationalPrivateFieldsModel
     .findOne({enterprise_id: id})
@@ -510,7 +515,7 @@ module.exports.editEnterprisePrivateFields = function(req, res) {
       return Promise.resolve(dbEnterprise);
     })
     .then(dbEnterprise => {
-      let mergedEnterprise = enterpriseAdapter.applyMerge(dbEnterprise, mergeRequest);
+      let mergedEnterprise = enterpriseAdapter.applyMerge(dbEnterprise, strippedMerge);
       return enterpriseInternationalPrivateFieldsModel.findOneAndUpdate({_id: dbEnterprise._id}, mergedEnterprise);
     })
     .then(result => {

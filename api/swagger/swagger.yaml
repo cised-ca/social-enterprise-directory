@@ -319,7 +319,7 @@ paths:
     put:
       description: Replaces an enterprise in the directory
       security:
-        - oauth-enterprise-admin: []
+        - oauth-directory-admin: []
       # call this method name on the controller
       operationId: replaceEnterprise
       parameters:
@@ -400,7 +400,7 @@ paths:
       security:
         - oauth-enterprise-admin: []
       # call this method name on the controller
-      operationId: editEnterprisePrivateFields
+      operationId: editEnterpriseAdmins
       parameters:
         - name: id
           in: path
@@ -412,7 +412,12 @@ paths:
           description: JSON Merge Patch style edit request for the enteprise
           required: true
           schema:
-            $ref: "#/definitions/EditInternationalPrivateEnterprise"
+            type: object
+            properties:
+              admin_emails:
+                type: array
+                items:
+                  type: string
       responses:
         "204":
           description: Success
@@ -882,10 +887,6 @@ definitions:
         $ref: "#/definitions/EnterpriseCompleteWithoutId"
       fr:
         $ref: "#/definitions/EnterpriseCompleteWithoutId"
-
-  EditInternationalPrivateEnterprise:
-      allOf:
-        - $ref: '#/definitions/EnterprisePrivateFields'
 
   PhoneNumber:
     required:
