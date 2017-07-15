@@ -11,7 +11,7 @@ const unpublishedEnterpriseInternationalPublicModel = mongoose.model('Unpublishe
 const unpublishedEnterpriseInternationalPrivateFieldsModel = mongoose.model('UnpublishedEnterpriseInternationalPrivateFields');
 const enterpriseLogoModel = mongoose.model('EnterpriseLogo');
 const enterpriseAdapter = require('./enterprise.adapter');
-const SUPPORTED_LANGUAGES = require('../helpers/language/constants').SUPPORTED_LANGUAGES;
+const langUtil = require('../helpers/language/lang_util');
 const DEFAULT_LANGUAGE = require('../helpers/language/constants').DEFAULT_LANGUAGE;
 const SUPPORTED_IMAGE_TYPES = ['image/png', 'image/gif', 'image/jpeg', 'image/svg+xml'];
 
@@ -111,7 +111,7 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
   let limit = req.swagger.params.count.value || 25;
   let page = req.swagger.params.page.value || 1;
 
-  let lang = getLanguage(req);
+  let lang = langUtil.getLanguage(req);
 
   if (locationSearch) {
     performLocationSearch(res, locationSearch, limit, page, lang);
@@ -154,19 +154,11 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
     });
 };
 
-function getLanguage(req) {
-  let lang = DEFAULT_LANGUAGE;
-  if (req.swagger.params.lang &&
-      req.swagger.params.lang.value &&
-      SUPPORTED_LANGUAGES.indexOf(req.swagger.params.lang.value) > -1) {
-    lang = req.swagger.params.lang.value;
-  }
-  return lang;
-}
+
 
 module.exports.getOneEnterprisePublic = function(req, res) {
   let id = req.swagger.params.id.value;
-  let lang = getLanguage(req);
+  let lang = langUtil.getLanguage(req);
 
   enterpriseInternationalPublicModel
     .findById(id)

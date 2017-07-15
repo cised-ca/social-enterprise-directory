@@ -141,6 +141,33 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
+  /account/enterpriseSummary:
+    x-swagger-router-controller: enterprise_summary_controller
+    get:
+      description: Endpoint for retrieving account enterprise summary.
+      # call this method name on the controller
+      operationId: getAccountEnterpriseSummary
+
+      parameters:
+        - name: lang
+          in: query
+          description: language to use
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Returns the details of the account enterprise summary
+          schema:
+            $ref: "#/definitions/AccountEnterpriseSummary"
+
+        "403":
+          description: Not logged in.
+
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
   /directoryAdmin:
     x-swagger-router-controller: admin_controller
     get:
@@ -945,6 +972,26 @@ definitions:
         type: boolean
       authenticatedEnterprises:
         description: List of enterprises {id, name}
+        type: array
+        items:
+          $ref: "#/definitions/SimpleEnterpiseInfo"
+
+  AccountEnterpriseSummary:
+    properties:
+      directoryAdmin:
+        type: boolean
+      published:
+        description: List of enterprises this account has access to
+        type: array
+        items:
+          $ref: "#/definitions/SimpleEnterpiseInfo"
+      unpublished:
+        description: List of unpublished enterprises this account has access to
+        type: array
+        items:
+          $ref: "#/definitions/SimpleEnterpiseInfo"
+      pending:
+        description: List of pending enterprises this account has access to
         type: array
         items:
           $ref: "#/definitions/SimpleEnterpiseInfo"
