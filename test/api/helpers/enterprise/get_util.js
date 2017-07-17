@@ -23,9 +23,78 @@ function getEnterpriseById(language, getIdFunc, verifyFunc) {
   });
 }
 
+function getEnterpriseByIdComplete(getIdFunc, verifyFunc) {
+  return new Promise( (resolve) => {
+    let fullURL = url + getIdFunc() + '/complete';
+    requestUtil.performGetRequest(fullURL)()
+    .then( res => {
+      verifyFunc(res.body);
+    })
+    .then(resolve)
+    .catch( (err) => {
+      logger.error(err);
+      should.fail(err);
+    });
+  });
+}
+
+function getPendingEnterpriseById(getIdFunc, verifyFunc) {
+  return new Promise( (resolve) => {
+    let fullURL = url + getIdFunc() + '/pending';
+    requestUtil.performGetRequest(fullURL)()
+    .then( res => {
+      verifyFunc(res.body);
+    })
+    .then(resolve)
+    .catch( (err) => {
+      logger.error(err);
+      should.fail(err);
+    });
+  });
+}
+
+function getUnpublishedEnterpriseById(getIdFunc, verifyFunc) {
+  return new Promise( (resolve) => {
+    let fullURL = url + getIdFunc() + '/unpublished';
+    requestUtil.performGetRequest(fullURL)()
+    .then( res => {
+      verifyFunc(res.body);
+    })
+    .then(resolve)
+    .catch( (err) => {
+      logger.error(err);
+      should.fail(err);
+    });
+  });
+}
+
 function getEnterpriseByIdExpectError(statusCode, getIdFunc) {
   return new Promise( (resolve) => {
     let fullURL = url + getIdFunc();
+    requestUtil.performGetRequest(fullURL, statusCode)()
+    .then(() => {resolve();})
+    .catch( (err) => {
+      logger.error(err);
+      should.fail(err);
+    });
+  });
+}
+
+function getPendingEnterpriseByIdExpectError(statusCode, getIdFunc) {
+  return new Promise( (resolve) => {
+    let fullURL = url + getIdFunc() + '/pending';
+    requestUtil.performGetRequest(fullURL, statusCode)()
+    .then(() => {resolve();})
+    .catch( (err) => {
+      logger.error(err);
+      should.fail(err);
+    });
+  });
+}
+
+function getUnpublishedEnterpriseByIdExpectError(statusCode, getIdFunc) {
+  return new Promise( (resolve) => {
+    let fullURL = url + getIdFunc() + '/unpublished';
     requestUtil.performGetRequest(fullURL, statusCode)()
     .then(() => {resolve();})
     .catch( (err) => {
@@ -41,6 +110,34 @@ function getEnterpriseBody(language, getIdFunc) {
     if (language) {
       fullURL += '?lang=' + language;
     }
+    requestUtil.performGetRequest(fullURL)()
+    .then( res => {
+      resolve(res.body);
+    })
+    .catch( (err) => {
+      logger.error(err);
+      should.fail(err);
+    });
+  });
+}
+
+function getPendingEnterpriseBody(getIdFunc) {
+  return new Promise( (resolve) => {
+    let fullURL = url + getIdFunc() + '/pending';
+    requestUtil.performGetRequest(fullURL)()
+    .then( res => {
+      resolve(res.body);
+    })
+    .catch( (err) => {
+      logger.error(err);
+      should.fail(err);
+    });
+  });
+}
+
+function getUnpublishedEnterpriseBody(getIdFunc) {
+  return new Promise( (resolve) => {
+    let fullURL = url + getIdFunc() + '/unpublished';
     requestUtil.performGetRequest(fullURL)()
     .then( res => {
       resolve(res.body);
@@ -127,6 +224,54 @@ module.exports.getEnterprise2 = function (language) {
   return getEnterpriseBody(language, postUtil.getTestEnterprise2Id);
 };
 
+module.exports.getByIdEnterprise1Complete = function () {
+  return getEnterpriseByIdComplete(postUtil.getTestEnterprise1Id,
+                      enterpriseVerifier.verifyEnterprise1);
+};
+module.exports.getByIdEnterprise2Complete = function () {
+  return getEnterpriseByIdComplete(postUtil.getTestEnterprise2Id,
+                      enterpriseVerifier.verifyEnterprise2);
+};
+
+module.exports.getByIdEnterprise3Complete = function () {
+  return getEnterpriseByIdComplete(postUtil.getTestEnterprise3Id,
+                      enterpriseVerifier.verifyEnterprise3);
+};
+
 module.exports.getEnterprise1Admins = function () {
   return getEnterpriseAdminsBody(postUtil.getTestEnterprise1Id);
+};
+
+module.exports.getByIdPendingEnterprise1 = function () {
+  return getPendingEnterpriseById(postUtil.getTestEnterprise1Id,
+                      enterpriseVerifier.verifyEnterprise1);
+};
+
+module.exports.getPendingEnterprise1Body = function () {
+  return getPendingEnterpriseBody(postUtil.getTestEnterprise1Id);
+};
+
+module.exports.getByIdPendingEnterprise1ExpectError = function (statusCode) {
+  return getPendingEnterpriseByIdExpectError(statusCode, postUtil.getTestEnterprise1Id);
+};
+
+module.exports.getByIdUnpublishedEnterprise1 = function () {
+  return getUnpublishedEnterpriseById(postUtil.getTestEnterprise1Id,
+                      enterpriseVerifier.verifyEnterprise1);
+};
+
+module.exports.getByIdUnpublishedEnterprise1ExpectError = function (statusCode) {
+  return getUnpublishedEnterpriseByIdExpectError(statusCode, postUtil.getTestEnterprise1Id);
+};
+
+module.exports.getUnpublishedEnterprise1Body = function () {
+  return getUnpublishedEnterpriseBody(postUtil.getTestEnterprise1Id);
+};
+
+module.exports.getUnpublishedEnterprise2Body = function () {
+  return getUnpublishedEnterpriseBody(postUtil.getTestEnterprise2Id);
+};
+
+module.exports.getUnpublishedEnterprise3Body = function () {
+  return getUnpublishedEnterpriseBody(postUtil.getTestEnterprise3Id);
 };

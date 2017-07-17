@@ -1,5 +1,6 @@
 const publicFields = require('../data/enterprise.model').enterprisePublicFields;
 const privateFields = require('../data/enterprise.model').enterprisePrivateFields;
+const internationalPrivateFields = require('../data/enterprise.model').internationalEnterprisePrivateFields;
 const SUPPORTED_LANGUAGES = require('../helpers/language/constants').SUPPORTED_LANGUAGES;
 const jsonMergePatch = require('json8-merge-patch');
 
@@ -22,6 +23,12 @@ function transformDbEnterprisesToApiFormat(dbEnterprise) {
 function copyLocations(source, dest) {
   if (source['locations']) {
     dest['locations'] = source['locations'];
+  }
+}
+
+function copyAdminEmails(source, dest) {
+  if (source['admin_emails']) {
+    dest['admin_emails'] = source['admin_emails'];
   }
 }
 
@@ -68,6 +75,7 @@ module.exports.transformDbIntlEnterpriseToApiIntlFormat = function(dbEnterprise)
 
   apiInternationalEnterprise['id'] = dbEnterprise._id.toString();
   copyLocations(dbEnterprise, apiInternationalEnterprise);
+  copyAdminEmails(dbEnterprise, apiInternationalEnterprise);
 
   SUPPORTED_LANGUAGES.forEach( function(language) {
     if (dbEnterprise[language]) {
@@ -105,10 +113,11 @@ function transformCompleteEnterpriseToPublicDBFormat(enterprise) {
   dbPublicEnterprise.lowercase_name = dbPublicEnterprise.name.toLowerCase();
 
   // remove private fields
-  filterPrivateEntriesForArray(dbPublicEnterprise.emails);
-  filterPrivateEntriesForArray(dbPublicEnterprise.phones);
-  filterPrivateEntriesForArray(dbPublicEnterprise.faxes);
-  filterPrivateEntriesForArray(dbPublicEnterprise.addresses);
+  ['emails', 'phones', 'faxes', 'addresses'].forEach(field => {
+    if (dbPublicEnterprise[field]) {
+      dbPublicEnterprise[field] = dbPublicEnterprise[field].filter(value => 'public' in value && value.public);
+    }
+  });
 
   return dbPublicEnterprise;
 }
@@ -140,28 +149,14 @@ function transformCompleteEnterpriseToPrivateDBFormat(enterprise) {
   });
 
   // remove public fields
-  filterPublicEntriesForArray(dbPrivateEnterprise.emails);
-  filterPublicEntriesForArray(dbPrivateEnterprise.phones);
-  filterPublicEntriesForArray(dbPrivateEnterprise.faxes);
-  filterPublicEntriesForArray(dbPrivateEnterprise.addresses);
+  ['emails', 'phones', 'faxes', 'addresses'].forEach(field => {
+    if (dbPrivateEnterprise[field]) {
+      dbPrivateEnterprise[field] = dbPrivateEnterprise[field].filter(value => 'public' in value && !value.public);
+    }
+  });
 
   return dbPrivateEnterprise;
 }
-
-// Throws exception on error.
-module.exports.appendPrivateInfo = function(enterprise, privateInfo) {
-
-  privateFields.forEach( field => {
-    if (privateInfo[field]) {
-      if (!enterprise[field]) {
-        enterprise[field] = privateInfo[field];
-      }
-      else {
-        enterprise[field] = enterprise[field].concat(privateInfo[field]);
-      }
-    }
-  });
-};
 
 module.exports.applyMerge = function(dbEnterprise, mergeRequest) {
   let mergedEnterprise = jsonMergePatch.apply(dbEnterprise, mergeRequest);
@@ -169,29 +164,34 @@ module.exports.applyMerge = function(dbEnterprise, mergeRequest) {
 };
 
 
+module.exports.mergePublicAndPrivateDBInfo = function(
+                    dbPublicInternationalEnterprise,
+                    dbPrivateInternationalEnterprise) {
+  let clone = JSON.parse(JSON.stringify(dbPublicInternationalEnterprise));
 
-function filterPrivateEntriesForArray(array) {
-  if (!array) {
-    return;
-  }
-  let i = array.length;
-  while(i--) {
-    if (array[i].public) {
-      continue;
+  internationalPrivateFields.forEach(field => {
+    if (SUPPORTED_LANGUAGES.includes(field)) {
+      return;
     }
-    array.splice(i,1);
-  }
-}
+    if (dbPrivateInternationalEnterprise[field] == null) {
+      return;
+    }
+    clone[field] = dbPrivateInternationalEnterprise[field];
+  });
 
-function filterPublicEntriesForArray(array) {
-  if (!array) {
-    return;
-  }
-  let i = array.length;
-  while(i--) {
-    if (!array[i].public) {
-      continue;
-    }
-    array.splice(i,1);
-  }
-}
+  SUPPORTED_LANGUAGES.forEach(lang => {
+    privateFields.forEach(field => {
+      let value = dbPrivateInternationalEnterprise[lang][field];
+      if (value == null) {
+        return;
+      }
+      if (clone[lang][field]) {
+        clone[lang][field] = clone[lang][field].concat(value);
+      } else {
+        clone[lang][field] = value;
+      }
+    });
+  });
+
+  return clone;
+};

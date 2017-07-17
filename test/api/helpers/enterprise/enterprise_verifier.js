@@ -12,19 +12,32 @@ const testEnterprise3_complete = require('../../helpers/data/enterprise/testEnte
 
 const DEFAULT_LANGUAGE = require('../../helpers/language/language_test_constants').DEFAULT_LANGUAGE;
 const FRENCH = require('../../helpers/language/language_test_constants').FRENCH;
+const ENGLISH = require('../../helpers/language/language_test_constants').ENGLISH;
+
+const internationalEnterpriseFields = [
+  'admin_emails',
+  'locations',
+  'en',
+  'fr'
+];
+
 
 const enterpriseFields = [
   'name',
+  'short_description',
   'description',
   'logo',
   'offering',
   'purposes',
+  'year_started',
   'website',
+  'facebook',
+  'instagram',
+  'twitter',
   'emails',
   'phones',
   'faxes',
   'addresses',
-  'locations',
   'clusters',
   'segments',
   'parent_organization',
@@ -35,16 +48,20 @@ const enterpriseFields = [
 
 const enterprisePublicFields = [
   'name',
+  'short_description',
   'description',
   'logo',
   'offering',
   'purposes',
+  'year_started',
   'website',
+  'facebook',
+  'instagram',
+  'twitter',
   'emails',
   'phones',
   'faxes',
-  'addresses',
-  'locations'
+  'addresses'
 ];
 
 function enterpriseNameMatches(nameToMatch) {
@@ -70,35 +87,36 @@ function failIfArrayContainsEnterprise(enterpriseArray, name) {
   }
 }
 
-let verifyArrayDoesNotContainEnterprise1 = function(enterpriseArray) {
+const verifyArrayDoesNotContainEnterprise1 = function(enterpriseArray) {
   failIfArrayContainsEnterprise(enterpriseArray, testEnterprise1_complete[DEFAULT_LANGUAGE]['name']);
 };
-let verifyArrayDoesNotContainEnterprise2 = function(enterpriseArray) {
+const verifyArrayDoesNotContainEnterprise2 = function(enterpriseArray) {
   failIfArrayContainsEnterprise(enterpriseArray, testEnterprise2_complete[DEFAULT_LANGUAGE]['name']);
 };
-let verifyArrayDoesNotContainEnterprise3 = function(enterpriseArray) {
+const verifyArrayDoesNotContainEnterprise3 = function(enterpriseArray) {
   failIfArrayContainsEnterprise(enterpriseArray, testEnterprise3_complete[DEFAULT_LANGUAGE]['name']);
 };
 
-let verifyArrayContainsEnterprise1 = function(enterpriseArray) {
+const verifyArrayContainsEnterprise1 = function(enterpriseArray) {
   let foundEnterprise = findEnterpriseInArrayOrFail(enterpriseArray, testEnterprise1_complete[DEFAULT_LANGUAGE]['name']);
   verifyEnterprise1Public(foundEnterprise);
 };
 
-let verifyArrayContainsEnterprise2 = function(enterpriseArray) {
+const verifyArrayContainsEnterprise2 = function(enterpriseArray) {
   let foundEnterprise = findEnterpriseInArrayOrFail(enterpriseArray, testEnterprise2_complete[DEFAULT_LANGUAGE]['name']);
   verifyEnterprise2Public(foundEnterprise);
 };
 
-let verifyArrayContainsEnterprise3 = function(enterpriseArray) {
+const verifyArrayContainsEnterprise3 = function(enterpriseArray) {
   let foundEnterprise = findEnterpriseInArrayOrFail(enterpriseArray, testEnterprise3_complete[DEFAULT_LANGUAGE]['name']);
   verifyEnterprise3Public(foundEnterprise);
 };
 
-let verifyEnterprise1 = function(enterprise) {
-  verifyEnterprise(testEnterprise1_complete, enterprise);
+const verifyEnterprise1 = function(enterprise) {
+  verifyInternationalEnterpriseComplete(testEnterprise1_complete, enterprise);
 };
-let verifyEnterprise1Public = function(enterprise, language) {
+
+const verifyEnterprise1Public = function(enterprise, language) {
   let expected = testEnterprise1_public_en;
   if (language === FRENCH) {
     expected = testEnterprise1_public_fr;
@@ -106,10 +124,10 @@ let verifyEnterprise1Public = function(enterprise, language) {
   verifyEnterprisePublic(expected, enterprise);
 };
 
-let verifyEnterprise2 = function(enterprise) {
-  verifyEnterprise(testEnterprise2_complete, enterprise);
+const verifyEnterprise2 = function(enterprise) {
+  verifyInternationalEnterpriseComplete(testEnterprise2_complete, enterprise);
 };
-let verifyEnterprise2Public = function(enterprise, language) {
+const verifyEnterprise2Public = function(enterprise, language) {
   let expected = testEnterprise2_public_en;
   if (language === FRENCH) {
     expected = testEnterprise2_public_fr;
@@ -117,10 +135,10 @@ let verifyEnterprise2Public = function(enterprise, language) {
   verifyEnterprisePublic(expected, enterprise);
 };
 
-let verifyEnterprise3 = function(enterprise) {
-  verifyEnterprise(testEnterprise3_complete, enterprise);
+const verifyEnterprise3 = function(enterprise) {
+  verifyInternationalEnterpriseComplete(testEnterprise3_complete, enterprise);
 };
-let verifyEnterprise3Public = function(enterprise, language) {
+const verifyEnterprise3Public = function(enterprise, language) {
   let expected = testEnterprise3_public_en;
   if (language === FRENCH) {
     expected = testEnterprise3_public_fr;
@@ -128,13 +146,24 @@ let verifyEnterprise3Public = function(enterprise, language) {
   verifyEnterprisePublic(expected, enterprise);
 };
 
-function verifyEnterprise(expectedEnterprise, actualEnterprise) {
+function verifyInternationalEnterpriseComplete(expectedEnterprise, actualEnterprise) {
   actualEnterprise['id'].should.not.be.undefined;
-  enterpriseFields.forEach(function(currentItem) {
+  internationalEnterpriseFields.forEach(currentItem => {
     if (areUndefinedValuesPresentAndEquivalent(expectedEnterprise[currentItem], actualEnterprise[currentItem])) {
       return;
     }
-    actualEnterprise[currentItem].should.eql(expectedEnterprise[currentItem], 'Failed on ' + currentItem);
+    if (currentItem == ENGLISH || currentItem == FRENCH) {
+      enterpriseFields.forEach(subField => {
+        if (areUndefinedValuesPresentAndEquivalent(expectedEnterprise[currentItem][subField],
+                                            actualEnterprise[currentItem][subField])) {
+          return;
+        }
+        actualEnterprise[currentItem][subField].should.eql(expectedEnterprise[currentItem][subField],
+          'Failed on [' + currentItem + '][' + subField + ']');
+      });
+    } else {
+      actualEnterprise[currentItem].should.eql(expectedEnterprise[currentItem], 'Failed on ' + currentItem);
+    }
   });
 }
 
@@ -148,12 +177,12 @@ function verifyEnterprisePublic(expectedEnterprise, actualEnterprise) {
   });
 }
 
-function undefinedValuesPresent(expected, actual) {
+function undefinedValuesArePresent(expected, actual) {
   return expected == null || actual == null;
 }
 
 function areUndefinedValuesPresentAndEquivalent(expected, actual) {
-  if (!undefinedValuesPresent(expected, actual)) { return false; }
+  if (!undefinedValuesArePresent(expected, actual)) { return false; }
   if (expected == actual) { return true; }
 
   if (expected == null) {

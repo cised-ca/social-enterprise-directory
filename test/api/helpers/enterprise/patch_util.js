@@ -23,6 +23,19 @@ module.exports.editEnterprise1Admins = function(enterpriseModifications, statusC
   });
 };
 
+module.exports.editPendingEnterprise1 = function(enterpriseModifications, statusCode) {
+  return new Promise( (resolve) => {
+    editEnterprise(resolve, baseURL + postUtil.getTestEnterprise1Id() + '/pending',
+                    enterpriseModifications, statusCode);
+  });
+};
+
+module.exports.editUnpublishedEnterprise1 = function(enterpriseModifications, statusCode) {
+  return new Promise( (resolve) => {
+    editEnterprise(resolve, baseURL + postUtil.getTestEnterprise1Id() + '/unpublished',
+                    enterpriseModifications, statusCode);
+  });
+};
 
 function editEnterprise(resolve, url, enterpriseModifications, statusCode) {
   requestUtil.buildPatchRequest(url, statusCode)

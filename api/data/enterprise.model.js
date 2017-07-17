@@ -159,6 +159,11 @@ let DirectoryAdministratorsModel = mongoose.model('DirectoryAdministrators', dir
 let EnterpriseInternationalPublicModel = mongoose.model('EnterpriseInternationalPublic', enterpriseInternationalPublicSchema, 'enterprises');
 let EnterpriseInternationalPrivateModel = mongoose.model('EnterpriseInternationalPrivateFields', enterpriseInternationalPrivateFieldsSchema, 'enterprisePrivateFields');
 let EnterpriseLogoModel = mongoose.model('EnterpriseLogo', enterpriseLogoSchema, 'enterpriseLogos');
+let PendingEnterpriseInternationalPublicModel = mongoose.model('PendingEnterpriseInternationalPublic', enterpriseInternationalPublicSchema, 'pendingEnterprises');
+let PendingEnterpriseInternationalPrivateModel = mongoose.model('PendingEnterpriseInternationalPrivateFields', enterpriseInternationalPrivateFieldsSchema, 'pendingEnterprisePrivateFields');
+let UnpublishedEnterpriseInternationalPublicModel = mongoose.model('UnpublishedEnterpriseInternationalPublic', enterpriseInternationalPublicSchema, 'unpublishedEnterprises');
+let UnpublishedEnterpriseInternationalPrivateModel = mongoose.model('UnpublishedEnterpriseInternationalPrivateFields', enterpriseInternationalPrivateFieldsSchema, 'unpublishedEnterprisePrivateFields');
+
 
 DirectoryAdministratorsModel.on('index', function(err) {
   if (err) {
@@ -192,5 +197,38 @@ EnterpriseLogoModel.on('index', function(err) {
   }
 });
 
+PendingEnterpriseInternationalPublicModel.on('index', function(err) {
+  if (err) {
+    logger.error('Error building indexes on Pending Enterprise International Public Model: ' + err);
+  } else {
+    logger.info('Built index on Pending Enterprise International Public Model');
+  }
+});
+
+PendingEnterpriseInternationalPrivateModel.on('index', function(err) {
+  if (err) {
+    logger.error('Error building indexes on Pending Enterprise Private Model: ' + err);
+  } else {
+    logger.info('Built index on Pending Enterprise Private Model');
+  }
+});
+
+UnpublishedEnterpriseInternationalPublicModel.on('index', function(err) {
+  if (err) {
+    logger.error('Error building indexes on Unpublished Enterprise International Public Model: ' + err);
+  } else {
+    logger.info('Built index on Unpublished Enterprise International Public Model');
+  }
+});
+
+UnpublishedEnterpriseInternationalPrivateModel.on('index', function(err) {
+  if (err) {
+    logger.error('Error building indexes on Unpublished Enterprise Private Model: ' + err);
+  } else {
+    logger.info('Built index on Unpublished Enterprise Private Model');
+  }
+});
+
 module.exports.enterprisePublicFields = Object.keys(enterprisePublicSchema.paths);
 module.exports.enterprisePrivateFields = Object.keys(enterprisePrivateFieldsSchema.paths);
+module.exports.internationalEnterprisePrivateFields = Object.keys(internationalPrivateFields);

@@ -1,5 +1,5 @@
 /* eslint-env node, mocha */
-const postUtil = require('../../helpers/enterprise/post_util');
+const publishUtil = require('../../helpers/enterprise/publish_util');
 const requestUtil = require('../../helpers/request_util');
 const putUtil = require('../../helpers/enterprise/put_util');
 const getUtil = require('../../helpers/enterprise/get_util');
@@ -15,7 +15,7 @@ const replaceEnterprise1_public_fr = require('../../helpers/data/enterprise/repl
 
 const DIRECTORY_URL = '/directory';
 
-describe('PUT /enterprise/{id}', function() {
+describe('test PUT /enterprise/{id}', function() {
   this.timeout(TEST_TIMEOUT);
 
   beforeEach(function(done) {
@@ -23,33 +23,33 @@ describe('PUT /enterprise/{id}', function() {
   });
 
   it('should return 403 Forbidden if not logged in', function(done) {
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
       mockAuthHandler.reset();
       mockAuthHandler.handler.loggedIn = false;
-      return putUtil.putEnterprise(postUtil.getTestEnterprise1Id(), replaceEnterprise1, 403);
+      return putUtil.putEnterprise(publishUtil.getTestEnterprise1Id(), replaceEnterprise1, 403);
     })
     .then(done)
     .catch(failTest(done));
   });
 
-  it('should return 403 Forbidden if not proper enterprise admin', function(done) {
-    postUtil.postTestEnterprise1()
+  it('should return 403 Forbidden if not directory admin', function(done) {
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
       mockAuthHandler.reset();
       mockAuthHandler.handler.loggedIn = true;
       mockAuthHandler.handler.isDirectoryAdmin = false;
-      mockAuthHandler.handler.isEnterpriseAdmin = false;
-      return putUtil.putEnterprise(postUtil.getTestEnterprise1Id(), replaceEnterprise1, 403);
+      mockAuthHandler.handler.isEnterpriseAdmin = true;
+      return putUtil.putEnterprise(publishUtil.getTestEnterprise1Id(), replaceEnterprise1, 403);
     })
     .then(done)
     .catch(failTest(done));
   });
 
   it('should replace testEnterprise1', function(done) {
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(() => {
-      return putUtil.putEnterprise(postUtil.getTestEnterprise1Id(), replaceEnterprise1);
+      return putUtil.putEnterprise(publishUtil.getTestEnterprise1Id(), replaceEnterprise1);
     })
     .then(getUtil.getEnterprise1)
     .then(body => {
@@ -68,13 +68,13 @@ describe('PUT /enterprise/{id}', function() {
   });
 
   it('should affect search results when replace testEnterprise1', function(done) {
-    postUtil.postTestEnterprise1()
+    publishUtil.createAndPublishTestEnterprise1()
     .then(requestUtil.performGetRequest(DIRECTORY_URL + '?q=abhoney2'))
     .then( res => {
       res.body.enterprises.length.should.equal(0);
     })
     .then(() => {
-      return putUtil.putEnterprise(postUtil.getTestEnterprise1Id(), replaceEnterprise1);
+      return putUtil.putEnterprise(publishUtil.getTestEnterprise1Id(), replaceEnterprise1);
     })
     .then(requestUtil.performGetRequest(DIRECTORY_URL + '?q=abhoney2'))
     .then( res => {

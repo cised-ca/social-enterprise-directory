@@ -141,6 +141,33 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
+  /account/enterpriseSummary:
+    x-swagger-router-controller: enterprise_summary_controller
+    get:
+      description: Endpoint for retrieving account enterprise summary.
+      # call this method name on the controller
+      operationId: getAccountEnterpriseSummary
+
+      parameters:
+        - name: lang
+          in: query
+          description: language to use
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Returns the details of the account enterprise summary
+          schema:
+            $ref: "#/definitions/AccountEnterpriseSummary"
+
+        "403":
+          description: Not logged in.
+
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
   /directoryAdmin:
     x-swagger-router-controller: admin_controller
     get:
@@ -249,7 +276,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: ID of enterprise to fetch
+          description: ID of enterprise to delete
           required: true
           type: string
       responses:
@@ -279,7 +306,7 @@ paths:
           description: JSON Merge Patch style edit request for the enteprise
           required: true
           schema:
-            $ref: "#/definitions/EditInternationalEnterprise"
+            $ref: "#/definitions/CompleteInternationalEnterpriseWithoutId"
 
       responses:
         "204":
@@ -292,7 +319,7 @@ paths:
     put:
       description: Replaces an enterprise in the directory
       security:
-        - oauth-enterprise-admin: []
+        - oauth-directory-admin: []
       # call this method name on the controller
       operationId: replaceEnterprise
       parameters:
@@ -311,6 +338,30 @@ paths:
       responses:
         "200":
           description: Success
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /enterprise/{id}/complete:
+    x-swagger-router-controller: enterprise.controller
+    get:
+      description: Returns one complete enterprise in the directory
+      security:
+        - oauth-enterprise-admin: []
+      # call this method name on the controller
+      operationId: getOneEnterpriseComplete
+      parameters:
+        - name: id
+          in: path
+          description: ID of enterprise to fetch
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/CompleteInternationalEnterpriseWithoutId"
         default:
           description: Error
           schema:
@@ -349,7 +400,7 @@ paths:
       security:
         - oauth-enterprise-admin: []
       # call this method name on the controller
-      operationId: editEnterprisePrivateFields
+      operationId: editEnterpriseAdmins
       parameters:
         - name: id
           in: path
@@ -361,7 +412,12 @@ paths:
           description: JSON Merge Patch style edit request for the enteprise
           required: true
           schema:
-            $ref: "#/definitions/EditInternationalPrivateEnterprise"
+            type: object
+            properties:
+              admin_emails:
+                type: array
+                items:
+                  type: string
       responses:
         "204":
           description: Success
@@ -495,6 +551,208 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
+
+  /enterprise/{id}/pending:
+    x-swagger-router-controller: enterprise.controller
+    get:
+      description: Returns one pending enterprise in the directory
+      security:
+        - oauth-enterprise-admin: []
+      # call this method name on the controller
+      operationId: getOnePendingEnterprise
+      parameters:
+        - name: id
+          in: path
+          description: ID of enterprise to fetch
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/CompleteInternationalEnterpriseWithoutId"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+    delete:
+      description: Deletes a pending enterprise from the directory
+      security:
+        - oauth-enterprise-admin: []
+      # call this method name on the controller
+      operationId: deletePendingEnterprise
+      parameters:
+        - name: id
+          in: path
+          description: ID of enterprise to delete
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+    patch:
+      consumes:
+        - application/merge-patch+json
+      description: JSON Merge Patch style edit request for the pending enteprise
+      security:
+        - oauth-enterprise-admin: []
+      # call this method name on the controller
+      operationId: editPendingEnterprise
+      parameters:
+        - name: id
+          in: path
+          description: ID of enterprise to edit
+          required: true
+          type: string
+        - name: EnterpriseMerge
+          in: body
+          description: JSON Merge Patch style edit request for the enteprise
+          required: true
+          schema:
+            $ref: "#/definitions/CompleteInternationalEnterpriseWithoutId"
+
+      responses:
+        "204":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+    put:
+      description: Replaces a pending enterprise in the directory
+      security:
+        - oauth-enterprise-admin: []
+      # call this method name on the controller
+      operationId: replacePendingEnterprise
+      parameters:
+        - name: id
+          in: path
+          description: ID of pending enterprise to replace
+          required: true
+          type: string
+        - name: Enterprise
+          in: body
+          description: Enterprise data to be added to the directory
+          required: true
+          schema:
+            $ref: "#/definitions/NewInternationalEnterprise"
+
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+
+  /enterprise/{id}/unpublished:
+    x-swagger-router-controller: enterprise.controller
+    get:
+      description: Returns one unpublished enterprise in the directory
+      security:
+        - oauth-directory-admin: []
+      # call this method name on the controller
+      operationId: getOneUnpublishedEnterprise
+      parameters:
+        - name: id
+          in: path
+          description: ID of enterprise to fetch
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/CompleteInternationalEnterpriseWithoutId"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+    delete:
+      description: Deletes an unpublished enterprise from the directory
+      security:
+        - oauth-directory-admin: []
+      # call this method name on the controller
+      operationId: deleteUnpublishedEnterprise
+      parameters:
+        - name: id
+          in: path
+          description: ID of enterprise to delete
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+    patch:
+      consumes:
+        - application/merge-patch+json
+      description: JSON Merge Patch style edit request for the pending enteprise
+      security:
+        - oauth-directory-admin: []
+      # call this method name on the controller
+      operationId: editUnpublishedEnterprise
+      parameters:
+        - name: id
+          in: path
+          description: ID of enterprise to edit
+          required: true
+          type: string
+        - name: EnterpriseMerge
+          in: body
+          description: JSON Merge Patch style edit request for the enteprise
+          required: true
+          schema:
+            $ref: "#/definitions/CompleteInternationalEnterpriseWithoutId"
+
+      responses:
+        "204":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+    put:
+      description: Replaces a unpublished enterprise in the directory
+      security:
+        - oauth-directory-admin: []
+      # call this method name on the controller
+      operationId: replaceUnpublishedEnterprise
+      parameters:
+        - name: id
+          in: path
+          description: ID of unpublished enterprise to replace
+          required: true
+          type: string
+        - name: Enterprise
+          in: body
+          description: Enterprise data to be added to the directory
+          required: true
+          schema:
+            $ref: "#/definitions/NewInternationalEnterprise"
+
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
 # complex objects have schema definitions
 definitions:
 
@@ -600,7 +858,7 @@ definitions:
       required:
       - name
 
-  EditEnterprise:
+  EnterpriseCompleteWithoutId:
       allOf:
         - $ref: '#/definitions/EnterprisePublicWithoutID' # inherit all the public fields
         - $ref: '#/definitions/EnterprisePrivateFields'
@@ -615,18 +873,20 @@ definitions:
       fr:
         $ref: "#/definitions/NewEnterprise"
 
-  EditInternationalEnterprise:
+  CompleteInternationalEnterpriseWithoutId:
     properties:
+      id:
+        type: string
+      admin_emails:
+        type: array
+        items:
+          type: string
       locations:
         $ref: "#/definitions/Locations"
       en:
-        $ref: "#/definitions/EditEnterprise"
+        $ref: "#/definitions/EnterpriseCompleteWithoutId"
       fr:
-        $ref: "#/definitions/EditEnterprise"
-
-  EditInternationalPrivateEnterprise:
-      allOf:
-        - $ref: '#/definitions/EnterprisePrivateFields'
+        $ref: "#/definitions/EnterpriseCompleteWithoutId"
 
   PhoneNumber:
     required:
@@ -713,6 +973,26 @@ definitions:
         type: boolean
       authenticatedEnterprises:
         description: List of enterprises {id, name}
+        type: array
+        items:
+          $ref: "#/definitions/SimpleEnterpiseInfo"
+
+  AccountEnterpriseSummary:
+    properties:
+      directoryAdmin:
+        type: boolean
+      published:
+        description: List of enterprises this account has access to
+        type: array
+        items:
+          $ref: "#/definitions/SimpleEnterpiseInfo"
+      unpublished:
+        description: List of unpublished enterprises this account has access to
+        type: array
+        items:
+          $ref: "#/definitions/SimpleEnterpiseInfo"
+      pending:
+        description: List of pending enterprises this account has access to
         type: array
         items:
           $ref: "#/definitions/SimpleEnterpiseInfo"
