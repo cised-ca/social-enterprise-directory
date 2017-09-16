@@ -189,6 +189,29 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+    put:
+      description: Updates the list of directory admins
+      security:
+        - oauth-directory-admin: []
+      # call this method name on the controller
+      operationId: updateDirectoryAdmins
+      parameters:
+        - name: admins
+          in: body
+          description: New list of admins for the directory
+          required: true
+          schema:
+            type: array
+            items:
+               $ref: "#/definitions/DirectoryAdmin"
+
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
 
   /directory:
     x-swagger-router-controller: enterprise.controller
