@@ -1,4 +1,5 @@
 const passport = require('../helpers/auth/passport_factory');
+const logger = require('../../lib/logger');
 const adminChecker = require('../helpers/auth/request_admin_checker');
 const oauthConfig = require('../../config/oauth/oauth_config.js');
 
@@ -20,13 +21,23 @@ module.exports.loginFacebook = function(req, res, next) {
 };
 
 module.exports.loginCallbackTwitter = function(req, res) {
-  passport.authenticate('twitter')(req, res, function() {
+  passport.authenticate('twitter')(req, res, function(err) {
+    if (err) {
+      logger.error('Error logging in with twitter:' + err);
+      res.status(403).json({'message': err});
+      return;
+    }
     res.redirect(oauthConfig.get('redirectURLOnSuccessfulLogin'));
   });
 };
 
 module.exports.loginCallbackFacebook = function(req, res) {
-  passport.authenticate('facebook')(req, res, function(){
+  passport.authenticate('facebook')(req, res, function(err){
+    if (err) {
+      logger.error('Error logging in with facebook:' + err);
+      res.status(403).json({'message': err});
+      return;
+    }
     res.redirect(oauthConfig.get('redirectURLOnSuccessfulLogin'));
   });
 };
