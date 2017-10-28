@@ -9,6 +9,7 @@ module.exports.install = function() {
       clientID: oauthConfig.get('facebookClientId'),
       clientSecret: oauthConfig.get('facebookSecret'),
       callbackURL: oauthConfig.get('facebookCallbackURL'),
+      enableProof: true,
       profileFields: ['id', 'email']
     },
     verifyFBAccount
