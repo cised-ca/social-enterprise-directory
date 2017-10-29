@@ -71,7 +71,7 @@ describe('Testing internationalization', function() {
 
   it('should return french data for location search (near enterprise 1)', function(done) {
     publishUtil.createAndPublishAllEnterprises()
-    .then(requestUtil.performGetRequest(DIRECTORY_URL + '?at=45.425,-75.692&lang=' + FRENCH))
+    .then(requestUtil.performGetRequest(DIRECTORY_URL + '?at=-75.692,45.425&lang=' + FRENCH))
     .then( res => {
       enterpriseVerifier.verifyEnterprise1Public(res.body.enterprises[0], FRENCH);
       enterpriseVerifier.verifyEnterprise2Public(res.body.enterprises[1], FRENCH);

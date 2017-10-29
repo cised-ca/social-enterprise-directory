@@ -17,6 +17,12 @@ module.exports.editEnterprise2 = function(enterpriseModifications, statusCode) {
   });
 };
 
+module.exports.editEnterprise3 = function(enterpriseModifications, statusCode) {
+  return new Promise( (resolve) => {
+    editEnterprise(resolve, baseURL + postUtil.getTestEnterprise3Id(), enterpriseModifications, statusCode);
+  });
+};
+
 module.exports.editEnterprise1Admins = function(enterpriseModifications, statusCode) {
   return new Promise( (resolve) => {
     editEnterprise(resolve, baseURL + postUtil.getTestEnterprise1Id() + '/admin', enterpriseModifications, statusCode);
