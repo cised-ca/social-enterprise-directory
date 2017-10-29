@@ -16,6 +16,7 @@ const DEFAULT_LANGUAGE = require('../helpers/language/constants').DEFAULT_LANGUA
 const SUPPORTED_IMAGE_TYPES = ['image/png', 'image/gif', 'image/jpeg', 'image/svg+xml'];
 
 const ENTERPRISE_CACHE_CONTROL = conf.get('enterpriseCacheControl');
+const ONE_HUNDRED_KM = 100*1000;
 
 const lunr = require('../../lib/lunr');
 
@@ -45,21 +46,25 @@ function processDirectoryResults(res, dbEnterprises, language, page, pages) {
   });
 }
 
+function buildGeoNearAggregate(point) {
+  return  {
+    '$geoNear': {
+      'maxDistance': ONE_HUNDRED_KM,
+      'near': point,
+      'spherical': true,
+      'distanceField': 'dis'
+    }
+  };
+}
+
 function performLocationSearch(res, locationSearch, limit, page, language) {
   let point = locationParamToPointObject(locationSearch);
   if (!point) {
     res.status(400).json({'message': 'Invalid location parameter'});
     return;
   }
-
   let aggregate = enterpriseInternationalPublicModel.aggregate(
-    [{
-      '$geoNear': {
-        'near': point,
-        'spherical': true,
-        'distanceField': 'dis'
-      }
-    }]
+    [buildGeoNearAggregate(point)]
   );
 
   let options = {
@@ -113,7 +118,8 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
 
   let lang = langUtil.getLanguage(req);
 
-  if (locationSearch) {
+  if (locationSearch && !search) {
+    // searching location with no keywords, want to sort by proximity
     performLocationSearch(res, locationSearch, limit, page, lang);
     return;
   }
@@ -137,7 +143,20 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
   let a = { '$addFields' : { '__order' : { '$indexOfArray' : [ ids, '$_id' ] } } };
   let s = { '$sort' : { '__order' : 1 } };
 
+  let g = null;
+  if (locationSearch) {
+    let point = locationParamToPointObject(locationSearch);
+    if (!point) {
+      res.status(400).json({'message': 'Invalid location parameter'});
+      return;
+    }
+    g = buildGeoNearAggregate(point);
+  }
+
   let aggregate = enterpriseInternationalPublicModel.aggregate([m,a,s]);
+  if (g) {
+    aggregate = enterpriseInternationalPublicModel.aggregate([g,m,a,s]);
+  }
 
   enterpriseInternationalPublicModel
     .aggregatePaginate(aggregate, options, (err, results, pageCount) => {
