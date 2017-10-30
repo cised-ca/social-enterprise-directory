@@ -6,14 +6,13 @@
 var logger = require('../lib/logger');
 var fs = require('fs');
 
-if (process.argv.length != 5) {
-  logger.error('Usage: node scripts/rttoToJson.js <inputFileEnglish> <inputFileFrench> <outputDir>');
+if (process.argv.length != 4) {
+  logger.error('Usage: node scripts/rttoToJson.js <inputFileEnglish> <outputDir>');
   return;
 }
 
 var inputFileEn = process.argv[2];
-var inputFileFr = process.argv[3];
-var outputDir = process.argv[4];
+var outputDir = process.argv[3];
 var publicOutputFile = outputDir+'/public.json';
 var privateOutputFile = outputDir+'/private.json';
 
@@ -22,82 +21,84 @@ var enterprisesEn = file.split('\n');
 // delete first 2 rows
 enterprisesEn.splice(0, 2);
 
+let mappings = {};
 
-var fileFr = fs.readFileSync(inputFileFr, 'utf8');
-var enterprisesFr = fileFr.split('\n');
-// delete first 2 rows
-enterprisesFr.splice(0, 2);
-
-var mappings = {
-  'GROW Studios': '58014c003762820bc88b8000',
-  'Heartwood House': '58014c003762820bc88b8001',
-  'HighJinx': '58014c003762820bc88b8002',
-  'EcoEquitable': '58014c003762820bc88b8003',
-  'Spread the Joy': '58014c003762820bc88b8004',
-  'BottleWorks': '58014c003762820bc88b8005',
-  'Bronson Centre': '58014c003762820bc88b8006',
-  'Krackers Katering': '58014c003762820bc88b8007',
-  'Thirteen: A Social Enterprise': '58014c003762820bc88b8008',
-  'Tableworks Catering': '58014c003762820bc88b8009',
-  'SuraiTea Inc': '58014c003762820bc88b8010',
-  'National Capital FreeNet': '58014c003762820bc88b8011',
-  'Sweet Memories Baskets': '58014c003762820bc88b8012',
-  'Institut social': '58014c003762820bc88b8013',
-  'mécènESS inc.': '58014c003762820bc88b8014',
-  'La Boite Theatre Box': '58014c003762820bc88b8015',
-  'Co-opérative Africa Slow Food Inc.': '58014c003762820bc88b8016',
-  'La Nouvelle Scène Gilles Desjardins': '58014c003762820bc88b8017',
-  'People of Motherland-A World of Cultures-Un Monde de Cultures': '58014c003762820bc88b8018',
-  'Gourmet-Xpress': '58014c003762820bc88b8019',
-  'Groupe Convex Prescott-Russell Inc.': '58014c003762820bc88b8020',
-  'La Passerelle-I.D.É.': '58014c003762820bc88b8021',
-  'Friends of Algoma': '58014c003762820bc88b8022',
-  'Blue Sky Community Healing Centre': '58014c003762820bc88b8023',
-  'The Cherry Side': '58014c003762820bc88b8024',
-  'PARO Presents': '58014c003762820bc88b8025',
-  'Shinnowap Consulting': '58014c003762820bc88b8026',
-  'Deprived Magazine': '58014c003762820bc88b8027',
-  'Entre Tacos Y Arepas': '58014c003762820bc88b8028',
-  'Accelerated Access': '58014c003762820bc88b8029',
-  'Willow Springs Creative Centre': '58014c003762820bc88b8030',
-  'Playing Nice in the Sandbox with Penny Tremblay': '58014c003762820bc88b8031',
-  'Boreal Journeys': '58014c003762820bc88b8032',
-  'Birch & Fern Events': '58014c003762820bc88b8033',
-  'Goodwill Industries': '58014c003762820bc88b8034',
-  'YOU Made It Cafe': '58014c003762820bc88b8035',
-  'Shut The Front Door Improv': '58014c003762820bc88b8036',
-  'For the Love of Laundry': '58014c003762820bc88b8037',
-  'Meals on Wheels London': '58014c003762820bc88b8038',
-  'The Old East Village Grocer': '58014c003762820bc88b8039',
-  'Growing Chefs! Headquarters/The Beet Cafe': '58014c003762820bc88b8040',
-  'CrueTV': '58014c003762820bc88b8041',
-  'Options Mississauga Print and Office Services': '58014c003762820bc88b8042',
-  'Artscape Performance and Event Venues': '58014c003762820bc88b8043',
-  'Hawthorne Food & Drink': '58014c003762820bc88b8044',
-  'Interpreter Services Toronto (IST)': '58014c003762820bc88b8045',
-  'Canadian Hearing Society': '58014c003762820bc88b8046',
-  'KLINK Coffee Inc.': '58014c003762820bc88b8047',
-  'Paintbox Catering': '58014c003762820bc88b8048',
-  'Jubilee Designs': '58014c003762820bc88b8049',
-  'Eva\'s Print Shop': '58014c003762820bc88b8050',
-  'Out of This World Cafe': '58014c003762820bc88b8051',
-  'ShareBaskets by FoodShare Toronto': '58014c003762820bc88b8052',
-  'Fresh Gifts by FoodShare Toronto': '58014c003762820bc88b8053',
-  'Field to Table Catering by FoodShare Toronto': '58014c003762820bc88b8054',
-  'PATCH': '58014c003762820bc88b8055',
-  'ENAGB Youth Cedar Basket': '58014c003762820bc88b8056',
-  'Fabarnak Cafe and Catering': '58014c003762820bc88b8057',
-  'The Remix Project Social Enterprise': '58014c003762820bc88b8058',
-  'Friends Catering': '58014c003762820bc88b8059',
-  'Haween Enterprises': '58014c003762820bc88b8060',
-  'Regent Park Catering Collective': '58014c003762820bc88b8061',
-  'Edgar and Joe\'s Café': '58014c003762820bc88b8062',
-  'caterToronto': '58014c003762820bc88b8063',
-  'The Root Cellar': '58014c003762820bc88b8064',
-  'Innovation Works': '58014c003762820bc88b8065',
-  'The Skill Centre': '58014c003762820bc88b8066',
-  'Museum London': '58014c003762820bc88b8067',
-  'Addventuresome': '58014c003762820bc88b8068'
+let locationMappingsLatLong = {
+  'Accelerated Access': [48.384543,-89.245742],
+  'Artscape Performance and Event Venues': [43.638147, -79.418215],
+  'Birch & Fern Events': [45.310155, -79.242184],
+  'Blue Sky Community Healing Centre': [48.384277, -89.246218],
+  'Border City Urban Farms': [42.322631, -83.022124],
+  'Boreal Journeys': [48.534302, -89.584896],
+  'BottleWorks': [45.418425, -75.697295],
+  'Bronson Centre': [45.413745, -75.706339],
+  'Canadian Hearing Society': [43.677318, -79.407867],
+  'caterToronto': [43.650951, -79.396595],
+  'Co-opérative Africa Slow Food Inc.': [45.421953, -75.670114],
+  'CrueTV': [43.881780, -79.438699],
+  'Deprived Magazine': [48.427079, -89.250261],
+  'EcoEquitable': [45.433392, -75.648798],
+  'Edgar and Joe\'s Café': [42.979685, -81.243464],
+  'ENAGB Youth Cedar Basket': [43.668420, -79.404909],
+  'Entre Tacos Y Arepas': [48.428870, -89.272926],
+  'Eva\'s Print Shop': [43.647125, -79.398663],
+  'Fabarnak Cafe and Catering': [43.666745, -79.380997],
+  'Field to Table Catering by FoodShare Toronto': [43.694399, -79.493035],
+  'For the Love of Laundry': [42.962560, -81.286660],
+  'Fresh Gifts by FoodShare Toronto': [43.694399, -79.493035],
+  'Friends Catering': [43.653863, -79.372988],
+  'Friends of Algoma': [46.300323, -83.790033],
+  'Goodwill Industries': [42.979748, -81.243497],
+  'Gourmet-Xpress': [45.462878, -75.542386],
+  'Groupe Convex Prescott-Russell Inc.': [45.610936, -74.602735],
+  'GROW Studios': [45.381794, -75.619278],
+  'Growing Chefs! Headquarters/The Beet Cafe': [42.986323, -81.236737],
+  'Haween Enterprises': [43.697854, -79.551122],
+  'Hawthorne Food & Drink': [43.652640, -79.376215],
+  'Heartwood House': [45.433302, -75.648798],
+  'HighJinx': [45.414836, -75.699102],
+  'Innovation & Creation Lab': [45.474158, -75.455297],
+  'Innovation Works': [42.982744, -81.247426],
+  'Institut social': [45.409588, -75.727758],
+  'Interpreter Services Toronto (IST)': [43.655874, -79.409224],
+  'Jubilee Designs': [43.658827, -79.381726],
+  'KLINK Coffee Inc.': [43.679366, -79.341807],
+  'Krackers Katering': [45.406641, -75.723701],
+  'La Boite Theatre Box': [45.427881, -75.504618],
+  'La Nouvelle Scène Gilles Desjardins': [45.430309, -75.686702],
+  'La Passerelle-I.D.É.': [43.661662, -79.382773],
+  'Mahtay Cafe': [43.158693, -79.243360],
+  'Maker House Co.': [45.405757, -75.723005],
+  'Meals on Wheels London': [42.989430, -81.231056],
+  'mécènESS inc.': [45.409565, -75.727768],
+  'Mes Amis Catering': [43.258937, -79.870227],
+  'Museum London': [42.982631, -81.255111],
+  'National Capital FreeNet': [45.368251, -75.785660],
+  'Options Mississauga Print and Office Services': [43.549678, -79.587581],
+  'Out of This World Cafe': [43.643324, -79.419164],
+  'Paintbox Catering': [43.659933, -79.362241],
+  'PARO Presents': [48.384500, -89.245680],
+  'PATCH': [43.641926, -79.371712],
+  'People of Motherland-A World of Cultures-Un Monde de Cultures': [43.621726, -79.743160],
+  'Playing Nice in the Sandbox with Penny Tremblay': [46.332785, -79.469126],
+  'Recycle-Action': [45.595420, -74.594014],
+  'Regent Park Catering Collective': [43.660201, -79.363293],
+  'Seven Shores Community Cafe': [43.466032, -80.521146],
+  'ShareBaskets by FoodShare Toronto': [43.694155, -79.493029],
+  'Shinnowap Consulting': [53.818871, -89.835175],
+  'Shut The Front Door Improv': [42.953014, -81.331336],
+  'Southridge Jam Company': [43.153002, -79.399282],
+  'Spread the Joy': [45.457462, -75.491149],
+  'SuraiTea Inc': [45.429679, -75.688582],
+  'Sweet Memories Baskets': [45.345455, -75.797808],
+  'Tableworks Catering': [45.337615, -75.903756],
+  'The Old East Village Grocer': [42.989278, -81.230871],
+  'The Remix Project Social Enterprise': [43.642772, -79.426513],
+  'The Root Cellar': [42.988948, -81.230932],
+  'The Skill Centre': [42.983347, -81.250357],
+  'Thirteen: A Social Enterprise': [45.401346, -75.726231],
+  'Willow Springs Creative Centre': [48.562542, -89.382947],
+  'YOU Made It Cafe': [42.981632, -81.248398]
 };
 
 var publicMap = {};
@@ -117,7 +118,13 @@ function parsePurposesEn(purposesStr) {
 
 function parsePurposesFr(purposesStr) {
   let purposes = purposesStr.split(',');
-  let result = purposes.map(purpose => purpose.split('/')[1].trim());
+  let result = purposes.map(purpose => {
+    if (purpose.split('/').length > 1) {
+      return purpose.split('/')[1].trim();
+    }
+    return '';
+  });
+  result = result.filter(purpose => purpose.length > 0);
   return result;
 }
 
@@ -141,24 +148,47 @@ enterprisesEn.forEach(function(enterprise) {
     genPrivId = mappings[enterpriseName].replace('58014', '66778');
   }
 
-  var publicEn = {
+  let publicEn = {
+    name: enterpriseName,
+    lowercase_name: enterpriseName.toLowerCase(),
+    short_description: fields[4],
+    description: fields[5],
+    offering: fields[6],
+
+    // location fields[5]
+
+    purposes: parsePurposesEn(fields[8]),
+
+    //address fields[9],
+    postal_code: fields[10],
+
+    website: fields[12],
+    twitter: fields[13].replace(/^.*twitter.com\//, '').replace(/\//, '').replace(/@/,'').split('?')[0],
+    facebook: fields[14].replace(/^.*facebook.com\//, '').replace(/^.*fb.me\//, '').replace(/\//, '').split('?')[0],
+    instagram: fields[15].replace(/^.*instagram.com\//, '').replace(/\//, '').replace(/@/,'').split('?')[0]
+
+  };
+
+  let publicFr = {
     name: enterpriseName,
     lowercase_name: enterpriseName.toLowerCase(),
     short_description: fields[2],
     description: fields[3],
-    offering: fields[4],
+
+    // we don't have french translations for the offerings
+    //offering: fields[6],
 
     // location fields[5]
 
-    purposes: parsePurposesEn(fields[6]),
+    purposes: parsePurposesFr(fields[8]),
 
-    //address fields[7],
-    postal_code: fields[8],
+    //address fields[9],
+    postal_code: fields[10],
 
-    website: fields[10],
-    twitter: fields[11].replace(/^.*twitter.com\//, '').replace(/\//, '').replace(/@/,'').split('?')[0],
-    facebook: fields[12].replace(/^.*facebook.com\//, '').replace(/^.*fb.me\//, '').replace(/\//, '').split('?')[0],
-    instagram: fields[13].replace(/^.*instagram.com\//, '').replace(/\//, '').replace(/@/,'').split('?')[0]
+    website: fields[12],
+    twitter: fields[13].replace(/^.*twitter.com\//, '').replace(/\//, '').replace(/@/,'').split('?')[0],
+    facebook: fields[14].replace(/^.*facebook.com\//, '').replace(/^.*fb.me\//, '').replace(/\//, '').split('?')[0],
+    instagram: fields[15].replace(/^.*instagram.com\//, '').replace(/\//, '').replace(/@/,'').split('?')[0]
 
   };
 
@@ -166,57 +196,27 @@ enterprisesEn.forEach(function(enterprise) {
     _id: {'$oid': genPubId},
     private_info: {'$oid': genPrivId},
     'en': publicEn,
-    'fr': {}
+    'fr': publicFr
   };
+  if (locationMappingsLatLong[enterpriseName]) {
+    jsonPublicEnterprise['locations'] = {
+      'type': 'MultiPoint',
+      'coordinates': [
+        [locationMappingsLatLong[enterpriseName][1], locationMappingsLatLong[enterpriseName][0]]
+      ]
+    };
+  } else {
+    /* eslint-disable no-console*/
+    console.log('WARNING: no location found for enterprise ' + enterpriseName);
+  }
 
   let jsonPrivateEnterprise = {
     _id: {'$oid': genPrivId},
-    'admin_emails': [fields[9]]
+    'admin_emails': [fields[11]]
   };
 
   publicMap[genPubId] = jsonPublicEnterprise;
   privateMap[genPubId] = jsonPrivateEnterprise;
-});
-
-
-enterprisesFr.forEach(function(enterprise) {
-  var fields = enterprise.split('\t');
-  if (!fields[0]) {
-    return;
-  }
-  if (!fields[0].toLowerCase().includes('yes')) {
-    return;
-  }
-
-  let enterpriseName = fields[1].trim();
-
-  var publicFr = {
-    name: enterpriseName,
-    lowercase_name: enterpriseName.toLowerCase(),
-    short_description: fields[2],
-    description: fields[3],
-    offering: fields[4],
-
-    // location fields[5]
-
-    purposes: parsePurposesFr(fields[6]),
-
-    //address fields[7],
-    postal_code: fields[8],
-
-    website: fields[10],
-    twitter: fields[11].replace(/^.*twitter.com\//, '').replace(/\//, '').replace(/@/,'').split('?')[0],
-    facebook: fields[12].replace(/^.*facebook.com\//, '').replace(/^.*fb.me\//, '').replace(/\//, '').split('?')[0],
-    instagram: fields[13].replace(/^.*instagram.com\//, '').replace(/\//, '').replace(/@/,'').split('?')[0]
-  };
-
-  let pubId = mappings[enterpriseName];
-  if (!pubId) {
-    /* eslint-disable no-console */
-    console.log('WARNING.... No enterprise found in mappings for french name ' + enterpriseName);
-  } else {
-    publicMap[pubId]['fr'] = publicFr;
-  }
 });
 
 
