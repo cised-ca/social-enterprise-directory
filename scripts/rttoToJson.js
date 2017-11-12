@@ -60,6 +60,7 @@ let locationMappingsLatLong = {
   'Innovation & Creation Lab': [45.474158, -75.455297],
   'Innovation Works': [42.982744, -81.247426],
   'Institut social': [45.409588, -75.727758],
+  'Intello-Productions Inc': [45.436090, -75.661965],
   'Interpreter Services Toronto (IST)': [43.655874, -79.409224],
   'Jubilee Designs': [43.658827, -79.381726],
   'KLINK Coffee Inc.': [43.679366, -79.341807],
@@ -72,15 +73,18 @@ let locationMappingsLatLong = {
   'Meals on Wheels London': [42.989430, -81.231056],
   'mécènESS inc.': [45.409565, -75.727768],
   'Mes Amis Catering': [43.258937, -79.870227],
+  'Muséoparc Vanier Museopark': [45.443794, -75.659493],
   'Museum London': [42.982631, -81.255111],
   'National Capital FreeNet': [45.368251, -75.785660],
   'Options Mississauga Print and Office Services': [43.549678, -79.587581],
   'Out of This World Cafe': [43.643324, -79.419164],
   'Paintbox Catering': [43.659933, -79.362241],
   'PARO Presents': [48.384500, -89.245680],
+  'Patro d\'Ottawa': [45.434684, -75.681302],
   'PATCH': [43.641926, -79.371712],
   'People of Motherland-A World of Cultures-Un Monde de Cultures': [43.621726, -79.743160],
   'Playing Nice in the Sandbox with Penny Tremblay': [46.332785, -79.469126],
+  'Radio Communautaire Kapnord inc.': [49.415854, -82.402885],
   'Recycle-Action': [45.595420, -74.594014],
   'Regent Park Catering Collective': [43.660201, -79.363293],
   'Seven Shores Community Cafe': [43.466032, -80.521146],
@@ -92,6 +96,7 @@ let locationMappingsLatLong = {
   'SuraiTea Inc': [45.429679, -75.688582],
   'Sweet Memories Baskets': [45.345455, -75.797808],
   'Tableworks Catering': [45.337615, -75.903756],
+  'The Down Stairs Kichen': [43.269878, -79.859722],
   'The Old East Village Grocer': [42.989278, -81.230871],
   'The Remix Project Social Enterprise': [43.642772, -79.426513],
   'The Root Cellar': [42.988948, -81.230932],
@@ -217,6 +222,7 @@ enterprisesEn.forEach(function(enterprise) {
 
   publicMap[genPubId] = jsonPublicEnterprise;
   privateMap[genPubId] = jsonPrivateEnterprise;
+  console.log(genPubId + ' ' + publicEn['name']);
 });
 
 
