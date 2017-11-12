@@ -1,6 +1,6 @@
 /*
   Usage:
-    node scripts/logosToJson.js <logoDirectory> <outputDirectory>
+    node scripts/logosToJson.js <logoDirectory>
 
   This is a simple script mainly to assist until we have the logo upload feature working.
   In the meantime, if we save all the logos in the same directory, this script will
