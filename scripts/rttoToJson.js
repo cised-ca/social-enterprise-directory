@@ -96,7 +96,7 @@ let locationMappingsLatLong = {
   'SuraiTea Inc': [45.429679, -75.688582],
   'Sweet Memories Baskets': [45.345455, -75.797808],
   'Tableworks Catering': [45.337615, -75.903756],
-  'The Down Stairs Kichen': [43.269878, -79.859722],
+  'The Down Stairs Kitchen': [43.269878, -79.859722],
   'The Old East Village Grocer': [42.989278, -81.230871],
   'The Remix Project Social Enterprise': [43.642772, -79.426513],
   'The Root Cellar': [42.988948, -81.230932],
@@ -153,6 +153,15 @@ enterprisesEn.forEach(function(enterprise) {
     genPrivId = mappings[enterpriseName].replace('58014', '66778');
   }
 
+  let city = fields[7].replace(', Ontario', '')
+          .replace(', ON', '')
+          .replace(', On', '')
+          .replace(' and Surrounding Communities', '');
+  let streetAddress = fields[9].replace(', ON', '')
+                                .replace(' '+ city, '')
+                                .replace(','+ city, '')
+                                .replace(city, '');
+
   let publicEn = {
     name: enterpriseName,
     lowercase_name: enterpriseName.toLowerCase(),
@@ -160,11 +169,15 @@ enterprisesEn.forEach(function(enterprise) {
     description: fields[5],
     offering: fields[6],
 
-    // location fields[5]
-
     purposes: parsePurposesEn(fields[8]),
 
-    //address fields[9],
+    addresses: [
+      {
+        'address': streetAddress + ', ' + city + ', ON, ' + fields[10],
+        'public': true,
+        'tags': ['main']
+      }
+    ],
     postal_code: fields[10],
 
     website: fields[12],
@@ -183,11 +196,16 @@ enterprisesEn.forEach(function(enterprise) {
     // we don't have french translations for the offerings
     //offering: fields[6],
 
-    // location fields[5]
-
     purposes: parsePurposesFr(fields[8]),
 
-    //address fields[9],
+
+    addresses: [
+      {
+        'address': streetAddress + ', ' + city + ', ON, ' + fields[10],
+        'public': true,
+        'tags': ['main']
+      }
+    ],
     postal_code: fields[10],
 
     website: fields[12],
