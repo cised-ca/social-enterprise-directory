@@ -181,10 +181,10 @@ module.exports.mergePublicAndPrivateDBInfo = function(
 
   SUPPORTED_LANGUAGES.forEach(lang => {
     privateFields.forEach(field => {
-      let value = dbPrivateInternationalEnterprise[lang][field];
-      if (value == null) {
+      if (dbPrivateInternationalEnterprise[lang] == null || dbPrivateInternationalEnterprise[lang][field] == null) {
         return;
       }
+      let value = dbPrivateInternationalEnterprise[lang][field];
       if (clone[lang][field]) {
         clone[lang][field] = clone[lang][field].concat(value);
       } else {
