@@ -134,7 +134,6 @@ function parsePurposesFr(purposesStr) {
 }
 
 function parseOffering(offeringStr) {
-  console.log(offeringStr)
   let offering = offeringStr.split('\r');
   let off = [];
   offering.forEach(s => {
