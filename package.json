@@ -32,6 +32,7 @@
     "mongoose-paginate": "^5.0.3",
     "passport": "0.3.2",
     "passport-facebook": "2.1.1",
+    "passport-google-oauth20": "1.0.0",
     "passport-instagram": "1.0.0",
     "passport-twitter": "1.0.4",
     "swagger-express-mw": "0.7.0",

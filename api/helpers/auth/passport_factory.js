@@ -11,5 +11,6 @@ passport.deserializeUser(function(user, cb) {
 require('./strategy_facebook').install();
 require('./strategy_twitter').install();
 require('./strategy_instagram').install();
+require('./strategy_google').install();
 
 module.exports = passport;

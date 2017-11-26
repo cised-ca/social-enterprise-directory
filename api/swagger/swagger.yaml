@@ -104,6 +104,41 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
+
+  /account/login/google:
+    x-swagger-router-controller: account_controller
+    get:
+      description: Endpoint for logging into the directory using Google
+      # call this method name on the controller
+      operationId: loginGoogle
+
+      responses:
+        "302":
+          description: Redirect to login
+
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+
+  /account/login/google/callback:
+    x-swagger-router-controller: account_controller
+    get:
+      description: Callback after logging into the directory using Google
+      # call this method name on the controller
+      operationId: loginCallbackGoogle
+
+      responses:
+        "302":
+          description: Redirect to login
+
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+
   /account/logout:
     x-swagger-router-controller: account_controller
     get:

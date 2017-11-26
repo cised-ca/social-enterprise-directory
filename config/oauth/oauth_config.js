@@ -19,6 +19,12 @@ let oauthConfig = convict({
     default: '',
     env: 'FACEBOOK_CALLBACK_URL'
   },
+  googleCallbackURL: {
+    doc: 'The google callback URL after oauth succeeds',
+    format: 'url',
+    default: '',
+    env: 'GOOGLE_CALLBACK_URL'
+  },
   instagramCallbackURL: {
     doc: 'The instagram callback URL after oauth succeeds',
     format: 'url',
@@ -51,6 +57,20 @@ let oauthConfig = convict({
     format: String,
     default: '',
     env: 'FACEBOOK_SECRET',
+    sensitive: true
+  },
+  googleClientId: {
+    doc: 'The google client id',
+    format: String,
+    default: '',
+    env: 'GOOGLE_CLIENT_ID',
+    sensitive: true
+  },
+  googleSecret: {
+    doc: 'The google secret',
+    format: String,
+    default: '',
+    env: 'GOOGLE_SECRET',
     sensitive: true
   },
   instagramClientId: {
