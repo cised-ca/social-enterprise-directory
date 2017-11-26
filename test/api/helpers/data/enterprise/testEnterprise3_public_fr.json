@@ -1,7 +1,7 @@
 {
   "name" : "A-Nationale Capitale Librenet",
   "description" : "Le National Capital LibreNet (NCF) est une alternative",
-  "offering" : "Bob Smith",
+  "offering" : ["Bob Smith"],
   "phones" : [
         {
           "number": "27777777777",

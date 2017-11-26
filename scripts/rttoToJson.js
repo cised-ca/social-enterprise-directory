@@ -133,6 +133,22 @@ function parsePurposesFr(purposesStr) {
   return result;
 }
 
+function parseOffering(offeringStr) {
+  console.log(offeringStr)
+  let offering = offeringStr.split('\r');
+  let off = [];
+  offering.forEach(s => {
+    let arr = s.split('  ');
+    arr.forEach(o => {
+      o = o.trim();
+      if (o.length > 0) {
+        off.push(o.trim());
+      }
+    });
+  });
+  return off;
+}
+
 var  i = 100;
 var  j = 100;
 
@@ -148,16 +164,19 @@ enterprisesEn.forEach(function(enterprise) {
   }
 
   let enterpriseName = fields[1].trim();
+  if (enterpriseName == 'The Down Stairs Kichen') {
+    enterpriseName = 'The Down Stairs Kitchen';
+  }
   if (mappings[enterpriseName]) {
     genPubId = mappings[enterpriseName];
     genPrivId = mappings[enterpriseName].replace('58014', '66778');
   }
 
-  let city = fields[7].replace(', Ontario', '')
+  let city = fields[8].replace(', Ontario', '')
           .replace(', ON', '')
           .replace(', On', '')
           .replace(' and Surrounding Communities', '');
-  let streetAddress = fields[9].replace(', ON', '')
+  let streetAddress = fields[10].replace(', ON', '')
                                 .replace(' '+ city, '')
                                 .replace(','+ city, '')
                                 .replace(city, '');
@@ -167,9 +186,9 @@ enterprisesEn.forEach(function(enterprise) {
     lowercase_name: enterpriseName.toLowerCase(),
     short_description: fields[4],
     description: fields[5],
-    offering: fields[6],
+    offering: parseOffering(fields[7]),
 
-    purposes: parsePurposesEn(fields[8]),
+    purposes: parsePurposesEn(fields[9]),
 
     addresses: [
       {
@@ -178,12 +197,12 @@ enterprisesEn.forEach(function(enterprise) {
         'tags': ['main']
       }
     ],
-    postal_code: fields[10],
+    postal_code: fields[11],
 
-    website: fields[12],
-    twitter: fields[13].replace(/^.*twitter.com\//, '').replace(/\//, '').replace(/@/,'').split('?')[0],
-    facebook: fields[14].replace(/^.*facebook.com\//, '').replace(/^.*fb.me\//, '').replace(/\//, '').split('?')[0],
-    instagram: fields[15].replace(/^.*instagram.com\//, '').replace(/\//, '').replace(/@/,'').split('?')[0]
+    website: fields[13],
+    twitter: fields[14].replace(/^.*twitter.com\//, '').replace(/\//, '').replace(/@/,'').split('?')[0],
+    facebook: fields[15].replace(/^.*facebook.com\//, '').replace(/^.*fb.me\//, '').replace(/\//, '').split('?')[0],
+    instagram: fields[16].replace(/^.*instagram.com\//, '').replace(/\//, '').replace(/@/,'').split('?')[0]
 
   };
 
@@ -193,25 +212,22 @@ enterprisesEn.forEach(function(enterprise) {
     short_description: fields[2],
     description: fields[3],
 
-    // we don't have french translations for the offerings
-    //offering: fields[6],
-
-    purposes: parsePurposesFr(fields[8]),
-
+    offering: parseOffering(fields[6]),
+    purposes: parsePurposesFr(fields[9]),
 
     addresses: [
       {
-        'address': streetAddress + ', ' + city + ', ON, ' + fields[10],
+        'address': streetAddress + ', ' + city + ', ON, ' + fields[11],
         'public': true,
         'tags': ['main']
       }
     ],
-    postal_code: fields[10],
+    postal_code: fields[12],
 
-    website: fields[12],
-    twitter: fields[13].replace(/^.*twitter.com\//, '').replace(/\//, '').replace(/@/,'').split('?')[0],
-    facebook: fields[14].replace(/^.*facebook.com\//, '').replace(/^.*fb.me\//, '').replace(/\//, '').split('?')[0],
-    instagram: fields[15].replace(/^.*instagram.com\//, '').replace(/\//, '').replace(/@/,'').split('?')[0]
+    website: fields[13],
+    twitter: fields[14].replace(/^.*twitter.com\//, '').replace(/\//, '').replace(/@/,'').split('?')[0],
+    facebook: fields[15].replace(/^.*facebook.com\//, '').replace(/^.*fb.me\//, '').replace(/\//, '').split('?')[0],
+    instagram: fields[16].replace(/^.*instagram.com\//, '').replace(/\//, '').replace(/@/,'').split('?')[0]
 
   };
 

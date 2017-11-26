@@ -89,7 +89,7 @@ describe('PATCH /enterprise/{id}', function() {
   });
 
   it('should change many items in english and french', function(done) {
-    let newFrenchOffering = 'Plein de bon nature';
+    let newFrenchOffering = ['Plein de bon nature'];
     let newFrenchEmails =  [
       {
         email: 'test2@test2.com',

@@ -67,7 +67,7 @@ let enterprisePublicSchema = new mongoose.Schema({
   lowercase_name: { type: String, required: true },
   short_description: String,
   description: String,
-  offering: String,
+  offering: [String],
   purposes: [String],
   year_started: Number,
   website: String,

@@ -1,7 +1,7 @@
 {
   "name" : "Good Nature Groundskeeping",
   "description" : "Good Nature Groundskeeping is a social business, providing professional landscape maintenance services while also providing employment to people who are economically disadvantaged.",
-  "offering" : "Bob Smith",
+  "offering" : ["Bob Smith"],
   "phones" : [
         {
           "number": "27777777777",
