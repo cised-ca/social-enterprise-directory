@@ -2,7 +2,7 @@
   "name" : "Cyclette de Salvation2",
   "short_description" : "C'est un mot en francais2",
   "description" : "On y va2",
-  "offering" : "Jean Alumette2",
+  "offering" : ["Jean Alumette2"],
 
   "phones" : [
         {

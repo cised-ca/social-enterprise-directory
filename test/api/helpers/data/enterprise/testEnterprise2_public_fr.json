@@ -1,7 +1,7 @@
 {
   "name" : "Bon Nature Groundskeeping",
   "description" : "Bon Nature Groundskeeping est un firme sociale",
-  "offering" : "Jean Levesque",
+  "offering" : ["Jean Levesque"],
   "phones" : [
         {
           "number": "27777777777",

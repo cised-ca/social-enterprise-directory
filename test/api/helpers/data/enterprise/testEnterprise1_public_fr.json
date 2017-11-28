@@ -2,7 +2,7 @@
   "name" : "Cyclette de Salvation",
   "short_description" : "C'est un mot en francais",
   "description" : "On y va",
-  "offering" : "Jean Alumette",
+  "offering" : ["Jean Alumette"],
 
   "phones" : [
         {
