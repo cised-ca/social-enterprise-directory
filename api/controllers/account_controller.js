@@ -20,6 +20,10 @@ module.exports.loginFacebook = function(req, res, next) {
   passport.authenticate('facebook', {scope: 'email', session:false})(req, res, next);
 };
 
+module.exports.loginGoogle = function(req, res, next) {
+  passport.authenticate('google', { scope: ['email'] })(req, res, next);
+};
+
 module.exports.loginCallbackTwitter = function(req, res) {
   passport.authenticate('twitter')(req, res, function(err) {
     if (err) {
@@ -35,6 +39,17 @@ module.exports.loginCallbackFacebook = function(req, res) {
   passport.authenticate('facebook')(req, res, function(err){
     if (err) {
       logger.error('Error logging in with facebook:' + err);
+      res.status(403).json({'message': err});
+      return;
+    }
+    res.redirect(oauthConfig.get('redirectURLOnSuccessfulLogin'));
+  });
+};
+
+module.exports.loginCallbackGoogle = function(req, res) {
+  passport.authenticate('google')(req, res, function(err){
+    if (err) {
+      logger.error('Error logging in with google:' + err);
       res.status(403).json({'message': err});
       return;
     }
