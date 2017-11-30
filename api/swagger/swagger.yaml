@@ -263,6 +263,51 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
+  /directory/offering:
+    x-swagger-router-controller: enterprise.controller
+    get:
+      description: Returns all social enterprises in the directory matching offering
+      # call this method name on the controller
+      operationId: getEnterprisesByOffering
+      parameters:
+        - name: page
+          in: query
+          description: Skip the first number of pages specified by page value
+          required: false
+          type: number
+          format: uint
+        - name: count
+          in: query
+          description: Number of enterprises to return
+          required: false
+          type: number
+          format: uint
+          minimum: 1
+          maximum: 500
+        - name: q
+          in: query
+          description: Offering value to match
+          required: true
+          type: string
+        - name: lang
+          in: query
+          description: language to use
+          required: false
+          type: string
+  
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: array
+            items:
+               $ref: "#/definitions/EnterprisePublic"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
   /enterprise/{id}:
     x-swagger-router-controller: enterprise.controller
     get:

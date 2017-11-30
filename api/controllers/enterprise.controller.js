@@ -173,7 +173,38 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
     });
 };
 
+module.exports.getEnterprisesByOffering = function(req, res) {
+  let search = req.swagger.params.q.value;
 
+  let limit = req.swagger.params.count.value || 25;
+  let page = req.swagger.params.page.value || 1;
+
+  let lang = langUtil.getLanguage(req);
+
+  let sortValue = {};
+  sortValue[lang + '.lowercase_name'] = 1;
+  let offeringField = lang + '.offering';
+
+  let query = {};
+  query[offeringField] = search;
+
+  let queryOptions = {
+    limit: limit,
+    page: page,
+    sort: sortValue
+  };
+
+  enterpriseInternationalPublicModel.paginate(query, queryOptions)
+    .then(results => {
+      let dbEnterprises = results.docs;
+
+      processDirectoryResults(res, dbEnterprises, lang, results.page, results.pages);
+    })
+    .catch(err => {
+      logger.error('Error finding enterprises by offering ' + err);
+      res.status(500).json({'message': err});
+    });
+};
 
 module.exports.getOneEnterprisePublic = function(req, res) {
   let id = req.swagger.params.id.value;
