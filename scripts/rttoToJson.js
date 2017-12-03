@@ -191,7 +191,7 @@ enterprisesEn.forEach(function(enterprise) {
 
     addresses: [
       {
-        'address': streetAddress + ', ' + city + ', ON, ' + fields[10],
+        'address': streetAddress + ', ' + city + ', ON, ' + fields[11],
         'public': true,
         'tags': ['main']
       }
@@ -221,7 +221,7 @@ enterprisesEn.forEach(function(enterprise) {
         'tags': ['main']
       }
     ],
-    postal_code: fields[12],
+    postal_code: fields[11],
 
     website: fields[13],
     twitter: fields[14].replace(/^.*twitter.com\//, '').replace(/\//, '').replace(/@/,'').split('?')[0],
@@ -250,7 +250,7 @@ enterprisesEn.forEach(function(enterprise) {
 
   let jsonPrivateEnterprise = {
     _id: {'$oid': genPrivId},
-    'admin_emails': [fields[11]]
+    'admin_emails': [fields[12]]
   };
 
   publicMap[genPubId] = jsonPublicEnterprise;
