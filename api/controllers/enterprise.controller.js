@@ -46,6 +46,15 @@ function processDirectoryResults(res, dbEnterprises, language, page, pages) {
   });
 }
 
+function buildPurposeAggregate(purpose, language) {
+  let match = {};
+  let field = language + '.purposes';
+  match[field] = purpose;
+  return  {
+    '$match': match
+  };
+}
+
 function buildGeoNearAggregate(point) {
   return  {
     '$geoNear': {
@@ -57,15 +66,18 @@ function buildGeoNearAggregate(point) {
   };
 }
 
-function performLocationSearch(res, locationSearch, limit, page, language) {
+function performLocationSearch(res, locationSearch, purposeFilter, limit, page, language) {
   let point = locationParamToPointObject(locationSearch);
   if (!point) {
     res.status(400).json({'message': 'Invalid location parameter'});
     return;
   }
-  let aggregate = enterpriseInternationalPublicModel.aggregate(
-    [buildGeoNearAggregate(point)]
-  );
+
+  let agg = [buildGeoNearAggregate(point)];
+  if (purposeFilter) {
+    agg.push(buildPurposeAggregate(purposeFilter, language));
+  }
+  let aggregate = enterpriseInternationalPublicModel.aggregate(agg);
 
   let options = {
     page: page,
@@ -87,7 +99,7 @@ function performLocationSearch(res, locationSearch, limit, page, language) {
     });
 }
 
-function performBrowseDirectory(res, limit, page, language) {
+function performBrowseDirectory(res, purposeFilter, limit, page, language) {
   let sortValue = {};
   sortValue[language + '.lowercase_name'] = 1;
 
@@ -97,7 +109,13 @@ function performBrowseDirectory(res, limit, page, language) {
     sort: sortValue
   };
 
-  enterpriseInternationalPublicModel.paginate({}, queryOptions)
+  let query = {};
+  if (purposeFilter) {
+    let field = language + '.purposes';
+    query[field] = purposeFilter;
+  }
+
+  enterpriseInternationalPublicModel.paginate(query, queryOptions)
     .then(results => {
       let dbEnterprises = results.docs;
 
@@ -112,6 +130,7 @@ function performBrowseDirectory(res, limit, page, language) {
 module.exports.getAllEnterprisesPublic = function(req, res) {
   let search = req.swagger.params.q.value;
   let locationSearch = req.swagger.params.at.value;
+  let purposeFilter = req.swagger.params.purpose.value;
 
   let limit = req.swagger.params.count.value || 25;
   let page = req.swagger.params.page.value || 1;
@@ -120,12 +139,12 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
 
   if (locationSearch && !search) {
     // searching location with no keywords, want to sort by proximity
-    performLocationSearch(res, locationSearch, limit, page, lang);
+    performLocationSearch(res, locationSearch, purposeFilter, limit, page, lang);
     return;
   }
 
   if (!search) {
-    performBrowseDirectory(res, limit, page, lang);
+    performBrowseDirectory(res, purposeFilter, limit, page, lang);
     return;
   }
 
@@ -153,10 +172,19 @@ module.exports.getAllEnterprisesPublic = function(req, res) {
     g = buildGeoNearAggregate(point);
   }
 
-  let aggregate = enterpriseInternationalPublicModel.aggregate([m,a,s]);
-  if (g) {
-    aggregate = enterpriseInternationalPublicModel.aggregate([g,m,a,s]);
+  let p = null;
+  if (purposeFilter) {
+    p = buildPurposeAggregate(purposeFilter, lang);
   }
+
+  let aggregateArray = [m, a, s];
+  if (p) {
+    aggregateArray.unshift(p);
+  }
+  if (g) {
+    aggregateArray.unshift(g);
+  }
+  let aggregate = enterpriseInternationalPublicModel.aggregate(aggregateArray);
 
   enterpriseInternationalPublicModel
     .aggregatePaginate(aggregate, options, (err, results, pageCount) => {

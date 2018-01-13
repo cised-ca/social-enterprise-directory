@@ -279,6 +279,11 @@ paths:
           description: Location. Eg. ?at=longitude,latitude
           required: false
           type: string
+        - name: purpose
+          in: query
+          description: Filter on enterprise purpose
+          required: false
+          type: string
         - name: lang
           in: query
           description: language to use
@@ -329,7 +334,7 @@ paths:
           description: language to use
           required: false
           type: string
-  
+
       responses:
         "200":
           description: Success

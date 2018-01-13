@@ -87,29 +87,47 @@ function failIfArrayContainsEnterprise(enterpriseArray, name) {
   }
 }
 
-const verifyArrayDoesNotContainEnterprise1 = function(enterpriseArray) {
-  failIfArrayContainsEnterprise(enterpriseArray, testEnterprise1_complete[DEFAULT_LANGUAGE]['name']);
+const verifyArrayDoesNotContainEnterprise1 = function(enterpriseArray, language) {
+  if (!language) {
+    language = DEFAULT_LANGUAGE;
+  }
+  failIfArrayContainsEnterprise(enterpriseArray, testEnterprise1_complete[language]['name']);
 };
-const verifyArrayDoesNotContainEnterprise2 = function(enterpriseArray) {
-  failIfArrayContainsEnterprise(enterpriseArray, testEnterprise2_complete[DEFAULT_LANGUAGE]['name']);
+const verifyArrayDoesNotContainEnterprise2 = function(enterpriseArray, language) {
+  if (!language) {
+    language = DEFAULT_LANGUAGE;
+  }
+  failIfArrayContainsEnterprise(enterpriseArray, testEnterprise2_complete[language]['name']);
 };
-const verifyArrayDoesNotContainEnterprise3 = function(enterpriseArray) {
-  failIfArrayContainsEnterprise(enterpriseArray, testEnterprise3_complete[DEFAULT_LANGUAGE]['name']);
+const verifyArrayDoesNotContainEnterprise3 = function(enterpriseArray, language) {
+  if (!language) {
+    language = DEFAULT_LANGUAGE;
+  }
+  failIfArrayContainsEnterprise(enterpriseArray, testEnterprise3_complete[language]['name']);
 };
 
-const verifyArrayContainsEnterprise1 = function(enterpriseArray) {
-  let foundEnterprise = findEnterpriseInArrayOrFail(enterpriseArray, testEnterprise1_complete[DEFAULT_LANGUAGE]['name']);
-  verifyEnterprise1Public(foundEnterprise);
+const verifyArrayContainsEnterprise1 = function(enterpriseArray, language) {
+  if (!language) {
+    language = DEFAULT_LANGUAGE;
+  }
+  let foundEnterprise = findEnterpriseInArrayOrFail(enterpriseArray, testEnterprise1_complete[language]['name']);
+  verifyEnterprise1Public(foundEnterprise, language);
 };
 
-const verifyArrayContainsEnterprise2 = function(enterpriseArray) {
-  let foundEnterprise = findEnterpriseInArrayOrFail(enterpriseArray, testEnterprise2_complete[DEFAULT_LANGUAGE]['name']);
-  verifyEnterprise2Public(foundEnterprise);
+const verifyArrayContainsEnterprise2 = function(enterpriseArray, language) {
+  if (!language) {
+    language = DEFAULT_LANGUAGE;
+  }
+  let foundEnterprise = findEnterpriseInArrayOrFail(enterpriseArray, testEnterprise2_complete[language]['name']);
+  verifyEnterprise2Public(foundEnterprise, language);
 };
 
-const verifyArrayContainsEnterprise3 = function(enterpriseArray) {
-  let foundEnterprise = findEnterpriseInArrayOrFail(enterpriseArray, testEnterprise3_complete[DEFAULT_LANGUAGE]['name']);
-  verifyEnterprise3Public(foundEnterprise);
+const verifyArrayContainsEnterprise3 = function(enterpriseArray, language) {
+  if (!language) {
+    language = DEFAULT_LANGUAGE;
+  }
+  let foundEnterprise = findEnterpriseInArrayOrFail(enterpriseArray, testEnterprise3_complete[language]['name']);
+  verifyEnterprise3Public(foundEnterprise, language);
 };
 
 const verifyEnterprise1 = function(enterprise) {

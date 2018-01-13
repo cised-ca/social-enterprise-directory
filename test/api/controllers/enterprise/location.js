@@ -6,6 +6,7 @@ const patchUtil = require('../../helpers/enterprise/patch_util');
 const enterpriseVerifier = require('../../helpers/enterprise/enterprise_verifier');
 const TEST_TIMEOUT = require('../../../test_constants').TEST_TIMEOUT;
 const failTest = require('../../helpers/test_util').failTest;
+const FRENCH = require('../../helpers/language/language_test_constants').FRENCH;
 
 const url = '/directory';
 const OTTAWA = [-75.692, 45.425];
@@ -146,6 +147,55 @@ describe('GET /directory with location', function() {
     .then( res => {
       res.body.enterprises.length.should.equal(1);
       enterpriseVerifier.verifyEnterprise1Public(res.body.enterprises[0]);
+    })
+    .then(done)
+    .catch(failTest(done));
+  });
+
+  it('should return multiple enterprises sorted by proximity (near enterprise 2), matching purpose', function(done) {
+    publishUtil.createAndPublishAllEnterprises()
+    .then(requestUtil.performGetRequest(url + '?at=-75.620,45.000&purpose=Helping%20disadvantaged%20peoples'))
+    .then( res => {
+      enterpriseVerifier.verifyEnterprise2Public(res.body.enterprises[0]);
+      enterpriseVerifier.verifyEnterprise1Public(res.body.enterprises[1]);
+      enterpriseVerifier.verifyArrayDoesNotContainEnterprise3(res.body.enterprises);
+    })
+    .then(requestUtil.performGetRequest(url + '?at=-75.620,45.000&purpose=Raising%20money%20for%20parent%20company'))
+    .then( res => {
+      enterpriseVerifier.verifyEnterprise2Public(res.body.enterprises[0]);
+      enterpriseVerifier.verifyArrayDoesNotContainEnterprise1(res.body.enterprises);
+      enterpriseVerifier.verifyArrayDoesNotContainEnterprise3(res.body.enterprises);
+    })
+    .then(done)
+    .catch(failTest(done));
+  });
+
+  it('should return multiple enterprises sorted by proximity (near enterprise 2), matching purpose, french', function(done) {
+    publishUtil.createAndPublishAllEnterprises()
+    .then(requestUtil.performGetRequest(url + '?at=-75.620,45.000&purpose=Supporter%20les%20pauvres&lang=' + FRENCH))
+    .then( res => {
+      enterpriseVerifier.verifyEnterprise2Public(res.body.enterprises[0], FRENCH);
+      enterpriseVerifier.verifyArrayDoesNotContainEnterprise1(res.body.enterprises, FRENCH);
+      enterpriseVerifier.verifyArrayDoesNotContainEnterprise3(res.body.enterprises, FRENCH);
+    })
+    .then(done)
+    .catch(failTest(done));
+  });
+
+  it('should sort results by best match to keywords, when search by location, keyword, and purpose', function(done) {
+    publishUtil.createAndPublishAllEnterprises()
+    .then(requestUtil.performGetRequest(url + '?at=-75.692,45.425&q=good+social&purpose=Helping%20disadvantaged%20peoples'))
+    .then( res => {
+      res.body.enterprises.length.should.equal(2);
+
+      // expect results in this exact order
+      enterpriseVerifier.verifyEnterprise2Public(res.body.enterprises[0]);
+      enterpriseVerifier.verifyEnterprise1Public(res.body.enterprises[1]);
+    })
+    .then(requestUtil.performGetRequest(url + '?at=-75.692,45.425&q=good+social&purpose=Raising%20money%20for%20parent%20company'))
+    .then( res => {
+      res.body.enterprises.length.should.equal(1);
+      enterpriseVerifier.verifyEnterprise2Public(res.body.enterprises[0]);
     })
     .then(done)
     .catch(failTest(done));
