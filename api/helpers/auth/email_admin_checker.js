@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const directoryAdministratorsModel = mongoose.model('DirectoryAdministrators');
 const enterpriseInternationalPrivateFieldsModel = mongoose.model('EnterpriseInternationalPrivateFields');
 const enterpriseNameResolver = require('../enterprise/enterprise_name_resolver');
+const DEFAULT_LANGUAGE = require('../language/constants').DEFAULT_LANGUAGE;
 
 function checkIfEmailIsDirectoryAdmin(email) {
   return new Promise( (resolve) => {
@@ -89,7 +90,7 @@ function authEnterpriseResultsToUniqueList(results) {
 
 function addEnterpriseNames(enterpriseIds) {
   return new Promise( (resolve) => {
-    let subPromises = enterpriseIds.map(id => { return enterpriseNameResolver.getName(id); });
+    let subPromises = enterpriseIds.map(id => { return enterpriseNameResolver.getName(id, DEFAULT_LANGUAGE); });
     Promise.all(subPromises)
     .then(results => {
       let detailedEnterprises = results.map( (enterpriseName, index) => {
