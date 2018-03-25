@@ -11,7 +11,7 @@ module.exports.getName = function(id, language) {
         if (!dbEnterprise) {
           return resolve('');
         }
-        return resolve(dbEnterprise['data']['name']);
+        return resolve(dbEnterprise[language]['name']);
       })
       .catch(err => {
         logger.error('Error resolving name for enterprise', id, ':', err);

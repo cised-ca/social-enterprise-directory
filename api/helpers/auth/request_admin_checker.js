@@ -9,8 +9,12 @@ module.exports.isRequestDirectoryAdmin = function(req) {
 module.exports.isRequestEnterpriseAdmin = function(req, enterpriseId) {
   if (enterpriseId.length == 0) return false;
   return this.isRequestDirectoryAdmin(req) ||
-          (req.isAuthenticated() && req.user && req.user.authenticatedEnterprises
-            && req.user.authenticatedEnterprises.contains(enterpriseId));
+        ( req.isAuthenticated() && req.user &&
+          req.user.authenticatedEnterprises &&
+          req.user.authenticatedEnterprises.filter(enterprise => {
+            return enterprise['id'] === enterpriseId;
+          }).length > 0
+        );
 };
 
 module.exports.getAuthenticatedEnterprisesByRequest = function(req) {

@@ -250,6 +250,7 @@ enterprisesEn.forEach(function(enterprise) {
 
   let jsonPrivateEnterprise = {
     _id: {'$oid': genPrivId},
+    'enterprise_id': {'$oid': genPubId},
     'admin_emails': [fields[12]]
   };
 
