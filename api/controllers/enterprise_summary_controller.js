@@ -25,7 +25,7 @@ module.exports.getAccountEnterpriseSummary = function(req, res) {
   }
 
   let enterprisePermissions = adminChecker.getAuthenticatedEnterprisesByRequest(req);
-  let query = {'_id': { $in: enterprisePermissions}};
+  let query = {'_id': { $in: enterprisePermissions.map(v => v.id)}};
   handleEnterpriseSummary(language, query)
     .then(summary => {res.status(200).json(summary);})
     .catch(err => {
